@@ -18,6 +18,7 @@ src/
 │   └── InvestigadorService.js
 │
 ├── views/                       # Vistas de la aplicación que se enlazan a través de las rutas
+│   ├── Inicio.js                # Página de inicio (home)
 │   ├── Proyectos/               # Vistas relacionadas a los proyectos
 │   │   ├── ListaProyectos.js    # Lista de proyectos (vista principal de proyectos)
 │   │   ├── DetallesProyecto.js  # Vista de detalles de un proyecto

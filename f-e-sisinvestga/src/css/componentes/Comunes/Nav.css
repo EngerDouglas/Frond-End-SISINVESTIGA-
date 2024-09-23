@@ -1,0 +1,44 @@
+.nav-bar {
+    background-color: #ffffff; /* Fondo blanco */
+    padding: 10px 20px; /* Espaciado */
+    display: flex; /* Para alinear elementos en línea */
+    justify-content: space-between; /* Espacio entre logo y menú */
+    align-items: center; /* Alinear verticalmente */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+.logo {
+    font-size: 1.5rem; /* Tamaño de fuente del logo */
+    font-weight: bold; /* Negrita */
+    color: #4CAF50; /* Color verde */
+}
+
+.nav-list {
+    list-style: none; /* Sin viñetas */
+    display: flex; /* Elementos en línea */
+    padding: 0; /* Sin padding */
+    margin: 0; /* Sin margen */
+}
+
+.nav-item {
+    color: #4CAF50; /* Color verde */
+    margin: 0 20px; /* Espaciado entre elementos */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    transition: color 0.3s; /* Animación suave al cambiar color */
+}
+
+.nav-item:hover {
+    color: #388E3C; /* Color verde más oscuro al pasar el mouse */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .nav-list {
+        flex-direction: column; /* Cambia a columna en pantallas pequeñas */
+        align-items: center; /* Centrar elementos */
+    }
+
+    .nav-item {
+        margin: 10px 0; /* Espaciado vertical entre elementos */
+    }
+}
