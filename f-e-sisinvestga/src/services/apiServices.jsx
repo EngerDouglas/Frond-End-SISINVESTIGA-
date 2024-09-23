@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const API_URL = 'http://localhost:3005/api';
 
@@ -7,7 +8,64 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
+
+
+//  ------------------ Accesos de las Cookies ------------------------ //
+
+// Guardar token y rol en las cookies
+export const saveSession = (token, role) => {
+  Cookies.set('ucsd_session', token, { expires: 1 });
+  Cookies.set('role', role, { expires: 1 });
+};
+
+// Borrar la sesión
+export const deleteSession = () => {
+  Cookies.remove('ucsd_session');
+  Cookies.remove('role');
+};
+
+// Obtener la sesión desde las cookies
+export const getSession = () => {
+  const token = Cookies.get('ucsd_session');
+  const role = Cookies.get('role');
+  return { token, role };
+};
+
+//  -------------------------------- END ---------------------------- //
+
+//  ------------------ Sesiones ------------------------ //
+
+// Función para iniciar sesión
+export const login = async (credentials) => {
+  try {
+    const response = await api.post('/users/login', credentials);
+    const { user } = response.data;
+    const { role } = user;
+
+    // Guardar el token y el rol en las cookies
+    saveSession(response.data.token, role);
+
+    return { user, token: response.data.token };
+  } catch (error) {
+    console.log('Error en el inicio de sesión:', error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// Función para cerrar sesión
+export const logout = async () => {
+  try {
+    await api.post('/users/logout');
+    deleteSession();
+  } catch (error) {
+    console.log('Error al cerrar sesión:', error.response?.data || error.message);
+    throw error;
+  }
+};
+
+//  -------------------------------- END ---------------------------- //
 
 // GET //
 export const getData = async (endpoint) => {
