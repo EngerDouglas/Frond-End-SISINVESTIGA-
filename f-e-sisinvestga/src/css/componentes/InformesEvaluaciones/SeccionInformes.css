@@ -1,0 +1,12 @@
+h1{
+  display: flex;
+  justify-content: center;
+  color:#0b9912;
+}
+
+.modules{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  /* border: 8px black solid */
+}
