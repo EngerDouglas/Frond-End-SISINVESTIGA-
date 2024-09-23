@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from './Modal'; // Asegúrate de que la ruta sea correcta
 import '../../css/componentes/GestionProyectos/Investigadores.css';
+import Nav from '../Comunes/Nav';
 
 const investigadoresData = [
     { id: 1, nombre: 'Juan Pérez', rol: 'Investigador Principal', especializacion: 'Biología' },
@@ -16,6 +17,7 @@ const roles = [
 ];
 
 function Investigadores() {
+    
     const [searchTerm, setSearchTerm] = useState('');
     const [editingInvestigador, setEditingInvestigador] = useState(null);
     const [newRol, setNewRol] = useState('');
@@ -40,7 +42,9 @@ function Investigadores() {
     };
 
     return (
-        <div className="investigadores-container">
+        <>
+            <Nav></Nav>
+             <div className="investigadores-container">
             <h1>Lista de Investigadores</h1>
             <input
                 type="text"
@@ -80,6 +84,12 @@ function Investigadores() {
                 <button onClick={() => setIsModalOpen(false)}>Cancelar</button>
             </Modal>
         </div>
+        
+        
+        
+        
+        </>
+       
     );
 }
 

@@ -1,17 +1,21 @@
 import React from 'react';
 import '../../css/componentes/GestionProyectos/Modal.css'
 
-const EditarRol = ({ isOpen, onClose, children }) => {
-    if (!isOpen) return null; // No renderizar nada si la ventana no está abierta
+const Modal = ({ isOpen, onClose, children }) => {
+    if (!isOpen) return null;
 
     return (
-        <div className="modal">
-            <div className="modal-content">
-                <span className="close" onClick={onClose}>&times;</span>
-                {children}
+        <div className="modal-overlay">
+            <div className="modal-container">
+                <div className="modal-header">
+                    <span className="modal-close" onClick={onClose}>&times;</span>
+                </div>
+                <div className="modal-body">
+                    {children}
+                </div>
             </div>
         </div>
     );
 };
 
-export default EditarRol;
+export default Modal;

@@ -1,36 +1,146 @@
-.modal {
+/* Fondo oscuro transparente para el modal */
+.modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro translúcido */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Asegúrate de que esté encima de otros elementos */
+    z-index: 1000;
+    opacity: 0;
+    animation: fadeIn 0.5s forwards; /* Añadimos la animación de fade-in */
 }
 
-.modal-content {
-    background-color: white;
+/* Contenedor del modal */
+.modal-container {
+    background-color: #fff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 450px;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    transform: translateY(-50px); /* Modal empieza desplazado hacia arriba */
+    opacity: 0;
+    animation: slideIn 0.5s forwards; /* Animación de deslizamiento hacia abajo */
+}
+
+/* Animación de fade-in para el overlay */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Animación de deslizamiento para el modal */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px); /* Comienza un poco hacia arriba */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0); /* Finaliza en su posición normal */
+    }
+}
+
+/* Cabecera del modal con más margen */
+.modal-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px; /* Separación de la cabecera y el cuerpo del modal */
+}
+
+/* Botón de cerrar */
+.modal-close {
+    color: #333;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: #e74c3c; /* Rojo claro al pasar el cursor */
+}
+
+/* Cuerpo del modal */
+.modal-body {
+    padding: 0 20px;
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    color: #333;
+}
+
+.modal-body h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #4CAF50;
+}
+
+/* Espaciado entre párrafos */
+.modal-body p {
+    margin: 8px 0;
+    color: #555;
+}
+
+/* Espaciado en inputs */
+.modal-body select, .modal-body input {
     width: 100%;
+    padding: 10px;
+    margin: 12px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
 }
 
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
+.modal-body input:focus, .modal-body select:focus {
+    outline: none;
+    border: 1px solid #4CAF50;
 }
 
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
+/* Contenedor de botones alineado */
+.modal-body .button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+/* Estilo de los botones */
+.modal-body button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
     cursor: pointer;
+    transition: background 0.3s ease;
+    flex: 1; /* Botones más flexibles */
+    margin: 0 10px; /* Espacio entre botones */
+}
+
+.modal-body button:hover {
+    background-color: #45a049;
+}
+
+.modal-body .cancel-button {
+    background-color: #ccc;
+    color: #333;
+}
+
+.modal-body .cancel-button:hover {
+    background-color: #bbb;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .modal-container {
+        width: 95%;
+    }
 }
