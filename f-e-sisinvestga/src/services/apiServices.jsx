@@ -16,8 +16,28 @@ const api = axios.create({
 
 // Guardar token y rol en las cookies
 export const saveSession = (token, role) => {
-  Cookies.set('ucsd_session', token, { expires: 1 });
-  Cookies.set('role', role, { expires: 1 });
+  if (!token) {
+    console.error("Token no válido o faltante:", token);
+    return;
+  }
+
+  // Guardar el token y el rol en las cookies
+  Cookies.set('ucsd_session', token, {
+    expires: 1,  // 1 día
+    path: '/',
+    sameSite: 'Lax',  // Permitir envío cruzado
+    secure: false  // Desactivar en desarrollo
+  });
+  Cookies.set('role', role, {
+    expires: 1,  
+    path: '/',
+    sameSite: 'Lax',
+    secure: false 
+  });
+
+  // Verificar si las cookies están guardadas correctamente
+  console.log("Token guardado en cookies:", Cookies.get('ucsd_session')); // Asegúrate de que aquí se vea el token
+  console.log("Role guardado en cookies:", Cookies.get('role')); // Asegúrate de que aquí se vea el rol
 };
 
 // Borrar la sesión
@@ -30,6 +50,7 @@ export const deleteSession = () => {
 export const getSession = () => {
   const token = Cookies.get('ucsd_session');
   const role = Cookies.get('role');
+  console.log("Obtenido desde las cookies:", { token, role });
   return { token, role };
 };
 

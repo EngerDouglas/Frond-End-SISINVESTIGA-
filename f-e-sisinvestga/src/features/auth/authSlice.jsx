@@ -42,6 +42,8 @@ const authSlice = createSlice({
   reducers: {
     loadSessionFromCookies(state) {
       const { token, role } = getSession(); // Obtener token y rol de las cookies
+			console.log("Token cargado desde cookies en Redux:", token); // Revisar si este log muestra el token
+			console.log("Role cargado desde cookies en Redux:", role); // Revisar si este log muestra el rol
       if (token) {
         state.token = token;
         state.role = role;
@@ -57,6 +59,7 @@ const authSlice = createSlice({
         state.status = "loading";
       })
       .addCase(loginUser.fulfilled, (state, action) => {
+				console.log("Datos en Redux:", action.payload); // Verifica los datos recibidos
         state.status = "succeeded";
         state.user = action.payload.user;
         state.token = action.payload.token;
@@ -77,4 +80,8 @@ const authSlice = createSlice({
 });
 
 export const { loadSessionFromCookies, clearError } = authSlice.actions;
+
+export const selectCurrentToken = (state) => state.auth.token;
+export const selectCurrentRole = (state) => state.auth.role;
+
 export default authSlice.reducer;
