@@ -1,6 +1,6 @@
 import React from "react";
-import FiltroBusqueda from "../componentes/FiltroBusqueda";
-import MostrarProyectos from "../componentes/MostrarProyectos";
+import FiltroBusqueda from "./components/GestionProyectos/FiltroBusqueda";
+import MostrarProyectos from "./components/GestionProyectos/MostrarProyectos";
 
 const ListaProyectos = () => {
   return (

@@ -1,5 +1,5 @@
 import React from "react";
-import Formulario from "../componentes/Formulario";
+import Formulario from "./components/GestionProyectos/Formulario";
 
 const AgregarProyecto = () => {
   return (
