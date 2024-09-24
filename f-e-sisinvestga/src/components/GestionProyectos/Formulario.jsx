@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Formulario.css';
+import './css/componentes/GestionProyectos/Formulario.css';
 
 const Formulario = ({ agregarProyecto }) => {
   const [proyectoDatos, setProyectoDatos] = useState({

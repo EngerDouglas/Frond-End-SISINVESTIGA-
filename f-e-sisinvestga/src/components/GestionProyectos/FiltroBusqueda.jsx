@@ -1,5 +1,5 @@
 import React from "react";
-import './FiltroBusqueda.css';
+import './css/componentes/GestionProyectos/FiltroBusqueda.css';
 
 const FiltroBusqueda = ({ onCrearProyecto }) => {
   return (

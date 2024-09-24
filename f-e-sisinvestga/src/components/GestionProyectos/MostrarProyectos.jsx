@@ -1,5 +1,5 @@
 import React from "react";
-import './MostrarProyectos.css';
+import './css/componentes/GestionProyectos/MostrarProyectos.css';
 
 const MostrarProyectos = () => {
   // Lista de proyectos de ejemplo
