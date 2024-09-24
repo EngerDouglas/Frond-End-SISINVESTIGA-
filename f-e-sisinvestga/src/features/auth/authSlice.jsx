@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { login, logout, getSession } from "../../services/apiServices";
+import { login, logout, logoutAll, getSession } from "../../services/apiServices";
 
 const initialState = {
   user: null,
@@ -52,6 +52,18 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
+// Async thunk para cerrar todas las sesiones
+export const logoutAllUser = createAsyncThunk(
+  "auth/logoutAllUser",
+  async (_, thunkAPI) => {
+    try {
+      await logoutAll();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data || "Error desconocido");
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -72,7 +84,6 @@ export const authSlice = createSlice({
         state.status = "loading";
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        console.log("Datos en Redux:", action.payload); 
         state.status = "succeeded";
         state.user = action.payload.user;
         state.token = action.payload.token;
@@ -90,6 +101,17 @@ export const authSlice = createSlice({
         state.role = null;
         state.sessionLoaded = true;  // Asegurarse de que la sesión se ha limpiado
         state.status = "idle";
+      })
+      .addCase(logoutAllUser.fulfilled, (state) => {
+        state.user = null;
+        state.token = null;
+        state.role = null;
+        state.sessionLoaded = true;  // Asegurarse de que la sesión se ha limpiado
+        state.status = "idle";
+      })
+      .addCase(logoutAllUser.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
       });
   },
 });

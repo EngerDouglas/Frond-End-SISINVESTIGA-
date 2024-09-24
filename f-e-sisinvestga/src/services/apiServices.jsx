@@ -57,7 +57,7 @@ api.interceptors.request.use((config) => {
 
 //  ------------------ Sesiones ------------------------ //
 
-// Función para iniciar sesión
+// Iniciar sesión
 export const login = async (credentials) => {
   try {
     const response = await api.post('/users/login', credentials);
@@ -79,13 +79,24 @@ export const login = async (credentials) => {
   }
 };
 
-// Función para cerrar sesión
+// Cerrar sesión
 export const logout = async () => {
   try {
     await api.post('/users/logout');
     deleteSession();
   } catch (error) {
     console.log('Error al cerrar sesión:', error.response?.data || error.message);
+    throw error;
+  }
+};
+
+// Cerrar todas las sesiones
+export const logoutAll = async () => {
+  try {
+    await api.post('/users/logout-all');
+    deleteSession(); 
+  } catch (error) {
+    console.log('Error al cerrar todas las sesiones:', error.response?.data || error.message);
     throw error;
   }
 };
@@ -102,6 +113,7 @@ export const getData = async (endpoint) => {
     throw error;
   }
 };
+
 // Obtener un recurso por ID
 export const getDataById = async (endpoint, id) => {
   try {
@@ -151,7 +163,7 @@ export const postData = async (endpoint, body) => {
 //  -------------------------------- END ---------------------------- //
 
 // PUT
-export const putData = async (endpoint, body) => {
+export const putData = async (endpoint, id, body) => {
   try {
     const response = await api.put(`/${endpoint}/${id}`, body);
     return response.data;
@@ -164,7 +176,7 @@ export const putData = async (endpoint, body) => {
 //  -------------------------------- END ---------------------------- //
 
 // DELETE
-export const deleteData = async (endpoint) => {
+export const deleteData = async (endpoint, id) => {
   try {
     const response = await api.delete(`/${endpoint}/${id}`);
     return response.data;
