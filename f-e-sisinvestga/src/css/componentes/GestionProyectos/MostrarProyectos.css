@@ -1,0 +1,19 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+#Proyectos{
+  border-radius: 4px;
+}
+
+#Proyectos>li{
+  border: black solid 1px;
+  padding: 4px;
+  transition: background-color 0.3s ease;
+  list-style-type: none;
+}
+
+#Proyectos>li:hover{
+  background-color: gray;
+}
