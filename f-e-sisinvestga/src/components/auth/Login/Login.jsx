@@ -6,13 +6,15 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
-    const { user, token, role, error, status } = useSelector((state) => state.auth);
+    const { user, role, error, status } = useSelector((state) => state.auth);
 
+    // Manejar el envío del formulario de inicio de sesión
     const handleSubmit = (e) => {
         e.preventDefault();
         dispatch(loginUser({ email, password }));
     };
 
+    // Limpiar el mensaje de error
     const handleClearError = () => {
         dispatch(clearError());
     };
@@ -25,26 +27,34 @@ const Login = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email"
+                    required
                 />
                 <input
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Contraseña"
+                    required
                 />
-                <button type="submit">Iniciar Sesión</button>
+                <button type="submit" className="submit-btn">
+                    {status === 'loading' ? 'Iniciando...' : 'Iniciar Sesión'}
+                </button>
             </form>
 
-            {status === 'loading' && <p>Cargando...</p>}
             {error && (
-                <div>
-                    <p>Error: {error.message}</p>
+                <div className="error-message">
+                    {/* Convertir el error en string si es necesario */}
+                    <p>Error: {typeof error === 'string' ? error : 'Ocurrió un error inesperado'}</p>
                     <button onClick={handleClearError}>Limpiar Error</button>
                 </div>
             )}
-            {user && <p>Bienvenido, {user.name}</p>}
-            {token && <p>Token: {token}</p>}
-            {role && <p>Rol: {role}</p>}
+            {/* Mostrar datos del usuario cuando se ha iniciado sesión */}
+            {user && (
+                <div className="user-info">
+                    <p>Bienvenido, {user.nombre}</p>
+                    {role && <p>Rol: {role}</p>}
+                </div>
+            )}
         </div>
     );
 };

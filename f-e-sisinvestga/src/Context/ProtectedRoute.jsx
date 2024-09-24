@@ -1,25 +1,22 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { selectCurrentToken, selectCurrentRole } from '../features/auth/authSlice';
+import { selectCurrentToken, selectCurrentRole, selectSessionLoaded } from '../features/auth/authSlice';
 
 const ProtectedRoute = ({ children, roles, redirectPath = '/unauthorized' }) => {
   const token = useSelector(selectCurrentToken);
   const role = useSelector(selectCurrentRole);
+  const sessionLoaded = useSelector(selectSessionLoaded);
 
-  useEffect(() => {
-    if (!token) {
-      // Si no hay token, redirige al login
-      console.log('Token no encontrado en cookies, redirigiendo a /login');
-    }
-  }, [token]);
-
-  console.log("Token en ProtectedRoute:", token);
-  console.log("Role en ProtectedRoute:", role);
+  if (!sessionLoaded) {
+    return <p>Cargando sesión...</p>;  // Puedes reemplazar esto con un componente de carga personalizado
+  }
 
   if (!token) {
     return <Navigate to='/login' />;
-  } else if(roles && !roles.includes(role)) {
+  }
+
+  if (roles && !roles.includes(role)) {
     return <Navigate to={redirectPath} />
   }
 

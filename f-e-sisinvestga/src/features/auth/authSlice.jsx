@@ -7,8 +7,25 @@ const initialState = {
   role: null,
   error: null,
   status: "idle",
+  sessionLoaded: false,
 };
 
+// Cargar la sesión desde localStorage al iniciar la aplicación
+export const loadSessionFromLocalStorage = () => {
+  const { token, role } = getSession(); // Obtener token y rol desde localStorage
+  if (token && role) {
+    return {
+      token,
+      role,
+    };
+  }
+  return {
+    token: null,
+    role: null,
+  };
+};
+
+// Async thunk para el inicio de sesión
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials, thunkAPI) => {
@@ -16,13 +33,12 @@ export const loginUser = createAsyncThunk(
       const response = await login(credentials);
       return response; // Retorna los datos del usuario
     } catch (error) {
-      return thunkAPI.rejectWithValue(
-        error.response?.data || "Error desconocido"
-      );
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
 
+// Async thunk para el cierre de sesión
 export const logoutUser = createAsyncThunk(
   "auth/logoutUser",
   async (_, thunkAPI) => {
@@ -36,18 +52,15 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
-const authSlice = createSlice({
+export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    loadSessionFromCookies(state) {
-      const { token, role } = getSession(); // Obtener token y rol de las cookies
-			console.log("Token cargado desde cookies en Redux:", token); // Revisar si este log muestra el token
-			console.log("Role cargado desde cookies en Redux:", role); // Revisar si este log muestra el rol
-      if (token) {
-        state.token = token;
-        state.role = role;
-      }
+    loadSession(state) {
+      const session = loadSessionFromLocalStorage(); // Cargar desde localStorage
+      state.token = session.token;
+      state.role = session.role;
+      state.sessionLoaded = true;  // Indicar que la sesión fue cargada
     },
     clearError(state) {
       state.error = null;
@@ -59,11 +72,12 @@ const authSlice = createSlice({
         state.status = "loading";
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-				console.log("Datos en Redux:", action.payload); // Verifica los datos recibidos
+        console.log("Datos en Redux:", action.payload); 
         state.status = "succeeded";
         state.user = action.payload.user;
         state.token = action.payload.token;
-        state.role = action.payload.user.role;
+        state.role = action.payload.role;
+        state.sessionLoaded = true;  // Establecer que la sesión está cargada
         state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -74,14 +88,16 @@ const authSlice = createSlice({
         state.user = null;
         state.token = null;
         state.role = null;
+        state.sessionLoaded = true;  // Asegurarse de que la sesión se ha limpiado
         state.status = "idle";
       });
   },
 });
 
-export const { loadSessionFromCookies, clearError } = authSlice.actions;
+export const { loadSession, clearError } = authSlice.actions;
 
 export const selectCurrentToken = (state) => state.auth.token;
 export const selectCurrentRole = (state) => state.auth.role;
+export const selectSessionLoaded = (state) => state.auth.sessionLoaded;
 
 export default authSlice.reducer;

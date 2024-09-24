@@ -1,5 +1,6 @@
 import React from 'react';
-import { Navigate, Route,Routes } from 'react-router';
+import { useSelector } from 'react-redux';
+import { Navigate, Route, Routes } from 'react-router';
 import Home from '../views/Home/Home';
 import LoginPage from '../views/Seguridad/LoginPage';
 import AdminDashboard from '../views/Admin/AdminDashboard';
@@ -9,12 +10,17 @@ import RegistroInvestigador from '../../src/components/GestionProyectos/Registro
 import Unauthorized from '../views/Pages/Unauthorized';
 import NotFound from '../views/Pages/NotFound';
 import ProtectedRoute from '../Context/ProtectedRoute';
-import { useSelector } from 'react-redux';
+import { selectSessionLoaded } from '../features/auth/authSlice';
 
 const AppRouter = () => {
 
   const token = useSelector((state) => state.auth.token);
   const role = useSelector((state) => state.auth.role);
+  const sessionLoaded = useSelector(selectSessionLoaded);
+
+  if (!sessionLoaded) {
+    return <p>Cargando sesión...</p>; // Mostrar indicador de carga mientras no se haya cargado la sesión
+  }
 
   const getHome = () => {
     if (token) {
@@ -27,18 +33,19 @@ const AppRouter = () => {
           return <Home />;
       }
     }
-    else
-    return <Home />;
+    else {
+      return <Home />;
+    }
   }
 
   return (
     <Routes>
-      {/* Rutas Defecto de la pagina */}
-      <Route path='/' element={getHome()} />
-
       {/* Rutas Publicas */}
       <Route path='/login' element={<LoginPage />} />
       <Route path='/registro' element={<RegistroInvestigador />} />
+
+      {/* Rutas Defecto de la pagina */}
+      <Route path='/' element={getHome()} />
       
       {/* Rutas Protegidas para Investigador */}
       <Route path='/invest' element={ 
@@ -61,10 +68,10 @@ const AppRouter = () => {
         </ProtectedRoute>
       } />
 
-      {/* Rutas Protegidas no Autorizadoo */}
+      {/* Rutas Protegidas no Autorizado */}
       <Route path='/unauthorized' element={<Unauthorized />} />
 
-      {/* Rutas Protegidas no Autorizadoo */}
+      {/* Ruta por defecto: Not Found */}
       <Route path='*' element={<NotFound />} />
     </Routes>
   )

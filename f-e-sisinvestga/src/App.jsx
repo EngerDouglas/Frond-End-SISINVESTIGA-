@@ -2,24 +2,19 @@ import React, { useEffect } from "react";
 import AppRouter from "./routes/AppRouter";
 import { Provider, useDispatch } from "react-redux";
 import store from "./store";
-import { BrowserRouter } from "react-router-dom";
+import { loadSession } from "./features/auth/authSlice"; // Importar la acción de carga de sesión
 import "./App.css";
-import { loadSessionFromCookies } from "./features/auth/authSlice"; // Importa la acción para cargar la sesión
 
-const App = () => {
+function App() {
   const dispatch = useDispatch();
 
-  // Cargar sesión al inicio de la aplicación
   useEffect(() => {
-    dispatch(loadSessionFromCookies()); // Cargar sesión desde las cookies al inicio
+    // Cargar el token y rol desde localStorage al iniciar la aplicación
+    dispatch(loadSession());
   }, [dispatch]);
 
-  return (
-    <BrowserRouter>
-      <AppRouter />
-    </BrowserRouter>
-  );
-};
+  return <AppRouter />;
+}
 
 const AppWrapper = () => (
   <Provider store={store}>
