@@ -11,6 +11,8 @@ import Unauthorized from '../views/Pages/Unauthorized';
 import NotFound from '../views/Pages/NotFound';
 import ProtectedRoute from '../Context/ProtectedRoute';
 import { selectSessionLoaded } from '../features/auth/authSlice';
+import AgregarProyecto from '../views/Proyectos/AgregarProyecto';
+import ListaProyectos from '../views/Proyectos/ListaProyectos';
 
 const AppRouter = () => {
 
@@ -65,6 +67,20 @@ const AppRouter = () => {
       <Route path='/gestion' element={ 
         <ProtectedRoute roles={['Administrador']}>
           <GestionPermisos />
+        </ProtectedRoute>
+      } />
+
+      {/* Rutas Protegidas para Administrador */}
+      <Route path='/agregarproyecto' element={ 
+        <ProtectedRoute roles={['Administrador', 'Investigador']}>
+          <AgregarProyecto />
+        </ProtectedRoute>
+      } />
+
+      {/* Rutas Protegidas para Administrador */}
+      <Route path='/listarproyectos' element={ 
+        <ProtectedRoute roles={['Administrador', 'Investigador']}>
+          <ListaProyectos />
         </ProtectedRoute>
       } />
 
