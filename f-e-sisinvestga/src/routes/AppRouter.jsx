@@ -33,12 +33,12 @@ const AppRouter = () => {
 
   return (
     <Routes>
+      {/* Rutas Defecto de la pagina */}
+      <Route path='/' element={getHome()} />
+
       {/* Rutas Publicas */}
       <Route path='/login' element={<LoginPage />} />
       <Route path='/registro' element={<RegistroInvestigador />} />
-
-      {/* Rutas Defecto de la pagina */}
-      <Route path='/' element={getHome()} />
       
       {/* Rutas Protegidas para Investigador */}
       <Route path='/invest' element={ 

@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, clearError, loadSessionFromCookies } from '../../../features/auth/authSlice';
+import { loginUser, clearError } from '../../../features/auth/authSlice';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
     const { user, token, role, error, status } = useSelector((state) => state.auth);
-
-    useEffect(() => {
-        dispatch(loadSessionFromCookies()); // Carga la sesión desde las cookies
-    }, [dispatch]);
 
     const handleSubmit = (e) => {
         e.preventDefault();

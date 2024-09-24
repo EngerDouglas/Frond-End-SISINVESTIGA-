@@ -18,27 +18,29 @@ const api = axios.create({
 export const saveSession = (token, role) => {
   if (!token) {
     console.error("Token no válido o faltante:", token);
-    return;
+    return false;
   }
 
-  // Guardar el token y el rol en las cookies
+  // Guarda la cookie y verifica si se guarda correctamente
   Cookies.set('ucsd_session', token, {
-    expires: 1,  // 1 día
-    path: '/',
-    sameSite: 'Lax',  // Permitir envío cruzado
-    secure: false  // Desactivar en desarrollo
-  });
-  Cookies.set('role', role, {
-    expires: 1,  
+    expires: 1, // Cambia la expiración a 1 día para pruebas
     path: '/',
     sameSite: 'Lax',
-    secure: false 
+    secure: process.env.NODE_ENV === 'production'
+  });
+  
+  Cookies.set('role', role, {
+    expires: 1,
+    path: '/',
+    sameSite: 'Lax',
+    secure: process.env.NODE_ENV === 'production'
   });
 
-  // Verificar si las cookies están guardadas correctamente
-  console.log("Token guardado en cookies:", Cookies.get('ucsd_session')); // Asegúrate de que aquí se vea el token
-  console.log("Role guardado en cookies:", Cookies.get('role')); // Asegúrate de que aquí se vea el rol
+  console.log("Token guardado en cookies:", Cookies.get('ucsd_session'));
+  console.log("Role guardado en cookies:", Cookies.get('role'));
+  return true;
 };
+
 
 // Borrar la sesión
 export const deleteSession = () => {
@@ -50,6 +52,10 @@ export const deleteSession = () => {
 export const getSession = () => {
   const token = Cookies.get('ucsd_session');
   const role = Cookies.get('role');
+  if (!token || !role) {
+    console.error("No se encontraron cookies de sesión válidas");
+    return { token: null, role: null }; // Return default values if cookies are missing
+  }
   console.log("Obtenido desde las cookies:", { token, role });
   return { token, role };
 };
@@ -62,13 +68,17 @@ export const getSession = () => {
 export const login = async (credentials) => {
   try {
     const response = await api.post('/users/login', credentials);
-    const { user } = response.data;
-    const { role } = user;
+    const { user, token } = response.data;
+
+    if (!token) {
+      console.error('El token no se recibió correctamente');
+      return;
+    }
 
     // Guardar el token y el rol en las cookies
-    saveSession(response.data.token, role);
+    saveSession(token, user.role);
 
-    return { user, token: response.data.token };
+    return { user, token };
   } catch (error) {
     console.log('Error en el inicio de sesión:', error.response?.data || error.message);
     throw error;
