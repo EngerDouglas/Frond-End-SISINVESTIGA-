@@ -153,7 +153,7 @@ export const postData = async (endpoint, body) => {
 // PUT
 export const putData = async (endpoint, body) => {
   try {
-    const response = await api.put(`/${endpoint}`, body);
+    const response = await api.put(`/${endpoint}/${id}`, body);
     return response.data;
   } catch (error) {
     console.log('Error en PUT:', error);
@@ -166,7 +166,7 @@ export const putData = async (endpoint, body) => {
 // DELETE
 export const deleteData = async (endpoint) => {
   try {
-    const response = await api.delete(`/${endpoint}`);
+    const response = await api.delete(`/${endpoint}/${id}`);
     return response.data;
   } catch (error) {
     console.log('Error en DELETE:', error);
