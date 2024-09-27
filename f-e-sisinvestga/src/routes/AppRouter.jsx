@@ -5,7 +5,6 @@ import Home from '../views/Home/Home';
 import LoginPage from '../views/Seguridad/LoginPage';
 import AdminDashboard from '../views/Admin/AdminDashboard';
 import InvestDashboard from '../views/Investigadores/InvestDashboard';
-import GestionPermisos from '../views/Seguridad/GestionPermisos';
 import Unauthorized from '../views/Pages/Unauthorized';
 import NotFound from '../views/Pages/NotFound';
 import ProtectedRoute from '../Context/ProtectedRoute';
@@ -70,12 +69,6 @@ const AppRouter = () => {
         </ProtectedRoute>
       } />
 
-      {/* Rutas Protegidas para Administrador */}
-      <Route path='/gestion' element={ 
-        <ProtectedRoute roles={['Administrador']}>
-          <GestionPermisos />
-        </ProtectedRoute>
-      } />
 
       {/* Rutas Protegidas para Administrador */}
       <Route path='/agregarproyecto' element={ 

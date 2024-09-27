@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { getData, putData } from "../../services/apiServices";
 import "../../css/componentes/GestionInvestigadores/GestionInvestigadores.css";
+import Modal from "./Modal"; // Asegúrate de que la ruta sea correcta
 
 function MostrarInvestigadores() {
   const [investigadoresData, setInvestigadoresData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [editingInvestigador, setEditingInvestigador] = useState(null);
   const [newRol, setNewRol] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [rolesData, setRolesData] = useState([]); // Para almacenar los roles desde la base de datos
 
   // Cargar los investigadores desde la API
   useEffect(() => {
@@ -15,6 +18,9 @@ function MostrarInvestigadores() {
         const users = await getData("users");
         const investigadores = users.filter(user => user.role.roleName === "Investigador");
         setInvestigadoresData(investigadores);
+         // Obtener roles desde la API
+         const roles = await getData("roles"); // Asegúrate de tener esta ruta en tu API
+         setRolesData(roles);
       } catch (error) {
         console.error("Error al obtener los investigadores:", error);
       }
@@ -42,7 +48,9 @@ function MostrarInvestigadores() {
   const handleEdit = (investigador) => {
     setEditingInvestigador(investigador);
     setNewRol(investigador.role._id); // Prellenar el rol actual con el ID del rol
+    setIsModalOpen(true); // Abrir la modal
   };
+
 
   const handleSave = async () => {
     if (editingInvestigador) {
@@ -115,24 +123,30 @@ function MostrarInvestigadores() {
         </tbody>
       </table>
 
-      {editingInvestigador && (
-        <div className="modal-editar">
-          <h2>Editar Rol de {editingInvestigador.nombre}</h2>
-          <select
-            value={newRol}
-            onChange={(e) => setNewRol(e.target.value)}
-          >
-            {/* Aquí debes mapear los roles disponibles desde la base de datos */}
-            {/* rolesData.map(role => <option key={role._id} value={role._id}>{role.roleName}</option>) */}
-          </select>
-          <button className="btn-guardar" onClick={handleSave}>
-            Guardar
-          </button>
-          <button className="btn-cancelar" onClick={() => setEditingInvestigador(null)}>
-            Cancelar
-          </button>
-        </div>
-      )}
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <h2>Editar Rol</h2>
+          {editingInvestigador && (
+            <>
+              <p>
+                <strong>Nombre:</strong> {editingInvestigador.nombre}
+              </p>
+              <p>
+                <strong>Especialización:</strong> {editingInvestigador.especializacion}
+              </p>
+              <select value={newRol} onChange={(e) => setNewRol(e.target.value)}>
+                {rolesData.map((role) => (
+                  <option key={role._id} value={role._id}>
+                    {role.roleName}
+                  </option>
+                ))}
+              </select>
+              <button onClick={handleSave}>Guardar</button>
+            </>
+          )}
+          <button onClick={() => setIsModalOpen(false)}>Cancelar</button>
+      </Modal>
+
+  
     </div>
   );
 }
