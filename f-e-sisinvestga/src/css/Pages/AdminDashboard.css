@@ -1,0 +1,86 @@
+.admin-dashboard {
+    padding: 20px;
+    margin-top: 50px;
+    animation: fadeIn 0.5s ease;
+  }
+
+
+  
+  .dashboard-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+    color: white; /* Your preferred color */
+  }
+  
+  .dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+  }
+
+  .admin-dashboard {
+    padding: 20px;
+  }
+  
+  .dashboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between cards */
+  }
+  
+  .dashboard-card {
+    background-color: #fff;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    padding: 20px;
+    flex: 1 1 200px; /* Flex-grow, flex-shrink, and basis */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+  }
+  
+  .dashboard-card:hover {
+    transform: translateY(-5px); /* Slight hover effect */
+  }
+  
+  .btn-card {
+    text-decoration: none;
+    background-color: #218838; /* Your color */
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background 0.3s;
+  }
+  
+  .btn-card:hover {
+    background-color: #1c7430; /* Darker shade for hover */
+  }
+  
+  
+  .dashboard-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+
+  

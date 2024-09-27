@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, clearError } from "../../../features/auth/authSlice";
+import { useNavigate } from "react-router-dom"; // Importa useNavigate
 import AlertComponent from "../../Comunes/AlertComponent";
 import "../../../css/componentes/Seguridad/Login.css";
 
@@ -8,35 +9,45 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Inicializa useNavigate
   const { user, role, error, status } = useSelector((state) => state.auth);
 
-  // Manejar el envío del formulario de inicio de sesión
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(loginUser({ email, password }));
   };
 
-  // Limpiar el mensaje de error
   const handleClearError = () => {
     dispatch(clearError());
   };
 
-	 // Mostrar alerta si hay error
-	useEffect(() => {
+  useEffect(() => {
     if (error) {
       AlertComponent.error(error);
     }
   }, [error]);
 
-  // Mostrar alerta de éxito si el usuario está logueado
   useEffect(() => {
     if (user && !error) {
       AlertComponent.success(`Bienvenido, ${user.nombre} ${user.apellido}. Rol: ${role}`);
+
+      // Redirigir según el rol
+      switch (role) {
+        case 'Administrador':
+          navigate('/admin');
+          break;
+        case 'Investigador':
+          navigate('/invest');
+          break;
+        default:
+          navigate('/'); 
+      }
     }
-  }, [user, role, error]);
+  }, [user, role, error, navigate]); // Asegúrate de incluir navigate en la dependencia
 
   return (
     <div className="login-container">
+      <h1 className="university-title">Universidad Católica Santo Domingo</h1>
       <form onSubmit={handleSubmit} className="login-form">
         <h2>Iniciar Sesión</h2>
         <input
@@ -59,7 +70,11 @@ const Login = () => {
           {status === "loading" ? "Iniciando..." : "Iniciar Sesión"}
         </button>
 
-        {/* Mostrar mensajes de error incluyendo el caso de usuario deshabilitado */}
+        {/* Botón para recuperar contraseña */}
+        <button type="button" className="forgot-password-btn" onClick={() => alert("Funcionalidad de recuperación de contraseña aún no implementada.")}>
+          Se me olvidó la contraseña
+        </button>
+
         {error && (
           <div className="error-message">
             <p>{error}</p>
@@ -67,7 +82,6 @@ const Login = () => {
           </div>
         )}
 
-        {/* Mostrar mensaje de éxito si el usuario está logueado */}
         {user && (
           <div className="success-message">
             <p>

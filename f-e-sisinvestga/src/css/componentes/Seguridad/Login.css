@@ -5,7 +5,30 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f0f4f8;
+  background: linear-gradient(135deg, #218838, #81c784);
+  background-size: 400% 400%;
+  animation: backgroundMove 10s ease infinite;
+  height: 100vh; /* Asegúrate de que el body ocupe toda la altura */
+  display: flex;
+  align-items: center; /* Centra verticalmente */
+  justify-content: center; /* Centra horizontalmente */
+}
+
+@keyframes backgroundMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.university-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  animation: fadeIn 1s ease-in-out;
+  text-align: center;
+  margin-top: 50px;
 }
 
 .login-container {
@@ -13,9 +36,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
   padding: 20px;
-  background-color: #f8fafc;
 }
 
 h2 {
@@ -38,17 +59,6 @@ h2 {
   text-align: center;
 }
 
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
-label {
-  margin-bottom: 5px;
-  display: block;
-  color: #555;
-  font-weight: 500;
-}
-
 input {
   width: 100%;
   padding: 0.75rem;
@@ -60,18 +70,13 @@ input {
 }
 
 input:focus {
-  border-color: #4caf50;
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.4);
+  border-color: #218838;
+  box-shadow: 0 0 5px rgba(33, 136, 56, 0.4);
   outline: none;
 }
 
-.error {
-  color: red;
-  margin-bottom: 10px;
-}
-
 .submit-btn {
-  background-color: #4caf50;
+  background-color: #218838;
   color: white;
   border: none;
   border-radius: 8px;
@@ -84,11 +89,10 @@ input:focus {
 }
 
 .submit-btn:hover {
-  background-color: #45a049;
+  background-color: #1e7c2d;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Mensajes de éxito */
 .success-message {
   background-color: #d4edda;
   color: #155724;
@@ -99,7 +103,6 @@ input:focus {
   text-align: center;
 }
 
-/* Mensajes de error */
 .error-message {
   background-color: #f8d7da;
   color: #721c24;
@@ -110,13 +113,11 @@ input:focus {
   text-align: center;
 }
 
-/* Campo con error */
 .input-error {
   border-color: #dc3545;
   box-shadow: 0 0 5px rgba(220, 53, 69, 0.4);
 }
 
-/* Contenedor principal */
 .user-info {
   margin-top: 1rem;
   padding: 1rem;
@@ -125,7 +126,6 @@ input:focus {
   font-size: 1.1rem;
 }
 
-/* Animaciones */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -144,4 +144,19 @@ input:focus {
     transform: translateY(0);
     opacity: 1;
   }
+}
+
+.forgot-password-btn {
+  background: none;
+  color: #218838;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 10px;
+  transition: color 0.3s;
+}
+
+.forgot-password-btn:hover {
+  color: white;
 }

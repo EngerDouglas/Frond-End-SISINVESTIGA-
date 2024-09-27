@@ -13,6 +13,7 @@ import { selectSessionLoaded } from '../features/auth/authSlice';
 import AgregarProyecto from '../views/Proyectos/AgregarProyecto';
 import ListaProyectos from '../views/Proyectos/ListaProyectos';
 import RegisterPage from '../views/Seguridad/RegisterPage';
+import GestionInvestigadores from '../views/Admin/GestionInvestigadores/GestionInvestigadores'
 
 const AppRouter = () => {
 
@@ -45,7 +46,6 @@ const AppRouter = () => {
       {/* Rutas Publicas */}
       <Route path='/login' element={<LoginPage />} />
       <Route path='/registro' element={<RegisterPage/>} />
-
       {/* Rutas Defecto de la pagina */}
       <Route path='/' element={getHome()} />
       
@@ -60,6 +60,13 @@ const AppRouter = () => {
       <Route path='/admin' element={ 
         <ProtectedRoute roles={['Administrador']}>
           <AdminDashboard />
+        </ProtectedRoute>
+      } />
+
+      {/* Rutas Protegidas para Administrador */}
+      <Route path='/gestionInvestigadores' element={ 
+        <ProtectedRoute roles={['Administrador']}>
+          <GestionInvestigadores />
         </ProtectedRoute>
       } />
 
