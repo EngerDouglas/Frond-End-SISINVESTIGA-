@@ -6,13 +6,13 @@ import LoginPage from '../views/Seguridad/LoginPage';
 import AdminDashboard from '../views/Admin/AdminDashboard';
 import InvestDashboard from '../views/Investigadores/InvestDashboard';
 import GestionPermisos from '../views/Seguridad/GestionPermisos';
-import RegistroInvestigador from '../../src/components/GestionProyectos/RegistroInvestigador';
 import Unauthorized from '../views/Pages/Unauthorized';
 import NotFound from '../views/Pages/NotFound';
 import ProtectedRoute from '../Context/ProtectedRoute';
 import { selectSessionLoaded } from '../features/auth/authSlice';
 import AgregarProyecto from '../views/Proyectos/AgregarProyecto';
 import ListaProyectos from '../views/Proyectos/ListaProyectos';
+import RegisterPage from '../views/Seguridad/RegisterPage';
 
 const AppRouter = () => {
 
@@ -44,7 +44,7 @@ const AppRouter = () => {
     <Routes>
       {/* Rutas Publicas */}
       <Route path='/login' element={<LoginPage />} />
-      <Route path='/registro' element={<RegistroInvestigador />} />
+      <Route path='/registro' element={<RegisterPage/>} />
 
       {/* Rutas Defecto de la pagina */}
       <Route path='/' element={getHome()} />

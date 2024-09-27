@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import '../../css/componentes/GestionProyectos/RegistroInvestigador.css';
-import Nav from '../Comunes/Nav';
-import { postData } from '../../services/apiServices';
+import '../../../css/componentes/Seguridad/Register.css';
+import Nav from '../../Comunes/Nav';
+import { postData } from '../../../services/apiServices';
 
-export default function RegistroInvestigador() {
+export default function Register() {
     const [nombre, setNombre] = useState('');
     const [apellido, setApellido] = useState('');
     const [email, setEmail] = useState('');
@@ -13,8 +13,9 @@ export default function RegistroInvestigador() {
     const [responsabilidadesList, setResponsabilidadesList] = useState([]);
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        postData('/users/register', {
+        try {
+          e.preventDefault();
+          postData('users/register', {
           'nombre': nombre,
           'apellido': apellido,
           'email': email,
@@ -23,6 +24,9 @@ export default function RegistroInvestigador() {
           'responsabilidades': responsabilidadesList
         });
         resetForm();
+        } catch (error) {
+          console.error('Error al registrarse', error)
+        }
     };
 
     const resetForm = () => {
