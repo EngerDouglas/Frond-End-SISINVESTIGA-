@@ -1,0 +1,97 @@
+.publicaciones-container {
+  padding: 20px;
+  animation: fadeIn 0.5s ease;
+}
+
+.search-bar {
+  display: flex; /* Alinear el input y el botón en línea */
+  margin-bottom: 20px;
+}
+
+.search-input {
+  flex: 1; /* Permitir que el input ocupe el espacio restante */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.search-input:focus {
+  border-color: #218838; /* Color al enfocar */
+  box-shadow: 0 0 5px rgba(33, 136, 56, 0.5); /* Sombra al enfocar */
+  outline: none; /* Quitar el borde por defecto del navegador */
+}
+
+.btn-create {
+  padding: 10px 15px;
+  background-color: #218838; /* Color para botón de crear */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  margin-left: 10px; /* Espacio entre el input y el botón */
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-create:hover {
+  background-color: #1c7430; /* Color al pasar el mouse */
+}
+
+.publicacion-card {
+  background-color: #fff;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.publicacion-card:hover {
+  transform: translateY(-5px); /* Efecto de hover */
+}
+
+.buttons {
+  margin-top: 10px;
+}
+
+.btn-update, .btn-delete {
+  padding: 6px 12px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-update {
+  background-color: #007bff; /* Color para botón de actualizar */
+  color: white;
+}
+
+.btn-update:hover {
+  background-color: #0056b3; /* Color al pasar el mouse */
+}
+
+.btn-delete {
+  background-color: #dc3545; /* Color para botón de eliminar */
+  color: white;
+}
+
+.btn-delete:hover {
+  background-color: #c82333; /* Color al pasar el mouse */
+}
+
+.anexo-link {
+  color: #007bff; /* Color de los enlaces */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

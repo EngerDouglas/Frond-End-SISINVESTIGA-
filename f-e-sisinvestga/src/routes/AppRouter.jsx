@@ -13,6 +13,7 @@ import AgregarProyecto from '../views/Proyectos/AgregarProyecto';
 import ListaProyectos from '../views/Proyectos/ListaProyectos';
 import RegisterPage from '../views/Seguridad/RegisterPage';
 import GestionInvestigadores from '../views/Admin/GestionInvestigadores/GestionInvestigadores'
+import Publicaciones from "../views/publicaciones/publicacionesViews"
 
 const AppRouter = () => {
 
@@ -74,6 +75,13 @@ const AppRouter = () => {
       <Route path='/agregarproyecto' element={ 
         <ProtectedRoute roles={['Administrador', 'Investigador']}>
           <AgregarProyecto />
+        </ProtectedRoute>
+      } />
+
+       {/* Rutas Protegidas para Administrador */}
+       <Route path='/publicaciones' element={ 
+        <ProtectedRoute roles={['Administrador']}>
+          <Publicaciones />
         </ProtectedRoute>
       } />
 
