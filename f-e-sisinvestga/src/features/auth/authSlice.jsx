@@ -6,6 +6,7 @@ const initialState = {
   token: null,
   role: null,
   error: null,
+  success: null, 
   status: "idle",
   sessionLoaded: false,
 };
@@ -33,7 +34,7 @@ export const loginUser = createAsyncThunk(
       const response = await login(credentials);
       return response; // Retorna los datos del usuario
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return thunkAPI.rejectWithValue(error.response?.data?.error || error.message);
     }
   }
 );
@@ -77,11 +78,16 @@ export const authSlice = createSlice({
     clearError(state) {
       state.error = null;
     },
+    clearSuccess(state) {
+      state.success = null; // Limpiar el mensaje de éxito
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
         state.status = "loading";
+        state.error = null;
+        state.success = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.status = "succeeded";
@@ -89,11 +95,13 @@ export const authSlice = createSlice({
         state.token = action.payload.token;
         state.role = action.payload.role;
         state.sessionLoaded = true;  // Establecer que la sesión está cargada
+        state.success = 'Inicio de sesión exitoso'; 
         state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
+        state.success = null;
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
