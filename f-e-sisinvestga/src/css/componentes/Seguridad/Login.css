@@ -1,26 +1,17 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f0f4f8;
-  overflow-x: hidden;
-}
-
 .login-page {
   display: flex;
-  height: 100vh; /* Ocupa toda la altura de la ventana */
+  height: 100vh; 
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 .login-left {
-  flex: 3; /* 60% del ancho */
+  flex: 3; 
 }
 
 .login-right {
-  flex: 2; /* 40% del ancho */
+  flex: 2;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -36,7 +27,7 @@ body {
 
 .login-container {
   width: 100%;
-  max-width: 400px; /* Limita el ancho máximo del formulario */
+  max-width: 400px; 
   padding: 30px;
   text-align: center;
 }
@@ -140,7 +131,7 @@ h2 {
     width: 100%;
   }
   .login-left {
-    height: 40vh; /* La imagen ocupará el 40% de la altura en pantallas pequeñas */
+    height: 40vh; 
   }
   .login-right {
     height: auto;
