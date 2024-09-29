@@ -1,151 +1,98 @@
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #218838, #81c784);
-  background-size: 400% 400%;
-  animation: backgroundMove 10s ease infinite;
-  height: 100vh; /* Asegúrate de que el body ocupe toda la altura */
+  background-color: #f0f4f8;
+  overflow-x: hidden;
+}
+
+.login-page {
   display: flex;
-  align-items: center; /* Centra verticalmente */
-  justify-content: center; /* Centra horizontalmente */
+  height: 100vh; /* Ocupa toda la altura de la ventana */
 }
 
-@keyframes backgroundMove {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+.login-left {
+  flex: 3; /* 60% del ancho */
 }
 
-.university-title {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: white;
-  margin-bottom: 20px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
-  animation: fadeIn 1s ease-in-out;
-  text-align: center;
-  margin-top: 50px;
+.login-right {
+  flex: 2; /* 40% del ancho */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+}
+
+.login-background {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .login-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+  width: 100%;
+  max-width: 400px; /* Limita el ancho máximo del formulario */
+  padding: 30px;
+  text-align: center;
 }
 
-h2 {
+.login-logo {
+  width: 220px;
   margin-bottom: 20px;
-  color: #333;
-  text-align: center;
+}
+
+/* Título */
+h2 {
+  color: #218838;
   font-size: 1.8rem;
-  font-weight: 600;
-  animation: fadeIn 0.5s ease-in-out;
+  margin-bottom: 20px;
 }
 
+/* Formulario */
 .login-form {
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
   width: 100%;
-  max-width: 400px;
-  animation: slideIn 0.5s ease-in-out;
-  text-align: center;
 }
 
-input {
+/* Inputs */
+.login-form input {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  padding: 12px 15px;
+  margin-bottom: 15px;
   font-size: 1rem;
-  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
   transition: border 0.3s, box-shadow 0.3s;
 }
 
-input:focus {
+.login-form input:focus {
   border-color: #218838;
-  box-shadow: 0 0 5px rgba(33, 136, 56, 0.4);
+  box-shadow: 0 0 5px rgba(33, 136, 56, 0.3);
   outline: none;
 }
 
+/* Botón de Enviar */
 .submit-btn {
   background-color: #218838;
   color: white;
   border: none;
-  border-radius: 8px;
-  padding: 0.75rem;
-  width: 100%;
+  border-radius: 6px;
+  padding: 12px 0;
+  font-size: 1.1rem;
   cursor: pointer;
-  font-size: 1.2rem;
-  font-weight: 600;
-  transition: background-color 0.3s, box-shadow 0.3s;
+  width: 100%;
+  transition: background-color 0.3s;
 }
 
 .submit-btn:hover {
   background-color: #1e7c2d;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.success-message {
-  background-color: #d4edda;
-  color: #155724;
-  padding: 1rem;
-  margin-top: 1rem;
-  border-radius: 8px;
-  font-weight: 500;
-  text-align: center;
-}
-
-.error-message {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 1rem;
-  margin-top: 1rem;
-  border-radius: 8px;
-  font-weight: 500;
-  text-align: center;
-}
-
-.input-error {
-  border-color: #dc3545;
-  box-shadow: 0 0 5px rgba(220, 53, 69, 0.4);
-}
-
-.user-info {
-  margin-top: 1rem;
-  padding: 1rem;
-  background-color: #e9ecef;
-  border-radius: 8px;
-  font-size: 1.1rem;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
+/* Botón de Recuperar Contraseña */
 .forgot-password-btn {
   background: none;
   color: #218838;
@@ -154,9 +101,25 @@ input:focus {
   cursor: pointer;
   font-size: 0.9rem;
   margin-top: 10px;
-  transition: color 0.3s;
 }
 
 .forgot-password-btn:hover {
-  color: white;
+  color: #1e7c2d;
+}
+
+/* Estilos Responsivos */
+@media (max-width: 768px) {
+  .login-page {
+    flex-direction: column;
+  }
+  .login-left, .login-right {
+    flex: none;
+    width: 100%;
+  }
+  .login-left {
+    height: 40vh; /* La imagen ocupará el 40% de la altura en pantallas pequeñas */
+  }
+  .login-right {
+    height: 60vh; /* El formulario ocupará el 60% de la altura en pantallas pequeñas */
+  }
 }

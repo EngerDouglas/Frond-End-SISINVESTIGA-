@@ -3,7 +3,6 @@ import AppRouter from "./routes/AppRouter";
 import { Provider, useDispatch } from "react-redux";
 import store from "./store";
 import { loadSession } from "./features/auth/authSlice"; // Importar la acción de carga de sesión
-import "./App.css";
 
 function App() {
   const dispatch = useDispatch();
