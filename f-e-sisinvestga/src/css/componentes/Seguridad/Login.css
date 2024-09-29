@@ -5,7 +5,7 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f0f4f8;
   overflow-x: hidden;
 }
@@ -92,6 +92,28 @@ h2 {
   background-color: #1e7c2d;
 }
 
+.signup-option {
+  margin-top: 20px;
+  font-size: 0.9rem;
+}
+
+.signup-link {
+  color: #2196f3;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
+}
+
+/* Pie de página */
+.footer {
+  margin-top: 30px;
+  font-size: 0.8rem;
+  color: #777;
+}
+
 /* Botón de Recuperar Contraseña */
 .forgot-password-btn {
   background: none;
@@ -112,7 +134,8 @@ h2 {
   .login-page {
     flex-direction: column;
   }
-  .login-left, .login-right {
+  .login-left,
+  .login-right {
     flex: none;
     width: 100%;
   }
@@ -120,6 +143,11 @@ h2 {
     height: 40vh; /* La imagen ocupará el 40% de la altura en pantallas pequeñas */
   }
   .login-right {
-    height: 60vh; /* El formulario ocupará el 60% de la altura en pantallas pequeñas */
+    height: auto;
+    padding: 20px 0;
+  }
+
+  .login-container {
+    max-width: 90%;
   }
 }

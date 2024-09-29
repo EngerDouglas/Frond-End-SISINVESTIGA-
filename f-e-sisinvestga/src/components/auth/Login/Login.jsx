@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../../features/auth/authSlice";
-import { useNavigate } from "react-router-dom"; // Importa useNavigate
+import { useNavigate, Link } from "react-router-dom"; // Importa useNavigate
 import AlertComponent from "../../Comunes/AlertComponent";
-import logo from '../../../assets/img/LogoUCSD.jpg'
-import backgroundStudy from '../../../assets/img/Study.png'
+import logo from "../../../assets/img/LogoUCSD.jpg";
+import backgroundStudy from "../../../assets/img/Study.png";
 import "../../../css/componentes/Seguridad/Login.css";
 
 const Login = () => {
@@ -27,18 +27,20 @@ const Login = () => {
 
   useEffect(() => {
     if (user && !error) {
-      AlertComponent.success(`Bienvenido, ${user.nombre} ${user.apellido}. Rol: ${role}`);
+      AlertComponent.success(
+        `Bienvenido, ${user.nombre} ${user.apellido}. Rol: ${role}`
+      );
 
       // Redirigir según el rol
       switch (role) {
-        case 'Administrador':
-          navigate('/admin');
+        case "Administrador":
+          navigate("/admin");
           break;
-        case 'Investigador':
-          navigate('/invest');
+        case "Investigador":
+          navigate("/invest");
           break;
         default:
-          navigate('/'); 
+          navigate("/");
       }
     }
   }, [user, role, error, navigate]); // Asegúrate de incluir navigate en la dependencia
@@ -47,7 +49,11 @@ const Login = () => {
     <div className="login-page">
       <div className="login-left">
         {/* Imagen de fondo */}
-        <img src={backgroundStudy} alt="Background" className="login-background" />
+        <img
+          src={backgroundStudy}
+          alt="Background"
+          className="login-background"
+        />
       </div>
       <div className="login-right">
         <div className="login-container">
@@ -68,7 +74,9 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Contraseña"
               required
-              className={error && error.includes("password") ? "input-error" : ""}
+              className={
+                error && error.includes("password") ? "input-error" : ""
+              }
             />
             <button type="submit" className="submit-btn">
               {status === "loading" ? "Iniciando..." : "Iniciar Sesión"}
@@ -78,7 +86,11 @@ const Login = () => {
             <button
               type="button"
               className="forgot-password-btn"
-              onClick={() => alert("Funcionalidad de recuperación de contraseña aún no implementada.")}
+              onClick={() =>
+                alert(
+                  "Funcionalidad de recuperación de contraseña aún no implementada."
+                )
+              }
             >
               Se me olvidó la contraseña
             </button>
@@ -92,6 +104,17 @@ const Login = () => {
               </div>
             )}
           </form>
+          <div className="signup-option">
+            <span>Don't have an account?</span>{" "}
+            <Link to="/registro" className="signup-link">
+              Sign up
+            </Link>
+          </div>
+          {/* Pie de página */}
+          <footer className="footer">
+            © 2024 Universidad Católica Santo Domingo - Todos los Derechos
+            Reservados
+          </footer>
         </div>
       </div>
     </div>

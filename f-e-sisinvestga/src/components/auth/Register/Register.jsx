@@ -4,6 +4,7 @@ import AlertComponent from "../../Comunes/AlertComponent";
 import ucsdImage from "../../../assets/img/ucsd.webp";
 import logo from "../../../assets/img/LogoUCSD.jpg";
 import { postData } from "../../../services/apiServices";
+import { Link } from "react-router-dom";
 
 export default function Register() {
   const [nombre, setNombre] = useState("");
@@ -124,7 +125,11 @@ export default function Register() {
                 value={responsabilidades}
                 onChange={(e) => setResponsabilidades(e.target.value)}
               />
-              <button className="add-btn" onClick={addResponsabilidad} type="button">
+              <button
+                className="add-btn"
+                onClick={addResponsabilidad}
+                type="button"
+              >
                 Agregar
               </button>
             </div>
@@ -142,8 +147,20 @@ export default function Register() {
                 </li>
               ))}
             </ul>
-            <button type="submit" className="submit-btn">Registrar Investigador</button>
+            <button type="submit" className="submit-btn">
+              Registrar Investigador
+            </button>
           </form>
+          <div className="signin-option">
+            <span>¿Ya tienes cuenta?</span>{" "}
+            <Link to="/login" className="signin-link">
+              Sign in
+            </Link>
+          </div>
+          <footer className="footer">
+            © 2024 Universidad Católica Santo Domingo - Todos los Derechos
+            Reservados
+          </footer>
         </div>
       </div>
     </div>
