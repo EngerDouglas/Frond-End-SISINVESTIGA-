@@ -24,7 +24,7 @@ const AdminDashboard = () => {
             <p>Administrar todos los proyectos en la plataforma.</p>
             <button
               onClick={() => handleNavigation("/listarproyectos")}
-              className="btn-card"
+              className="admin-btn-card"
             >
               Ir a Proyectos
             </button>
@@ -35,7 +35,7 @@ const AdminDashboard = () => {
             <p>Administrar investigadores y su información.</p>
             <button
               onClick={() => handleNavigation("/gestionInvestigadores")}
-              className="btn-card"
+              className="admin-btn-card"
             >
               Ir a Investigadores
             </button>
@@ -46,7 +46,7 @@ const AdminDashboard = () => {
             <p>Revisar el historial de actividades.</p>
             <button
               onClick={() => handleNavigation("/auditoria")}
-              className="btn-card"
+              className="admin-btn-card"
             >
               Ir a Auditoría
             </button>
@@ -57,7 +57,7 @@ const AdminDashboard = () => {
             <p>Revisar y gestionar logs del sistema.</p>
             <button
               onClick={() => handleNavigation("/gestion-logs")}
-              className="btn-card"
+              className="admin-btn-card"
             >
               Ir a Logs
             </button>
@@ -68,7 +68,7 @@ const AdminDashboard = () => {
             <p>Administrar las publicaciones de los investigadores.</p>
             <button
               onClick={() => handleNavigation("/publicaciones")}
-              className="btn-card"
+              className="admin-btn-card"
             >
               Ir a Publicaciones
             </button>
@@ -79,7 +79,7 @@ const AdminDashboard = () => {
             <p>Generar y revisar informes de actividades.</p>
             <button
               onClick={() => handleNavigation("/informes")}
-              className="btn-card"
+              className="admin-btn-card"
             >
               Ir a Informes
             </button> 

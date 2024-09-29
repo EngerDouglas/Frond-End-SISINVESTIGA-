@@ -83,7 +83,7 @@ function MostrarInvestigadores() {
       <h1 className="titulo">Investigadores</h1>
       <input
         type="text"
-        className="search-bar"
+        className="invest-search-bar"
         placeholder="Buscar investigador..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
@@ -106,16 +106,16 @@ function MostrarInvestigadores() {
               <td>{investigador.role.roleName}</td>
               <td>
                 <button
-                  className="btn-modificar"
+                  className="invest-btn-modificar"
                   onClick={() => handleEdit(investigador)}
                 >
                   Modificar
                 </button>
                 <button
-                  className={investigador.isDisabled ? "btn-deshabilitar" : "btn-modificar"}
+                  className={investigador.isDisabled ? "invest-btn-deshabilitar" : "invest-btn-modificar"}
                   onClick={() => handleToggleStatus(investigador._id, investigador.isDisabled)}
                 >
-                  {investigador.isDisabled ? "Habilitar" : "Deshabilitar"}
+                  {investigador.isDisabled ? "invest-Habilitar" : "invest-Deshabilitar"}
                 </button>
               </td>
             </tr>

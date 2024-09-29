@@ -48,7 +48,7 @@
     transform: translateY(-5px); /* Slight hover effect */
   }
   
-  .btn-card {
+  .admin-btn-card {
     text-decoration: none;
     background-color: #218838; /* Your color */
     color: white;
@@ -57,7 +57,7 @@
     transition: background 0.3s;
   }
   
-  .btn-card:hover {
+  .admin-btn-card:hover {
     background-color: #1c7430; /* Darker shade for hover */
   }
   
@@ -92,7 +92,7 @@
       grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjust for smaller screens */
   }
 
-  .btn-card {
+  .admin-btn-card {
       padding: 8px 12px; /* Adjust button padding for smaller screens */
       font-size: 0.9rem;
   }
@@ -103,7 +103,7 @@
       grid-template-columns: 1fr; /* Single column layout for very small screens */
   }
 
-  .btn-card {
+  .admin-btn-card {
       padding: 6px 10px;
       font-size: 0.8rem;
   }

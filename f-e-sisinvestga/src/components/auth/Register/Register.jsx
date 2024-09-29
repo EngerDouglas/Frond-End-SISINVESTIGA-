@@ -149,7 +149,7 @@ export default function Register() {
                 </li>
               ))}
             </ul>
-            <button type="submit" className="submit-btn">
+            <button type="submit" className="register-btn">
               Registrar Investigador
             </button>
           </form>

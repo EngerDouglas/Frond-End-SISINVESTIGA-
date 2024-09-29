@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Nav from "../Comunes/Nav";
 import { getData } from "../../services/apiServices";
-import '../../css/componentes/Home/Home.css'
+import "../../css/componentes/Home/Home.css";
 
 const HomeComponent = () => {
   const [projects, setProjectData] = useState([]);
   const [publications, setPublicationData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [activeTab, setActiveTab] = useState("Proyectos");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -53,113 +54,105 @@ const HomeComponent = () => {
   return (
     <div>
       <Nav />
-      <input
-        type="text"
-        placeholder="Buscar por nombre..."
-        className="search-bar"
-        value={searchTerm}
-        onChange={handleSearchChange}
-      />
-      <h2>Proyectos</h2>
-      {filteredProjects.length > 0 ? (
-        filteredProjects.map((project) => (
-          <div key={project._id} className="project-card">
-            <h3>{project.nombre}</h3>
-            <p>
-              <strong>Descripción:</strong> {project.descripcion}
-            </p>
-            <p>
-              <strong>Objetivos:</strong> {project.objetivos}
-            </p>
-            <p>
-              <strong>Presupuesto:</strong> ${project.presupuesto}
-            </p>
-            <p>
-              <strong>Estado:</strong> {project.estado}
-            </p>
-            <p>
-              <strong>Fecha de inicio:</strong>{" "}
-              {new Date(project.cronograma.fechaInicio).toLocaleDateString()}
-            </p>
-            <p>
-              <strong>Fecha de fin:</strong>{" "}
-              {new Date(project.cronograma.fechaFin).toLocaleDateString()}
-            </p>
+      <div className="home-container">
+        {/* Barra de búsqueda */}
+        <div className="home-search-container">
+          <input
+            type="text"
+            placeholder="Buscar..."
+            className="home-search-bar"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+        </div>
 
-            <h4>Investigadores:</h4>
-            <ul>
-              {project.investigadores.map((investigador) => (
-                <li key={investigador._id}>
-                  {investigador.nombre} {investigador.apellido}
-                </li>
-              ))}
-            </ul>
+        {/* Pestañas */}
+        <div className="home-tabs">
+          <button
+            className={`home-tab ${activeTab === "Proyectos" ? "active" : ""}`}
+            onClick={() => setActiveTab("Proyectos")}
+          >
+            Proyectos
+          </button>
+          <button
+            className={`home-tab ${
+              activeTab === "Publicaciones" ? "active" : ""
+            }`}
+            onClick={() => setActiveTab("Publicaciones")}
+          >
+            Publicaciones
+          </button>
+        </div>
 
-            <h4>Recursos:</h4>
-            <ul>
-              {project.recursos.map((recurso, index) => (
-                <li key={index}>{recurso}</li>
-              ))}
-            </ul>
-
-            <h4>Hitos:</h4>
-            <ul>
-              {project.hitos.map((hito) => (
-                <li key={hito._id}>
-                  {hito.nombre} - Entregable: {hito.entregable} - Fecha:{" "}
-                  {new Date(hito.fecha).toLocaleDateString()}
-                </li>
-              ))}
-            </ul>
+        {/* Contenido */}
+        {activeTab === "Proyectos" && (
+          <div className="projects-section">
+            {filteredProjects.length > 0 ? (
+              <div className="cards-container">
+                {filteredProjects.map((project) => (
+                  <div key={project._id} className="project-card">
+                    {/* Imagen del proyecto (si tienes una URL o un placeholder) */}
+                    <div className="card-image">
+                      <img
+                        src={
+                          project.imagen ||
+                          "https://via.placeholder.com/300x200"
+                        }
+                        alt={project.nombre}
+                      />
+                    </div>
+                    <div className="card-content">
+                      <h3>{project.nombre}</h3>
+                      <p>{project.descripcion.substring(0, 100)}...</p>
+                      <p>
+                        <strong>Estado:</strong> {project.estado}
+                      </p>
+                      {/* Botón "Ver más" */}
+                      <button className="card-button">Ver más</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>No se encontraron Proyectos</p>
+            )}
           </div>
-        ))
-      ) : (
-        <p>No se encontraron Proyectos</p>
-      )}
+        )}
 
-      <h2>Publicaciones</h2>
-      {filteredPublications.length > 0 ? (
-        filteredPublications.map((publication) => (
-          <div key={publication._id} className="publication-card">
-            <h3>{publication.titulo}</h3>
-            <p>
-              <strong>Resumen:</strong> {publication.resumen}
-            </p>
-            <p>
-              <strong>Fecha de publicación:</strong>{" "}
-              {new Date(publication.fecha).toLocaleDateString()}
-            </p>
-            <p>
-              <strong>Estado:</strong> {publication.estado}
-            </p>
-            <p>
-              <strong>Revista:</strong> {publication.revista}
-            </p>
-
-            <h4>Autores:</h4>
-            <ul>
-              {publication.autores.map((autor, index) => (
-                <li key={index}>
-                  {autor.nombre} {autor.apellido} - {autor.especializacion}
-                </li>
-              ))}
-            </ul>
-
-            <h4>Anexos:</h4>
-            <ul>
-              {publication.anexos.map((anexo, index) => (
-                <li key={index}>
-                  <a href={anexo} target="_blank" rel="noopener noreferrer">
-                    Ver anexo {index + 1}
-                  </a>
-                </li>
-              ))}
-            </ul>
+        {activeTab === "Publicaciones" && (
+          <div className="publications-section">
+            {filteredPublications.length > 0 ? (
+              <div className="cards-container">
+                {filteredPublications.map((publication) => (
+                  <div key={publication._id} className="publication-card">
+                    {/* Imagen de la publicación (si tienes una URL o un placeholder) */}
+                    <div className="card-image">
+                      <img
+                        src={
+                          publication.imagen ||
+                          "https://via.placeholder.com/300x200"
+                        }
+                        alt={publication.titulo}
+                      />
+                    </div>
+                    <div className="card-content">
+                      <h3>{publication.titulo}</h3>
+                      <p>{publication.resumen.substring(0, 100)}...</p>
+                      <p>
+                        <strong>Revista:</strong> {publication.revista}
+                      </p>
+                      {/* Botón "Ver más" */}
+                      <button className="card-button">Ver más</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>No se encontraron Publicaciones</p>
+            )}
           </div>
-        ))
-      ) : (
-        <p>No se encontraron Publicaciones</p>
-      )}
+        )}
+      </div>
     </div>
   );
 };

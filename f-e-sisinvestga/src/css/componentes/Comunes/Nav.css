@@ -1,44 +1,160 @@
-.nav-bar {
-    background-color: #ffffff; /* Fondo blanco */
-    padding: 10px 20px; /* Espaciado */
-    display: flex; /* Para alinear elementos en línea */
-    justify-content: space-between; /* Espacio entre logo y menú */
-    align-items: center; /* Alinear verticalmente */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+.common-nav-bar {
+  background-color: #f9f9f9; /* Fondo blanco casi gris */
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.logo {
-    font-size: 1.5rem; /* Tamaño de fuente del logo */
-    font-weight: bold; /* Negrita */
-    color: #4CAF50; /* Color verde */
+.common-nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.nav-list {
-    list-style: none; /* Sin viñetas */
-    display: flex; /* Elementos en línea */
-    padding: 0; /* Sin padding */
-    margin: 0; /* Sin margen */
+/* Menú de navegación */
+.common-nav-list {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
 }
 
-.nav-item {
-    color: #4CAF50; /* Color verde */
-    margin: 0 20px; /* Espaciado entre elementos */
-    cursor: pointer; /* Cambia el cursor al pasar por encima */
-    transition: color 0.3s; /* Animación suave al cambiar color */
+.common-nav-left {
+  flex: 1;
+  justify-content: flex-start;
 }
 
-.nav-item:hover {
-    color: #388E3C; /* Color verde más oscuro al pasar el mouse */
+.common-nav-right {
+  flex: 1;
+  justify-content: flex-end;
 }
 
-/* Responsive */
+.common-nav-item {
+	list-style: none;
+  margin: 0 15px;
+}
+
+.common-nav-link {
+  color: #333;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.common-nav-link:hover {
+  color: #0077b6;
+}
+
+/* Logo */
+.common-logo-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.common-nav-logo {
+  max-height: 80px;
+  height: auto;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.common-nav-logo:hover {
+  transform: scale(1.05);
+}
+
+/* Botón Iniciar Sesión */
+.common-login-btn .common-nav-link {
+  background-color: #0077b6; 
+  color: white;
+  padding: 8px 15px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.common-login-btn .common-nav-link:hover {
+  background-color: #005f87;
+}
+
+/* Barra de búsqueda */
+.common-search-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.common-search-input {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  width: 160px;
+  transition: width 0.3s ease, border-color 0.3s ease;
+}
+
+.common-search-input:focus {
+  width: 200px;
+  outline: none;
+  border-color: #0077b6;
+}
+
+.common-search-btn {
+  background: none;
+  border: none;
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #555;
+}
+
+.common-search-btn:hover {
+  color: #0077b6;
+}
+
+/* Estilos Responsivos */
+@media (max-width: 992px) {
+  .common-nav-item {
+    margin: 0 10px;
+  }
+
+  .common-search-input {
+    width: 120px;
+  }
+
+  .common-search-input:focus {
+    width: 160px;
+  }
+}
+
 @media (max-width: 768px) {
-    .nav-list {
-        flex-direction: column; /* Cambia a columna en pantallas pequeñas */
-        align-items: center; /* Centrar elementos */
-    }
+  .common-nav-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-    .nav-item {
-        margin: 10px 0; /* Espaciado vertical entre elementos */
-    }
+  .common-nav-left,
+  .common-nav-right {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .common-nav-item {
+    margin: 10px 15px;
+  }
+
+  .common-logo-container {
+    margin: 15px 0;
+  }
+
+  .common-search-container {
+    margin-top: 10px;
+  }
 }

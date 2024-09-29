@@ -52,15 +52,15 @@ function PublicacionesInfo() {
   return (
     <div className="publicaciones-container">
       <h2>Lista de Publicaciones</h2>
-      <div className="search-bar">
+      <div className="pub-search-bar">
         <input
           type="text"
           placeholder="Buscar por título..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="search-input"
+          className="pub-search-input"
         />
-        <button className="btn-create" onClick={handleCreate}>
+        <button className="pub-btn-create" onClick={handleCreate}>
           Crear Publicación
         </button>
       </div>
@@ -81,11 +81,11 @@ function PublicacionesInfo() {
             ))}</p>
             <p><strong>Idioma:</strong> {publicacion.idioma}</p>
 
-            <div className="buttons">
-              <button className="btn-update" onClick={() => handleUpdate(publicacion)}>
+            <div className="pub-buttons">
+              <button className="pub-btn-update" onClick={() => handleUpdate(publicacion)}>
                 Actualizar
               </button>
-              <button className="btn-delete" onClick={() => handleDelete(publicacion.id)}>
+              <button className="pub-btn-delete" onClick={() => handleDelete(publicacion.id)}>
                 Eliminar
               </button>
             </div>
