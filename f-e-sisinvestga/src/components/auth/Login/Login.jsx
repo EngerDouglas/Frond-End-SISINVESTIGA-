@@ -57,7 +57,9 @@ const Login = () => {
       </div>
       <div className="login-right">
         <div className="login-container">
-          <img src={logo} alt="UCSD Logo" className="login-logo" />
+          <Link to='/'>
+            <img src={logo} alt="UCSD Logo" className="login-logo" />
+          </Link>
           <h2>Iniciar Sesión</h2>
           <form onSubmit={handleSubmit} className="login-form">
             <input

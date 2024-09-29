@@ -80,7 +80,9 @@ export default function Register() {
       </div>
       <div className="register-right">
         <div className="register-container">
-          <img src={logo} alt="UCSD Logo" className="register-logo" />
+          <Link to="/">
+            <img src={logo} alt="UCSD Logo" className="register-logo" />
+          </Link>
           <h2>Registro de Investigador</h2>
           <form className="register-form" onSubmit={handleSubmit}>
             <input

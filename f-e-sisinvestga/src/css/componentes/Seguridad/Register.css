@@ -53,6 +53,14 @@ body {
   margin-bottom: 20px;
 }
 
+.register-logo {
+  transition: transform 0.3s ease;
+}
+
+.register-logo:hover {
+  transform: scale(1.1); /* Aumenta el tamaño del logo al 110% */
+}
+
 .register-container h2 {
   margin-top: 0;
 }
