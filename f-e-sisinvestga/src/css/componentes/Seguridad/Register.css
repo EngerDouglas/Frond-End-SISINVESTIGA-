@@ -1,135 +1,212 @@
-/* RegistroInvestigador.css */
-.registro-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    margin-top: 70px;
+/* Register.css */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-.registro-container:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f4f8;
+  overflow-x: hidden;
+}
+
+.register-page {
+  display: flex;
+  height: 100vh; /* Ocupa toda la altura de la ventana */
+}
+
+.register-left {
+  flex: 3; /* 60% del ancho */
+}
+
+.register-right {
+  flex: 2; /* 40% del ancho */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #ffffff;
+}
+
+.register-background {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.register-container {
+  width: 100%;
+  max-width: 500px; /* Puedes ajustar este valor según tus necesidades */
+  padding: 30px;
+  text-align: center;
+}
+
+.register-logo {
+  width: 220px;
+  margin-bottom: 20px;
+}
+
+.register-container h2 {
+  margin-top: 0;
 }
 
 h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #4CAF50; /* Color verde */
+  color: #4caf50; /* Color verde */
+  font-size: 1.8rem;
+  margin-bottom: 20px;
 }
 
-.registro-form {
-    display: flex;
-    flex-direction: column;
+.register-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-input {
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    transition: border 0.3s ease;
+.register-form input,
+.submit-btn {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border 0.3s, box-shadow 0.3s;
 }
 
-input:focus {
-    border: 1px solid #4CAF50; /* Color verde */
+.register-form input:focus {
+  border-color: #4caf50; /* Color verde */
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+  outline: none;
 }
 
-button {
-    padding: 10px;
-    background-color: #4CAF50; /* Color verde */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.3s ease;
+.submit-btn {
+  background-color: #4caf50; /* Color verde */
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-button:hover {
-    background-color: #45a049; /* Color verde más oscuro */
+.submit-btn:hover {
+  background-color: #45a049; /* Color verde más oscuro */
 }
 
+/* Responsabilidades */
 .responsabilidades-container {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  margin-bottom: 15px;
 }
 
+.responsabilidades-container input {
+  flex-grow: 1;
+  margin-right: 10px;
+  padding: 12px 15px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+.responsabilidades-container input:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+  outline: none;
+}
+
+.add-btn {
+	height: 45px;
+  padding: 2px 10px 2px 10px;
+  background-color: #2196f3; /* Color azul */
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-btn:hover {
+  background-color: #0b7dda;
+}
+
+.responsabilidades-container .add-btn:hover {
+  background-color: #0b7dda;
+}
+
+/* Lista de Responsabilidades */
 .responsabilidades-list {
-    list-style-type: none;
-    padding: 0;
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 15px;
 }
 
 .responsabilidades-list li {
-    background-color: #f2f2f2;
-    margin: 5px 0;
-    padding: 5px;
-    border-radius: 4px;
-    display: flex;
-    justify-content: space-between; /* Alinear elementos */
+  background-color: #f2f2f2;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
 }
 
-/* Investigadores.css */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.responsabilidades-list li .responsabilidad-text {
+  flex: 1;
+  margin-right: 10px;
+  word-wrap: break-word;
 }
-
-.modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    max-width: 400px;
-    width: 100%;
-}
-
 
 .remove-btn {
-    background-color: #ff4d4d; /* Color rojo para eliminar */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    padding: 4px 8px;
-    transition: background 0.3s ease;
+  background-color: #ff4d4d; /* Color rojo */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  white-space: nowrap;
+  transition: background 0.3s ease;
 }
 
 .remove-btn:hover {
-    background-color: #ff1a1a; /* Color rojo más oscuro */
+  background-color: #ff1a1a;
 }
 
-/* Media Queries para Responsividad */
-@media (max-width: 480px) {
-    .registro-container {
-        width: 90%; /* Aumentar el ancho en pantallas pequeñas */
-        padding: 15px;
-    }
+/* Estilos Responsivos */
+@media (max-width: 768px) {
+  .register-page {
+    flex-direction: column;
+  }
 
-    input, button {
-        padding: 12px; /* Aumentar el padding en pantallas pequeñas */
-        font-size: 16px; /* Aumentar el tamaño de la fuente */
-    }
-    
-    .responsabilidades-container {
-        flex-direction: column; /* Cambiar a columna en pantallas pequeñas */
-        align-items: flex-start; /* Alinear a la izquierda */
-    }
+  .register-left,
+  .register-right {
+    flex: none;
+    width: 100%;
+  }
 
-    .responsabilidades-container input {
-        width: 100%; /* Hacer que el input ocupe todo el ancho */
-        margin-bottom: 10px; /* Agregar margen inferior */
-    }
+  .register-left {
+    height: 40vh; /* Ajusta según tus necesidades */
+  }
 
-    .responsabilidades-container button {
-        width: 100%; /* Botón ocupa todo el ancho */
-    }
+  .register-right {
+    height: auto;
+    padding: 20px 0;
+  }
+
+  .register-container {
+    max-width: 90%;
+  }
+
+	.responsabilidades-list li {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .responsabilidades-list li .responsabilidad-text {
+    margin-bottom: 10px;
+  }
+
+  .remove-btn {
+    align-self: flex-end;
+  }
 }

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "../../../css/componentes/Seguridad/Register.css";
-import Nav from "../../Comunes/Nav";
 import AlertComponent from "../../Comunes/AlertComponent";
+import ucsdImage from "../../../assets/img/ucsd.webp";
+import logo from "../../../assets/img/LogoUCSD.jpg";
 import { postData } from "../../../services/apiServices";
 
 export default function Register() {
@@ -72,74 +73,79 @@ export default function Register() {
   };
 
   return (
-    <>
-      <Nav></Nav>
-      <div className="registro-container">
-        <h2>Registro de Investigador</h2>
-        <form className="registro-form" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Nombre"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Apellido"
-            value={apellido}
-            onChange={(e) => setApellido(e.target.value)}
-            required
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="Especialización"
-            value={especializacion}
-            onChange={(e) => setEspecializacion(e.target.value)}
-            required
-          />
-          <div className="responsabilidades-container">
+    <div className="register-page">
+      <div className="register-left">
+        <img src={ucsdImage} alt="UCSD" className="register-background" />
+      </div>
+      <div className="register-right">
+        <div className="register-container">
+          <img src={logo} alt="UCSD Logo" className="register-logo" />
+          <h2>Registro de Investigador</h2>
+          <form className="register-form" onSubmit={handleSubmit}>
             <input
               type="text"
-              placeholder="Responsabilidad"
-              value={responsabilidades}
-              onChange={(e) => setResponsabilidades(e.target.value)}
+              placeholder="Nombre"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              required
             />
-            <button onClick={addResponsabilidad} type="button">
-              Agregar
-            </button>
-          </div>
-          <ul className="responsabilidades-list">
-            {responsabilidadesList.map((resp, index) => (
-              <li key={index}>
-                {resp}
-                <button
-                  onClick={() => removeResponsabilidad(index)}
-                  type="button"
-                  className="remove-btn"
-                >
-                  Eliminar
-                </button>
-              </li>
-            ))}
-          </ul>
-          <button type="submit">Registrar Investigador</button>
-        </form>
+            <input
+              type="text"
+              placeholder="Apellido"
+              value={apellido}
+              onChange={(e) => setApellido(e.target.value)}
+              required
+            />
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Especialización"
+              value={especializacion}
+              onChange={(e) => setEspecializacion(e.target.value)}
+              required
+            />
+            <div className="responsabilidades-container">
+              <input
+                type="text"
+                placeholder="Responsabilidad"
+                value={responsabilidades}
+                onChange={(e) => setResponsabilidades(e.target.value)}
+              />
+              <button className="add-btn" onClick={addResponsabilidad} type="button">
+                Agregar
+              </button>
+            </div>
+            <ul className="responsabilidades-list">
+              {responsabilidadesList.map((resp, index) => (
+                <li key={index}>
+                  <span className="responsabilidad-text">{resp}</span>
+                  <button
+                    onClick={() => removeResponsabilidad(index)}
+                    type="button"
+                    className="remove-btn"
+                  >
+                    Eliminar
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button type="submit" className="submit-btn">Registrar Investigador</button>
+          </form>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
