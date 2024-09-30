@@ -115,7 +115,7 @@ function MostrarInvestigadores() {
                   className={investigador.isDisabled ? "invest-btn-deshabilitar" : "invest-btn-modificar"}
                   onClick={() => handleToggleStatus(investigador._id, investigador.isDisabled)}
                 >
-                  {investigador.isDisabled ? "invest-Habilitar" : "invest-Deshabilitar"}
+                  {investigador.isDisabled ? "Habilitar" : "Deshabilitar"}
                 </button>
               </td>
             </tr>

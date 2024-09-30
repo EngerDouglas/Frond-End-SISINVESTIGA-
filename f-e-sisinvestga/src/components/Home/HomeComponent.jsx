@@ -1,23 +1,65 @@
 import React, { useEffect, useState } from "react";
 import Nav from "../Comunes/Nav";
-import { getData } from "../../services/apiServices";
+import { getDataParams } from "../../services/apiServices";
 import "../../css/componentes/Home/Home.css";
 
 const HomeComponent = () => {
   const [projects, setProjectData] = useState([]);
   const [publications, setPublicationData] = useState([]);
+  const [projectStates, setProjectStates] = useState([]);
+  const [publicationTypes, setPublicationTypes] = useState([]);
+  const [selectedProjectState, setSelectedProjectState] = useState("");
+  const [selectedPublicationTipo, setSelectedPublicationTipo] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("Proyectos");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const fetchedProjects = await getData("projects");
-        setProjectData(fetchedProjects);
+        if (activeTab === "Proyectos") {
+          const projectParams = {};
+          if (selectedProjectState) {
+            projectParams.estado = selectedProjectState;
+          }
+          if (searchTerm) {
+            projectParams.nombre = searchTerm;
+          }
+          const fetchedProjects = await getDataParams(
+            "projects",
+            projectParams
+          );
+          setProjectData(fetchedProjects);
 
-        const fetchedPublications = await getData("publications");
-        setPublicationData(fetchedPublications);
+          // Extraer los estados únicos de los proyectos
+          const uniqueStates = [
+            ...new Set(fetchedProjects.map((project) => project.estado)),
+          ];
+          setProjectStates(uniqueStates);
+        } else if (activeTab === "Publicaciones") {
+          const publicationParams = {};
+          if (selectedPublicationTipo) {
+            publicationParams.tipoPublicacion = selectedPublicationTipo;
+          }
+          if (searchTerm) {
+            publicationParams.titulo = searchTerm;
+          }
+
+          const fetchedPublications = await getDataParams(
+            "publications",
+            publicationParams
+          );
+          setPublicationData(fetchedPublications);
+
+          // Extraer los tipos únicos de publicaciones
+          const uniqueTypes = [
+            ...new Set(
+              fetchedPublications.map((pub) => pub.tipoPublicacion)
+            ),
+          ];
+          setPublicationTypes(uniqueTypes);
+        }
         setLoading(false);
       } catch (error) {
         console.error("Error al traer los datos", error);
@@ -25,28 +67,21 @@ const HomeComponent = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [
+    searchTerm,
+    selectedProjectState,
+    selectedPublicationTipo,
+    activeTab,
+  ]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  const filteredProjects = projects.filter(
-    (project) =>
-      project.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      project.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      project.objetivos.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      project.estado.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const filteredPublications = publications.filter((publication) =>
-    publication.titulo.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
   if (loading) {
     return (
       <div>
-        <p>Loading......</p>
+        <p>Cargando...</p>
       </div>
     );
   }
@@ -84,14 +119,53 @@ const HomeComponent = () => {
           </button>
         </div>
 
+        {/* Filtros */}
+        <div className="filters-container">
+          {activeTab === "Proyectos" && (
+            <div className="filter-group">
+              <label htmlFor="estado">Estado:</label>
+              <select
+                id="estado"
+                value={selectedProjectState}
+                onChange={(e) => setSelectedProjectState(e.target.value)}
+              >
+                <option value="">Todos</option>
+                {projectStates.map((estado) => (
+                  <option key={estado} value={estado}>
+                    {estado}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {activeTab === "Publicaciones" && (
+            <div className="filter-group">
+              <label htmlFor="tipoPublicacion">Tipo de Publicación:</label>
+              <select
+                id="tipoPublicacion"
+                value={selectedPublicationTipo}
+                onChange={(e) => setSelectedPublicationTipo(e.target.value)}
+              >
+                <option value="">Todas</option>
+                {publicationTypes.map((tipoPublicacion) => (
+                  <option key={tipoPublicacion} value={tipoPublicacion}>
+                    {tipoPublicacion}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+
         {/* Contenido */}
         {activeTab === "Proyectos" && (
           <div className="projects-section">
-            {filteredProjects.length > 0 ? (
+            {projects.length > 0 ? (
               <div className="cards-container">
-                {filteredProjects.map((project) => (
+                {projects.map((project) => (
                   <div key={project._id} className="project-card">
-                    {/* Imagen del proyecto (si tienes una URL o un placeholder) */}
+                    {/* Imagen del proyecto */}
                     <div className="card-image">
                       <img
                         src={
@@ -121,11 +195,11 @@ const HomeComponent = () => {
 
         {activeTab === "Publicaciones" && (
           <div className="publications-section">
-            {filteredPublications.length > 0 ? (
+            {publications.length > 0 ? (
               <div className="cards-container">
-                {filteredPublications.map((publication) => (
+                {publications.map((publication) => (
                   <div key={publication._id} className="publication-card">
-                    {/* Imagen de la publicación (si tienes una URL o un placeholder) */}
+                    {/* Imagen de la publicación */}
                     <div className="card-image">
                       <img
                         src={
@@ -139,7 +213,7 @@ const HomeComponent = () => {
                       <h3>{publication.titulo}</h3>
                       <p>{publication.resumen.substring(0, 100)}...</p>
                       <p>
-                        <strong>Revista:</strong> {publication.revista}
+                        <strong>Tipo:</strong> {publication.tipoPublicacion}
                       </p>
                       {/* Botón "Ver más" */}
                       <button className="card-button">Ver más</button>

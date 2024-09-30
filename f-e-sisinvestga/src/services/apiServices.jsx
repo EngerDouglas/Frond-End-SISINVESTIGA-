@@ -114,6 +114,17 @@ export const getData = async (endpoint) => {
   }
 };
 
+// GET con parámetros
+export const getDataParams = async (endpoint, params = {}) => {
+  try {
+    const response = await api.get(`/${endpoint}`, { params });
+    return response.data;
+  } catch (error) {
+    console.log('Error en GET:', error);
+    throw error;
+  }
+};
+
 // Obtener un recurso por ID
 export const getDataById = async (endpoint, id) => {
   try {
