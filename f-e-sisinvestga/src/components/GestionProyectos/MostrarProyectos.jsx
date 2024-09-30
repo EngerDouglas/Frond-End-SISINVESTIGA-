@@ -1,37 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import '../../css/componentes/GestionProyectos/MostrarProyectos.css';
 
 const MostrarProyectos = () => {
-  // Lista de proyectos de ejemplo
-  const proyectos = [
-    {
-      titulo: 'Proyecto 1',
-      objetivos: 'Objetivo 1',
-      presupuesto: '1000',
-      fechaInicio: '2024-01-01',
-      fechaLimite: '2024-12-31'
-    },
-    {
-      titulo: 'Proyecto 2',
-      objetivos: 'Objetivo 2',
-      presupuesto: '2000',
-      fechaInicio: '2024-02-01',
-      fechaLimite: '2024-11-30'
+  const [proyectos, setProyectos] = useState([]);
+
+  const obtenerProyectos = async () => {
+    try {
+      const response = await fetch('http://localhost:3005/api/projects'); 
+      const data = await response.json();
+      setProyectos(data);  
+    } catch (error) {
+      console.error('Error al obtener los proyectos:', error);
     }
-  ];
+  };
+
+  useEffect(() => {
+    obtenerProyectos(); 
+  }, []);
+
+
+  const handleProjectClick = (id) => {
+    console.log(`Proyecto seleccionado con ID: ${id}`);
+    // Logica para redirigir a detalles del proyecto
+  };
 
   return (
     <div id="mostrarProyectos">
       <ul id="Proyectos">
-        {proyectos.map((proyecto, index) => (
-          <li key={index}>
-            <h3>{proyecto.titulo}</h3>
-            <p>Objetivos: {proyecto.objetivos}</p>
-            <p>Presupuesto: {proyecto.presupuesto}</p>
-            <p>Fecha de Inicio: {proyecto.fechaInicio}</p>
-            <p>Fecha Límite: {proyecto.fechaLimite}</p>
-          </li>
-        ))}
+        {proyectos.length > 0 ? (
+          proyectos.map((proyecto) => (
+            <li 
+              key={proyecto._id} 
+              onClick={() => handleProjectClick(proyecto._id)}  
+              className="proyecto-item"  
+            >
+              <h3>{proyecto.nombre}</h3>
+              <p>Descripción: {proyecto.descripcion}</p>
+              <p>Presupuesto: ${proyecto.presupuesto}</p>
+              <p>Fecha de Inicio: {new Date(proyecto.cronograma.fechaInicio).toLocaleDateString()}</p>
+              <p>Fecha Límite: {new Date(proyecto.cronograma.fechaFin).toLocaleDateString()}</p>
+              <p>Estado: {proyecto.estado}</p>
+            </li>
+          ))
+        ) : (
+          <p>No hay proyectos disponibles</p>
+        )}
       </ul>
     </div>
   );
