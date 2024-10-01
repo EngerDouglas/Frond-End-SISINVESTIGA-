@@ -18,6 +18,7 @@ function MostrarInvestigadores() {
         const users = await getData("users");
         const investigadores = users.filter(user => user.role.roleName === "Investigador");
         setInvestigadoresData(investigadores);
+
          // Obtener roles desde la API
          const roles = await getData("roles"); // Asegúrate de tener esta ruta en tu API
          setRolesData(roles);

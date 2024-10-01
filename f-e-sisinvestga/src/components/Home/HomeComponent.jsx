@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import Nav from "../Comunes/Nav";
 import { getDataParams } from "../../services/apiServices";
 import "../../css/componentes/Home/Home.css";
+import img1 from "../../img/invest.jpg";
+import img2 from "../../img/invest2.jpg";
+import img3 from "../../img/invest3.jpg";
+import { Carousel } from "react-bootstrap";
 
 const HomeComponent = () => {
   const [projects, setProjectData] = useState([]);
@@ -32,7 +36,6 @@ const HomeComponent = () => {
           );
           setProjectData(fetchedProjects);
 
-          // Extraer los estados únicos de los proyectos
           const uniqueStates = [
             ...new Set(fetchedProjects.map((project) => project.estado)),
           ];
@@ -52,7 +55,6 @@ const HomeComponent = () => {
           );
           setPublicationData(fetchedPublications);
 
-          // Extraer los tipos únicos de publicaciones
           const uniqueTypes = [
             ...new Set(
               fetchedPublications.map((pub) => pub.tipoPublicacion)
@@ -67,12 +69,7 @@ const HomeComponent = () => {
       }
     };
     fetchData();
-  }, [
-    searchTerm,
-    selectedProjectState,
-    selectedPublicationTipo,
-    activeTab,
-  ]);
+  }, [searchTerm, selectedProjectState, selectedPublicationTipo, activeTab]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -90,6 +87,31 @@ const HomeComponent = () => {
     <div>
       <Nav />
       <div className="home-container">
+        {/* Carrusel */}
+        <Carousel className="mb-4">
+          <Carousel.Item interval={3000}>
+            <img className="d-block w-100" src={img1} alt="First slide" />
+            <Carousel.Caption>
+              <h3>Investigación 1</h3>
+              <p>Detalles del proyecto de investigación 1.</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item interval={3000}>
+            <img className="d-block w-100" src={img2} alt="Second slide" />
+            <Carousel.Caption>
+              <h3>Investigación 2</h3>
+              <p>Detalles del proyecto de investigación 2.</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item interval={3000}>
+            <img className="d-block w-100" src={img3} alt="Third slide" />
+            <Carousel.Caption>
+              <h3>Investigación 3</h3>
+              <p>Detalles del proyecto de investigación 3.</p>
+            </Carousel.Caption>
+          </Carousel.Item>
+        </Carousel>
+
         {/* Barra de búsqueda */}
         <div className="home-search-container">
           <input

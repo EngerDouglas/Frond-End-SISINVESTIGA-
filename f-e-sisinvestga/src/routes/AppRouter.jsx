@@ -9,9 +9,7 @@ import Unauthorized from '../views/Pages/Unauthorized';
 import NotFound from '../views/Pages/NotFound';
 import ProtectedRoute from '../Context/ProtectedRoute';
 import { selectSessionLoaded } from '../features/auth/authSlice';
-import AgregarProyecto from '../views/Proyectos/AgregarProyecto';
 import ListaProyectos from '../views/Proyectos/ListaProyectos';
-import RegisterPage from '../views/Seguridad/RegisterPage';
 import GestionInvestigadores from '../views/Admin/GestionInvestigadores/GestionInvestigadores'
 import Publicaciones from "../views/publicaciones/publicacionesViews"
 
@@ -45,7 +43,6 @@ const AppRouter = () => {
     <Routes>
       {/* Rutas Publicas */}
       <Route path='/login' element={<LoginPage />} />
-      <Route path='/registro' element={<RegisterPage/>} />
       {/* Rutas Defecto de la pagina */}
       <Route path='/' element={getHome()} />
       
@@ -67,14 +64,6 @@ const AppRouter = () => {
       <Route path='/gestionInvestigadores' element={ 
         <ProtectedRoute roles={['Administrador']}>
           <GestionInvestigadores />
-        </ProtectedRoute>
-      } />
-
-
-      {/* Rutas Protegidas para Administrador */}
-      <Route path='/agregarproyecto' element={ 
-        <ProtectedRoute roles={['Administrador', 'Investigador']}>
-          <AgregarProyecto />
         </ProtectedRoute>
       } />
 

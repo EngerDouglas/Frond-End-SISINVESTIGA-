@@ -1,107 +1,134 @@
+/* Estado inicial como bola */
 .nav-admin-bar {
+  background: linear-gradient(to bottom, #ffffff, #66bb6a);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #218838;
-  padding: 0.5rem 1rem;
+  padding: 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   position: relative;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px; /* Inicialmente un círculo pequeño */
+  transition: all 0.8s ease-in-out;
+  overflow: hidden;
+  margin: 50px auto;
 }
 
+/* Al cargar, se transforma en óvalo */
+.nav-admin-bar.active {
+  width: 90%; /* Expansión del ancho */
+  height: 60px; /* Altura de óvalo */
+  padding: 15px 30px; /* Agregar padding una vez expandido */
+  border-radius: 50px;
+}
+
+/* Logo y elementos del navbar ocultos inicialmente */
 .logo-admin {
-  font-size: 1.5rem;
-  color: white;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #218838;
+  display: none; /* Ocultado inicialmente */
+  transition: all 0.5s ease-in-out;
+}
+
+.nav-admin-bar.active .logo-admin {
+  display: block; /* Mostrar logo al activar */
 }
 
 .menu-icon {
-  display: none;
+  font-size: 1.8em;
   cursor: pointer;
+  color: #218838;
+  display: none;
+  transition: opacity 0.3s ease-in-out;
 }
 
-.menu-icon i {
-  color: white;
-  font-size: 1.5rem;
+.nav-admin-bar.active .menu-icon {
+  display: block; /* Mostrar ícono del menú cuando se active */
 }
 
 .nav-admin-list {
-  display: flex;
   list-style: none;
-}
-
-.nav-admin-item {
-  margin-left: 1rem;
-}
-
-.nav-admin-link {
-  color: white;
-  text-decoration: none;
-  padding: 0.5rem;
-}
-
-.nav-admin-link:hover {
-  background-color: white;
-  color: #218838;
-  border-radius: 5px;
-}
-
-.admin-btn-logout, .admin-btn-back, .admin-btn-dropdown {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  padding: 0.5rem;
-}
-
-.admin-btn-logout:hover, .admin-btn-back:hover, .admin-btn-dropdown:hover {
-  background-color: white;
-  color: #218838;
-  border-radius: 5px;
-}
-
-.dropdown-menu {
   display: none;
+  gap: 20px;
+  justify-content: flex-end;
+  align-items: center;
+  flex-grow: 1;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.nav-admin-bar.active .nav-admin-list {
+  display: flex; /* Mostrar lista de navegación cuando se active */
+  opacity: 1;
+}
+
+/* Estilos de botones */
+.admin-btn-logout, .admin-btn-dropdown, .admin-btn-back {
+  background-color: transparent;
+  border: none;
+  font-size: 1em;
+  cursor: pointer;
+  padding: 10px 15px;
+  transition: color 0.3s ease;
+}
+
+.admin-btn-logout:hover, .admin-btn-dropdown:hover, .admin-btn-back:hover {
+  color: #1b5e20;
+}
+
+/* Estilo del menú desplegable */
+.dropdown-menu {
   position: absolute;
   top: 100%;
-  background-color: white;
-  color: #218838;
-  list-style: none;
-  padding: 0.5rem;
-  border-radius: 5px;
+  left: 0;
+  background-color: #fff;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.dropdown-menu.show {
+  display: flex;
 }
 
 .dropdown-item {
-  padding: 0.5rem 1rem;
+  padding: 10px 15px;
 }
 
-.dropdown-item .nav-admin-link {
+.dropdown-item a {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.dropdown-item a:hover {
   color: #218838;
 }
 
-.dropdown:hover .dropdown-menu {
-  display: block;
-}
-
-/* Responsive */
 @media (max-width: 768px) {
-  .nav-admin-list {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    background-color: #218838;
-    position: absolute;
-    top: 100%;
-    left: 0;
-  }
-
-  .nav-admin-list.active {
-    display: flex;
-  }
-
   .menu-icon {
     display: block;
   }
 
+  .nav-admin-list {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 100%;
+    background-color: #fff;
+    flex-direction: column;
+    transform: translateX(100%);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
   .nav-admin-item {
-    margin-left: 0;
     text-align: center;
+  }
+
+  .nav-admin-list.active {
+    transform: translateX(0);
   }
 }

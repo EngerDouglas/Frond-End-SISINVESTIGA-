@@ -1,13 +1,11 @@
 import React from "react";
-import FiltroBusqueda from "../../components/GestionProyectos/FiltroBusqueda";
 import MostrarProyectos from "../../components/GestionProyectos/MostrarProyectos";
+import Nav from '../../components/Comunes/NavAdmin'
 
 const ListaProyectos = () => {
   return (
     <div id="ListaProyectos">
-
-      <FiltroBusqueda></FiltroBusqueda>
-
+      <Nav></Nav>
       <MostrarProyectos></MostrarProyectos>
       
     </div>

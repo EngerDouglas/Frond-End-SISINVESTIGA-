@@ -20,68 +20,80 @@ const AdminDashboard = () => {
           {/* Other dashboard boxes */}
           
           <div className="dashboard-card">
-            <h2>Gestión de Proyectos</h2>
+            <h2><i className="bi bi-folder2"></i> Gestión de Proyectos</h2>
             <p>Administrar todos los proyectos en la plataforma.</p>
             <button
               onClick={() => handleNavigation("/listarproyectos")}
               className="admin-btn-card"
             >
-              Ir a Proyectos
+              <i className="bi bi-arrow-right"></i> Ir a Proyectos
             </button>
           </div>
 
           <div className="dashboard-card">
-            <h2>Gestión de Investigadores</h2>
+            <h2><i className="bi bi-person-lines-fill"></i> Gestión de Investigadores</h2>
             <p>Administrar investigadores y su información.</p>
             <button
               onClick={() => handleNavigation("/gestionInvestigadores")}
               className="admin-btn-card"
             >
-              Ir a Investigadores
+              <i className="bi bi-arrow-right"></i> Ir a Investigadores
             </button>
           </div>
 
           <div className="dashboard-card">
-            <h2>Auditoría</h2>
+            <h2><i className="bi bi-file-earmark-text"></i> Auditoría</h2>
             <p>Revisar el historial de actividades.</p>
             <button
               onClick={() => handleNavigation("/auditoria")}
               className="admin-btn-card"
             >
-              Ir a Auditoría
+              <i className="bi bi-arrow-right"></i> Ir a Auditoría
             </button>
           </div>
 
           <div className="dashboard-card">
-            <h2>Gestión de Logs</h2>
+            <h2><i className="bi bi-journal-text"></i> Gestión de Logs</h2>
             <p>Revisar y gestionar logs del sistema.</p>
             <button
               onClick={() => handleNavigation("/gestion-logs")}
               className="admin-btn-card"
             >
-              Ir a Logs
+              <i className="bi bi-arrow-right"></i> Ir a Logs
             </button>
           </div>
 
           <div className="dashboard-card">
-            <h2>Publicaciones</h2>
+            <h2><i className="bi bi-file-earmark-person"></i> Publicaciones</h2>
             <p>Administrar las publicaciones de los investigadores.</p>
             <button
               onClick={() => handleNavigation("/publicaciones")}
               className="admin-btn-card"
             >
-              Ir a Publicaciones
+              <i className="bi bi-arrow-right"></i> Ir a Publicaciones
             </button>
           </div>
 
           <div className="dashboard-card">
-            <h2>Informes</h2>
+            <h2><i className="bi bi-bell"></i> Solicitudes</h2>
+            <p>Solicitud para agregar investigadores a proyectos</p>
+            <button
+              onClick={() => handleNavigation("/publicaciones")}
+              className="admin-btn-card"
+            >
+              <i className="bi bi-arrow-right"></i> Ir a Publicaciones
+            </button>
+          </div>
+
+
+          <div className="dashboard-card">
+            <h2><i className="bi bi-file-earmark-bar-graph"></i> Informes</h2>
             <p>Generar y revisar informes de actividades.</p>
             <button
               onClick={() => handleNavigation("/informes")}
               className="admin-btn-card"
             >
-              Ir a Informes
+              <i className="bi bi-arrow-right"></i> Ir a Informes
             </button> 
           </div>
         </div>

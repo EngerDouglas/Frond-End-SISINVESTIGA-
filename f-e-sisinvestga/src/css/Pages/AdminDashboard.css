@@ -1,113 +1,105 @@
 .admin-dashboard {
-    padding: 20px;
-    margin-top: 50px;
-    animation: fadeIn 0.5s ease;
-  }
+  margin: 0;
+  padding: 20px;
+  background-color: white; /* Fondo blanco */
+  min-height: 100vh; /* Asegura que cubra la altura completa de la pantalla */
+  box-sizing: border-box; /* Asegura que padding no afecte el tamaño total */
+}
 
-  .name{
-    color: white;
-    justify-content: center;
-    display: flex;
-    margin-bottom: 40px;
-  }
-  
-  .dashboard-title {
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 2rem;
-    color: white; /* Your preferred color */
-  }
-  
-  .dashboard-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-  }
+.name {
+  color: white;
+  justify-content: center;
+  display: flex;
+  margin-bottom: 40px;
+}
 
-  .admin-dashboard {
-    padding: 20px;
+.dashboard-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+  color: white; /* Your preferred color */
+}
+
+.dashboard-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Space between cards */
+}
+
+.dashboard-card {
+  background-color: #fff;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  padding: 20px;
+  flex: 1 1 200px; /* Flex-grow, flex-shrink, and basis */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transform: translateY(10px); /* Initial position for animation */
+  opacity: 0; /* Start hidden */
+  transition: transform 0.3s, box-shadow 0.3s; /* Transition effects */
+  animation: slideIn 0.5s forwards; /* Apply animation */
+}
+
+/* Animation keyframes */
+@keyframes slideIn {
+  0% {
+    transform: translateY(10px); /* Comienza un poco más alto */
+    opacity: 0;
   }
-  
-  .dashboard-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; /* Space between cards */
+  100% {
+    transform: translateY(0); /* Termina en su posición normal */
+    opacity: 1;
   }
-  
-  .dashboard-card {
-    background-color: #fff;
-    border: 1px solid #e1e1e1;
-    border-radius: 8px;
-    padding: 20px;
-    flex: 1 1 200px; /* Flex-grow, flex-shrink, and basis */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
-  }
-  
-  .dashboard-card:hover {
-    transform: translateY(-5px); /* Slight hover effect */
-  }
-  
-  .admin-btn-card {
-    text-decoration: none;
-    background-color: #218838; /* Your color */
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    transition: background 0.3s;
-  }
-  
-  .admin-btn-card:hover {
-    background-color: #1c7430; /* Darker shade for hover */
-  }
-  
-  
-  .dashboard-card {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    text-align: center;
-    text-decoration: none;
-    color: #333;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  
-  .dashboard-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-  /* Responsive breakpoints */
+}
+
+.dashboard-card:hover {
+  transform: translateY(-8px); /* Efecto de desplazamiento hacia arriba en hover */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Incrementar la sombra al pasar el mouse */
+}
+
+.admin-btn-card {
+  text-decoration: none;
+  background-color: #218838; /* Your color */
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.admin-btn-card:hover {
+  background-color: #1c7430; /* Darker shade for hover */
+}
+
 @media (max-width: 768px) {
   .dashboard-container {
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjust for smaller screens */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Adjust for smaller screens */
   }
 
   .admin-btn-card {
-      padding: 8px 12px; /* Adjust button padding for smaller screens */
-      font-size: 0.9rem;
+    padding: 8px 12px; /* Adjust button padding for smaller screens */
+    font-size: 0.9rem;
   }
 }
 
 @media (max-width: 480px) {
   .dashboard-container {
-      grid-template-columns: 1fr; /* Single column layout for very small screens */
+    grid-template-columns: 1fr; /* Single column layout for very small screens */
   }
 
   .admin-btn-card {
-      padding: 6px 10px;
-      font-size: 0.8rem;
+    padding: 6px 10px;
+    font-size: 0.8rem;
   }
 }
 
+.dashboard-card h2 {
+  display: flex;
+  align-items: center; /* Alinear verticalmente el icono y el texto */
+}
 
-  
+.dashboard-card h2 i {
+  margin-right: 8px; /* Espacio entre el icono y el texto */
+}
+
+.admin-btn-card i {
+  margin-right: 5px; /* Espacio entre el icono y el texto del botón */
+}
