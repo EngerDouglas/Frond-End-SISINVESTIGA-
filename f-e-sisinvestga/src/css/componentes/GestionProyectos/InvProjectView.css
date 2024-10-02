@@ -1,0 +1,64 @@
+.inv-project-view {
+  padding: 40px;
+  background-color: #f4f6f9;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Título principal */
+.inv-project-view h1 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: #333;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 1px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Botón para agregar proyecto */
+.add-project-btn {
+  background-color: #4caf50;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.add-project-btn:hover {
+  background-color: #45a049;
+  transform: translateY(-3px);
+}
+
+.add-project-btn:focus {
+  outline: none;
+}
+
+/* Lista de proyectos */
+.projects-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Estilo para los mensajes si no hay proyectos */
+.projects-list p {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #666;
+  padding: 20px;
+}

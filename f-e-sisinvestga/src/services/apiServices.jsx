@@ -148,9 +148,9 @@ export const searchData = async (endpoint, params) => {
 };
 
 // Obtener recursos personalizados (ej: obtener publicaciones del usuario)
-export const getUserData = async (endpoint) => {
+export const getUserData = async (endpoint, params) => {
   try {
-    const response = await api.get(`/${endpoint}/me`);
+    const response = await api.get(`/${endpoint}/me`, { params });
     return response.data;
   } catch (error) {
     console.log('Error en GET user data:', error);

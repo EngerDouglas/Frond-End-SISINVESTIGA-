@@ -33,11 +33,15 @@ const AlertComponent = {
   },
 
   warning: (message) => {
-    MySwal.fire({
+    return MySwal.fire({
       icon: 'warning',
       title: 'Advertencia',
       text: message,
-      confirmButtonColor: '#f39c12',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
     });
   },
 };

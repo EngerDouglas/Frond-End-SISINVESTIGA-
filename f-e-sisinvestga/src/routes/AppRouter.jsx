@@ -20,6 +20,8 @@ import GestionInvestigadores from '../views/Admin/GestionInvestigadores/GestionI
 import Publicaciones from "../views/publicaciones/publicacionesViews"
 import ProjectDetails from '../views/Proyectos/ProjectDetails';
 import PublicationDetails from '../views/publicaciones/PublicationDetails';
+import AddProjectView from '../views/Investigadores/AddProjectView';
+import EditProjectView from '../views/Investigadores/EditProjectView';
 
 const AppRouter = () => {
 
@@ -67,6 +69,18 @@ const AppRouter = () => {
       <Route path='/proyectos' element={
         <ProtectedRoute roles={['Investigador']}>
           <InvProjectView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/proyectos/agregar' element={
+        <ProtectedRoute roles={['Investigador', 'Administrador']}>
+          <AddProjectView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/proyectos/editar/:id' element={
+        <ProtectedRoute roles={['Investigador', 'Administrador']}>
+          <EditProjectView />
         </ProtectedRoute>
       } />
 
