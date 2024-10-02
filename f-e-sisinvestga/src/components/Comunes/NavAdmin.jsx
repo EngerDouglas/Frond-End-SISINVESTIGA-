@@ -1,20 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectCurrentRole } from "../../features/auth/authSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { selectCurrentRole, logoutUser } from "../../features/auth/authSlice";
 import "../../css/componentes/Comunes/NavAdmin.css"; // Asegúrate de que el CSS esté importado correctamente
 
 const AdminNav = () => {
   const role = useSelector(selectCurrentRole);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
+  
   const handleLogout = () => {
-    console.log("Cerrando sesión...");
-    navigate("/logout");
+    try {
+      dispatch(logoutUser()).then(() => {
+        navigate('/login')
+      });
+    } catch (error) {
+      console.error('Error al cerrar la sesion', error)
+    }
   };
 
   const goBack = () => {
