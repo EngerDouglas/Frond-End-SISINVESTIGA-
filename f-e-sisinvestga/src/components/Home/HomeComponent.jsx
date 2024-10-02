@@ -57,9 +57,7 @@ const HomeComponent = () => {
           setPublicationData(fetchedPublications);
 
           const uniqueTypes = [
-            ...new Set(
-              fetchedPublications.map((pub) => pub.tipoPublicacion)
-            ),
+            ...new Set(fetchedPublications.map((pub) => pub.tipoPublicacion)),
           ];
           setPublicationTypes(uniqueTypes);
         }
@@ -205,7 +203,10 @@ const HomeComponent = () => {
                         <strong>Estado:</strong> {project.estado}
                       </p>
                       {/* Botón "Ver más" */}
-                      <Link to={`/proyectos/${project._id}`} className="card-button">
+                      <Link
+                        to={`/proyectos/${project._id}`}
+                        className="card-button"
+                      >
                         Ver más
                       </Link>
                     </div>
@@ -241,7 +242,12 @@ const HomeComponent = () => {
                         <strong>Tipo:</strong> {publication.tipoPublicacion}
                       </p>
                       {/* Botón "Ver más" */}
-                      <button className="card-button">Ver más</button>
+                      <Link
+                        to={`/publicaciones/${publication._id}`}
+                        className="card-button"
+                      >
+                        Ver más
+                      </Link>
                     </div>
                   </div>
                 ))}

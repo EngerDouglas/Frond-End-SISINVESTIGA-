@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router';
 import Home from '../views/Home/Home';
 import LoginPage from '../views/Seguridad/LoginPage';
+import RegisterPage from '../views/Seguridad/RegisterPage';
 import AdminDashboard from '../views/Admin/AdminDashboard';
 import InvestDashboard from '../views/Investigadores/InvestDashboard';
 import Unauthorized from '../views/Pages/Unauthorized';
@@ -13,6 +14,7 @@ import ListaProyectos from '../views/Proyectos/ListaProyectos';
 import GestionInvestigadores from '../views/Admin/GestionInvestigadores/GestionInvestigadores'
 import Publicaciones from "../views/publicaciones/publicacionesViews"
 import ProjectDetails from '../views/Proyectos/ProjectDetails';
+import PublicationDetails from '../views/publicaciones/PublicationDetails';
 
 const AppRouter = () => {
 
@@ -44,9 +46,11 @@ const AppRouter = () => {
     <Routes>
       {/* Rutas Publicas */}
       <Route path='/login' element={<LoginPage />} />
+      <Route path='/register' element={<RegisterPage />} />
       {/* Rutas Defecto de la pagina */}
       <Route path='/' element={getHome()} />
       <Route path='proyectos/:id' element={<ProjectDetails />} />
+      <Route path='publicaciones/:id' element={<PublicationDetails />} />
       
       {/* Rutas Protegidas para Investigador */}
       <Route path='/invest' element={ 
