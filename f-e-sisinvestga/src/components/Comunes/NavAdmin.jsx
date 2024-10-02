@@ -40,7 +40,7 @@ const AdminNav = () => {
 
       {/* Botón de menú hamburguesa */}
       <div className="menu-icon" onClick={toggleMenu}>
-        <i className={`bi ${isMenuOpen ? "bi-x" : "bi-list"}`}></i>
+        <i className={`bi ${isMenuOpen ? "bi" : "bi"}`}></i>
       </div>
 
       {/* Lista de botones */}
