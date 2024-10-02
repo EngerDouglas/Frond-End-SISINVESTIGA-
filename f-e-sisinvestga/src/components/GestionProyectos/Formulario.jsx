@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../css/componentes/GestionProyectos/Formulario.css';
 
 const Formulario = ({ agregarProyecto }) => {
@@ -16,11 +16,12 @@ const Formulario = ({ agregarProyecto }) => {
 
   const [sugerencias, setSugerencias] = useState([]); 
   const [nuevoInvestigador, setNuevoInvestigador] = useState(""); 
+  const [errores, setErrores] = useState([]);
 
   useEffect(() => {
     const obtenerInvestigadores = async () => {
       try {
-        const response = await fetch('/api/investigadores');
+        const response = await fetch('http://localhost:3005/api/users');
         const data = await response.json();
         setSugerencias(data.investigadores); 
       } catch (error) {
@@ -103,8 +104,36 @@ const Formulario = ({ agregarProyecto }) => {
     });
   };
 
+  const validarFormulario = () => {
+    const newErrores = [];
+    if (!proyectoDatos.nombre) newErrores.push("El nombre es obligatorio.");
+    if (!proyectoDatos.descripcion) newErrores.push("La descripción es obligatoria.");
+    if (!proyectoDatos.objetivos) newErrores.push("Los objetivos son obligatorios.");
+    if (!proyectoDatos.presupuesto) newErrores.push("El presupuesto es obligatorio.");
+    if (!proyectoDatos.fechaInicio) newErrores.push("La fecha de inicio es obligatoria.");
+    if (!proyectoDatos.fechaLimite) newErrores.push("La fecha límite es obligatoria.");
+    
+    if (!proyectoDatos.fechaInicio || !proyectoDatos.fechaLimite) {
+      newErrores.push("El cronograma debe incluir fecha de inicio y fecha límite.");
+    }
+
+    if (!proyectoDatos.hitos || proyectoDatos.hitos.length === 0) {
+      newErrores.push("Al menos un hito es obligatorio con nombre y fecha.");
+    } else {
+      proyectoDatos.hitos.forEach((hito, index) => {
+        if (!hito.nombre || !hito.fecha) {
+          newErrores.push(`El hito en la posición ${index + 1} debe tener un nombre y una fecha.`);
+        }
+      });
+    }
+
+    setErrores(newErrores);
+    return newErrores.length === 0;
+  };
+
   const manejoSubida = async (e) => {
     e.preventDefault();
+    if (!validarFormulario()) return; 
 
     const cronograma = {
       fechaInicio: proyectoDatos.fechaInicio,
@@ -123,7 +152,7 @@ const Formulario = ({ agregarProyecto }) => {
     };
 
     try {
-      const response = await fetch('/api/proyectos', {
+      const response = await fetch('http://localhost:3005/api/projects', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -145,6 +174,7 @@ const Formulario = ({ agregarProyecto }) => {
           hitos: [{ nombre: "", fecha: "" }],
           recursos: [""] 
         });
+        setErrores([]); 
       } else {
         console.error("Error al crear el proyecto:", data);
       }
@@ -156,6 +186,15 @@ const Formulario = ({ agregarProyecto }) => {
   return (
     <form onSubmit={manejoSubida} className="form-container">
       <h2>Crear Proyecto</h2>
+      {errores.length > 0 && (
+        <div className="errores">
+          <ul>
+            {errores.map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
+        </div>
+      )}
       <div className="form">
         <label>Nombre:</label>
         <input
