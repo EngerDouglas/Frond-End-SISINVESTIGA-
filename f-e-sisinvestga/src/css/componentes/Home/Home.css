@@ -1,3 +1,4 @@
+/* Contenedor principal */
 .home-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -24,9 +25,22 @@
 }
 
 /* Carrusel */
+.carousel .carousel-item {
+  position: relative;
+}
+
 .carousel .carousel-item img {
   max-height: 400px;
   object-fit: cover;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Agregar gradiente sobre la imagen para crear el efecto de desvanecimiento */
+.carousel .carousel-item img {
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
 }
 
 /* Pestañas */

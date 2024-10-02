@@ -6,7 +6,7 @@ import "../../css/componentes/Home/Home.css";
 import img1 from "../../img/invest.jpg";
 import img2 from "../../img/invest2.jpg";
 import img3 from "../../img/invest3.jpg";
-import { useDebounce } from 'use-debounce';
+import { useDebounce } from "use-debounce";
 import { Carousel } from "react-bootstrap";
 
 const HomeComponent = () => {
@@ -81,32 +81,29 @@ const HomeComponent = () => {
   return (
     <div>
       <Nav />
-      <div className="home-container">
-        {/* Carrusel */}
+      
+      {/* Carrusel de lado a lado */}
+      <div className="carousel-container">
         <Carousel className="mb-4">
           <Carousel.Item interval={3000}>
             <img className="d-block w-100" src={img1} alt="First slide" />
             <Carousel.Caption>
-              <h3>Investigación 1</h3>
-              <p>Detalles del proyecto de investigación 1.</p>
             </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item interval={3000}>
             <img className="d-block w-100" src={img2} alt="Second slide" />
             <Carousel.Caption>
-              <h3>Investigación 2</h3>
-              <p>Detalles del proyecto de investigación 2.</p>
             </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item interval={3000}>
             <img className="d-block w-100" src={img3} alt="Third slide" />
             <Carousel.Caption>
-              <h3>Investigación 3</h3>
-              <p>Detalles del proyecto de investigación 3.</p>
             </Carousel.Caption>
           </Carousel.Item>
         </Carousel>
+      </div>
 
+      <div className="home-container">
         {/* Barra de búsqueda */}
         <div className="home-search-container">
           <input
@@ -184,12 +181,10 @@ const HomeComponent = () => {
               <div className="cards-container">
                 {projects.map((project) => (
                   <div key={project._id} className="project-card">
-                    {/* Imagen del proyecto */}
                     <div className="card-image">
                       <img
                         src={
-                          project.imagen ||
-                          "https://via.placeholder.com/300x200"
+                          project.imagen || "https://via.placeholder.com/300x200"
                         }
                         alt={project.nombre}
                       />
@@ -200,7 +195,6 @@ const HomeComponent = () => {
                       <p>
                         <strong>Estado:</strong> {project.estado}
                       </p>
-                      {/* Botón "Ver más" */}
                       <Link
                         to={`/proyectos/${project._id}`}
                         className="card-button"
@@ -225,7 +219,6 @@ const HomeComponent = () => {
               <div className="cards-container">
                 {publications.map((publication) => (
                   <div key={publication._id} className="publication-card">
-                    {/* Imagen de la publicación */}
                     <div className="card-image">
                       <img
                         src={
@@ -241,7 +234,6 @@ const HomeComponent = () => {
                       <p>
                         <strong>Tipo:</strong> {publication.tipoPublicacion}
                       </p>
-                      {/* Botón "Ver más" */}
                       <Link
                         to={`/publicaciones/${publication._id}`}
                         className="card-button"
