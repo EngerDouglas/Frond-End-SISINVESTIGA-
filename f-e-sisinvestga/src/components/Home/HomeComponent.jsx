@@ -6,6 +6,7 @@ import "../../css/componentes/Home/Home.css";
 import img1 from "../../img/invest.jpg";
 import img2 from "../../img/invest2.jpg";
 import img3 from "../../img/invest3.jpg";
+import { useDebounce } from 'use-debounce';
 import { Carousel } from "react-bootstrap";
 
 const HomeComponent = () => {
@@ -16,6 +17,7 @@ const HomeComponent = () => {
   const [selectedProjectState, setSelectedProjectState] = useState("");
   const [selectedPublicationTipo, setSelectedPublicationTipo] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm] = useDebounce(searchTerm, 400);
   const [activeTab, setActiveTab] = useState("Proyectos");
   const [loading, setLoading] = useState(true);
 
@@ -28,13 +30,10 @@ const HomeComponent = () => {
           if (selectedProjectState) {
             projectParams.estado = selectedProjectState;
           }
-          if (searchTerm) {
-            projectParams.nombre = searchTerm;
+          if (debouncedSearchTerm) {
+            projectParams.nombre = debouncedSearchTerm;
           }
-          const fetchedProjects = await getDataParams(
-            "projects",
-            projectParams
-          );
+          const fetchedProjects = await getDataParams("projects", projectParams);
           setProjectData(fetchedProjects);
 
           const uniqueStates = [
@@ -46,8 +45,8 @@ const HomeComponent = () => {
           if (selectedPublicationTipo) {
             publicationParams.tipoPublicacion = selectedPublicationTipo;
           }
-          if (searchTerm) {
-            publicationParams.titulo = searchTerm;
+          if (debouncedSearchTerm) {
+            publicationParams.titulo = debouncedSearchTerm;
           }
 
           const fetchedPublications = await getDataParams(
@@ -68,19 +67,16 @@ const HomeComponent = () => {
       }
     };
     fetchData();
-  }, [searchTerm, selectedProjectState, selectedPublicationTipo, activeTab]);
+  }, [
+    debouncedSearchTerm,
+    selectedProjectState,
+    selectedPublicationTipo,
+    activeTab,
+  ]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
-
-  if (loading) {
-    return (
-      <div>
-        <p>Cargando...</p>
-      </div>
-    );
-  }
 
   return (
     <div>
@@ -182,7 +178,9 @@ const HomeComponent = () => {
         {/* Contenido */}
         {activeTab === "Proyectos" && (
           <div className="projects-section">
-            {projects.length > 0 ? (
+            {loading ? (
+              <p>Cargando proyectos...</p>
+            ) : projects.length > 0 ? (
               <div className="cards-container">
                 {projects.map((project) => (
                   <div key={project._id} className="project-card">
@@ -221,7 +219,9 @@ const HomeComponent = () => {
 
         {activeTab === "Publicaciones" && (
           <div className="publications-section">
-            {publications.length > 0 ? (
+            {loading ? (
+              <p>Cargando publicaciones...</p>
+            ) : publications.length > 0 ? (
               <div className="cards-container">
                 {publications.map((publication) => (
                   <div key={publication._id} className="publication-card">
