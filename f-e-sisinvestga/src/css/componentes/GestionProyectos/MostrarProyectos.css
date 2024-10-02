@@ -58,3 +58,7 @@
 .btn-primary:hover {
   background-color: #1b6d30; /* Color del botón al pasar el ratón */
 }
+
+.btn-detalles{
+  color:#218838
+}
