@@ -6,6 +6,10 @@ import LoginPage from '../views/Seguridad/LoginPage';
 import RegisterPage from '../views/Seguridad/RegisterPage';
 import AdminDashboard from '../views/Admin/AdminDashboard';
 import InvestDashboard from '../views/Investigadores/InvestDashboard';
+import InvProjectView from '../views/Investigadores/InvProjectView';
+import InvPublicationView from '../views/Investigadores/InvPublicationView';
+import InvInformeView from '../views/Investigadores/InvInformeView';
+import InvestigatorProfile from '../views/Investigadores/InvestigatorProfile';
 import Unauthorized from '../views/Pages/Unauthorized';
 import NotFound from '../views/Pages/NotFound';
 import ProtectedRoute from '../Context/ProtectedRoute';
@@ -59,6 +63,31 @@ const AppRouter = () => {
         </ProtectedRoute>
       } />
 
+      <Route path='/proyectos' element={
+        <ProtectedRoute roles={['Investigador']}>
+          <InvProjectView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/publicaciones' element={
+        <ProtectedRoute roles={['Investigador']}>
+          <InvPublicationView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/informes' element={
+        <ProtectedRoute roles={['Investigador']}>
+          <InvInformeView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/perfil' element={
+        <ProtectedRoute roles={['Investigador']}>
+          <InvestigatorProfile />
+        </ProtectedRoute>
+      } />
+
+
       {/* Rutas Protegidas para Administrador */}
       <Route path='/admin' element={ 
         <ProtectedRoute roles={['Administrador']}>
@@ -66,21 +95,18 @@ const AppRouter = () => {
         </ProtectedRoute>
       } />
 
-      {/* Rutas Protegidas para Administrador */}
       <Route path='/gestionInvestigadores' element={ 
         <ProtectedRoute roles={['Administrador']}>
           <GestionInvestigadores />
         </ProtectedRoute>
       } />
 
-       {/* Rutas Protegidas para Administrador */}
       <Route path='/publicaciones' element={ 
         <ProtectedRoute roles={['Administrador']}>
           <Publicaciones />
         </ProtectedRoute>
       } />
 
-      {/* Rutas Protegidas para Administrador */}
       <Route path='/listarproyectos' element={ 
         <ProtectedRoute roles={['Administrador', 'Investigador']}>
           <ListaProyectos />
