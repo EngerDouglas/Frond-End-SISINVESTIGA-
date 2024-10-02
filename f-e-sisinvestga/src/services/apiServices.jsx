@@ -148,7 +148,7 @@ export const searchData = async (endpoint, params) => {
 };
 
 // Obtener recursos personalizados (ej: obtener publicaciones del usuario)
-export const getUserData = async (endpoint, userId) => {
+export const getUserData = async (endpoint) => {
   try {
     const response = await api.get(`/${endpoint}/me`);
     return response.data;

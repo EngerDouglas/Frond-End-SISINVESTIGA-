@@ -13,6 +13,7 @@ import {
   FaBell,
   FaMoon,
   FaSun,
+  FaTasks,
 } from "react-icons/fa";
 import logo from "../../assets/img/LogoUCSD.jpg"; // Asegúrate de que el logo esté en la ruta correcta
 import "../../css/componentes/GestionInvestigadores/NavInvestigator.css"; // Archivo CSS específico
@@ -67,6 +68,11 @@ const NavInvestigator = () => {
         <li className="nav-investigator-item">
           <Link to="/informes" className="nav-investigator-link">
             <FaChartBar /> Informes
+          </Link>
+        </li>
+        <li className="nav-investigator-item">
+          <Link to="/solicitudes" className="nav-investigator-link">
+            <FaTasks /> Solicitudes
           </Link>
         </li>
       </ul>

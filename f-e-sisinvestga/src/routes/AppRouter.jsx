@@ -9,6 +9,7 @@ import InvestDashboard from '../views/Investigadores/InvestDashboard';
 import InvProjectView from '../views/Investigadores/InvProjectView';
 import InvPublicationView from '../views/Investigadores/InvPublicationView';
 import InvInformeView from '../views/Investigadores/InvInformeView';
+import InvRequestView from '../views/Investigadores/InvRequestView';
 import InvestigatorProfile from '../views/Investigadores/InvestigatorProfile';
 import Unauthorized from '../views/Pages/Unauthorized';
 import NotFound from '../views/Pages/NotFound';
@@ -78,6 +79,12 @@ const AppRouter = () => {
       <Route path='/informes' element={
         <ProtectedRoute roles={['Investigador']}>
           <InvInformeView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/solicitudes' element={
+        <ProtectedRoute roles={['Investigador']}>
+          <InvRequestView />
         </ProtectedRoute>
       } />
 
