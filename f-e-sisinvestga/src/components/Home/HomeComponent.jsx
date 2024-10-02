@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Nav from "../Comunes/Nav";
 import { getDataParams } from "../../services/apiServices";
 import "../../css/componentes/Home/Home.css";
@@ -204,7 +205,9 @@ const HomeComponent = () => {
                         <strong>Estado:</strong> {project.estado}
                       </p>
                       {/* Botón "Ver más" */}
-                      <button className="card-button">Ver más</button>
+                      <Link to={`/proyectos/${project._id}`} className="card-button">
+                        Ver más
+                      </Link>
                     </div>
                   </div>
                 ))}

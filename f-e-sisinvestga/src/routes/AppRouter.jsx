@@ -12,6 +12,7 @@ import { selectSessionLoaded } from '../features/auth/authSlice';
 import ListaProyectos from '../views/Proyectos/ListaProyectos';
 import GestionInvestigadores from '../views/Admin/GestionInvestigadores/GestionInvestigadores'
 import Publicaciones from "../views/publicaciones/publicacionesViews"
+import ProjectDetails from '../views/Proyectos/ProjectDetails';
 
 const AppRouter = () => {
 
@@ -45,6 +46,7 @@ const AppRouter = () => {
       <Route path='/login' element={<LoginPage />} />
       {/* Rutas Defecto de la pagina */}
       <Route path='/' element={getHome()} />
+      <Route path='proyectos/:id' element={<ProjectDetails />} />
       
       {/* Rutas Protegidas para Investigador */}
       <Route path='/invest' element={ 
@@ -68,7 +70,7 @@ const AppRouter = () => {
       } />
 
        {/* Rutas Protegidas para Administrador */}
-       <Route path='/publicaciones' element={ 
+      <Route path='/publicaciones' element={ 
         <ProtectedRoute roles={['Administrador']}>
           <Publicaciones />
         </ProtectedRoute>
