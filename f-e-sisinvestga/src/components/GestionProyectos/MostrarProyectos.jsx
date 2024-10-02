@@ -1,36 +1,38 @@
-import React, { useState } from "react";
-import { Card, Button, Col, Row, Modal, Form } from "react-bootstrap"; // Importar componentes de Bootstrap
+import React, { useEffect, useState } from "react";
+import { Card, Button, Col, Row, Modal, Form } from "react-bootstrap"; 
+import { getData, putData } from "../../services/apiServices";
 import '../../css/componentes/GestionProyectos/MostrarProyectos.css';
 
-const MostrarProyectos = () => {
-  // Lista de proyectos de ejemplo
-  const initialProyectos = [
-    {
-      titulo: 'Proyecto 1',
-      objetivos: 'Objetivo 1',
-      presupuesto: '1000',
-      fechaInicio: '2024-01-01',
-      fechaLimite: '2024-12-31'
-    },
-    {
-      titulo: 'Proyecto 2',
-      objetivos: 'Objetivo 2',
-      presupuesto: '2000',
-      fechaInicio: '2024-02-01',
-      fechaLimite: '2024-11-30'
-    }
-  ];
-
-  const [proyectos, setProyectos] = useState(initialProyectos);
+function MostrarProyectos() {
+  const [proyectosData, setProyectosData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showModal, setShowModal] = useState(false);
   const [newProject, setNewProject] = useState({
-    titulo: '',
+    nombre: '',
+    descripcion: '',
     objetivos: '',
-    presupuesto: '',
-    fechaInicio: '',
-    fechaLimite: ''
+    presupuesto: 0,
+    cronograma: {
+      fechaInicio: '',
+      fechaFin: ''
+    },
+    investigadores: [],
+    recursos: [], // Cambiado para incluir PDFs
+    hitos: [],
+    estado: ''
   });
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    const fetchProyectos = async () => {
+      try {
+        const proyectos = await getData("projects");
+        setProyectosData(proyectos);
+      } catch (error) {
+        console.error("Error al obtener los proyectos", error);
+      }
+    };
+    fetchProyectos();
+  }, []);
 
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
@@ -40,20 +42,48 @@ const MostrarProyectos = () => {
     setNewProject({ ...newProject, [name]: value });
   };
 
-  const handleCreateProject = () => {
-    setProyectos([...proyectos, newProject]);
+  const handleCreateProject = async () => {
+    // Verificar si el nombre del proyecto ya existe
+    const proyectoExistente = proyectosData.some(
+      (proyecto) => proyecto.nombre.toLowerCase() === newProject.nombre.toLowerCase()
+    );
+    
+    if (proyectoExistente) {
+      alert('Ya existe un proyecto con este nombre.');
+      return; // Detener la creación si el nombre ya existe
+    }
+  
+    try {
+      const response = await putData("projects", newProject); 
+      setProyectosData([...proyectosData, response]); 
+    } catch (error) {
+      console.error("Error al crear el proyecto", error);
+    }
     handleCloseModal();
     setNewProject({
-      titulo: '',
+      nombre: '',
+      descripcion: '',
       objetivos: '',
-      presupuesto: '',
-      fechaInicio: '',
-      fechaLimite: ''
+      presupuesto: 0,
+      cronograma: {
+        fechaInicio: '',
+        fechaFin: ''
+      },
+      investigadores: [],
+      recursos: [],
+      hitos: [],
+      estado: ''
     });
   };
+  
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    const fileURLs = files.map(file => URL.createObjectURL(file));
+    setNewProject({ ...newProject, recursos: fileURLs }); // Almacena las URLs de los archivos
+  };
 
-  const filteredProyectos = proyectos.filter((proyecto) =>
-    proyecto.titulo.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProyectos = proyectosData.filter((proyecto) =>
+    proyecto.nombre && proyecto.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -79,12 +109,25 @@ const MostrarProyectos = () => {
           <Col key={index}>
             <Card className="project-card shadow-sm border-light">
               <Card.Body>
-                <Card.Title className="project-title">{proyecto.titulo}</Card.Title>
+                <Card.Title className="project-title">{proyecto.nombre}</Card.Title>
                 <Card.Text>
+                  <strong>Descripción:</strong> {proyecto.descripcion}<br />
                   <strong>Objetivos:</strong> {proyecto.objetivos}<br />
                   <strong>Presupuesto:</strong> ${proyecto.presupuesto}<br />
-                  <strong>Fecha de Inicio:</strong> {proyecto.fechaInicio}<br />
-                  <strong>Fecha Límite:</strong> {proyecto.fechaLimite}
+                  <strong>Fecha de Inicio:</strong> {new Date(proyecto.cronograma.fechaInicio).toLocaleDateString()}<br />
+                  <strong>Fecha Límite:</strong> {new Date(proyecto.cronograma.fechaFin).toLocaleDateString()}<br />
+                  <strong>Recursos:</strong>
+                  {proyecto.recursos && proyecto.recursos.length > 0 ? (
+                    <ul>
+                      {proyecto.recursos.map((recurso, index) => (
+                        <li key={index}>
+                          <a href={recurso} target="_blank" rel="noopener noreferrer">Ver PDF {index + 1}</a>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No hay recursos disponibles.</p>
+                  )}
                 </Card.Text>
                 <Button variant="primary" className="w-100">Ver Detalles</Button>
               </Card.Body>
@@ -100,14 +143,24 @@ const MostrarProyectos = () => {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group controlId="formTitulo">
-              <Form.Label>Título</Form.Label>
+            <Form.Group controlId="formNombre">
+              <Form.Label>Nombre</Form.Label>
               <Form.Control
                 type="text"
-                name="titulo"
-                value={newProject.titulo}
+                name="nombre"
+                value={newProject.nombre}
                 onChange={handleInputChange}
-                placeholder="Ingrese el título del proyecto"
+                placeholder="Ingrese el nombre del proyecto"
+              />
+            </Form.Group>
+            <Form.Group controlId="formDescripcion">
+              <Form.Label>Descripción</Form.Label>
+              <Form.Control
+                type="text"
+                name="descripcion"
+                value={newProject.descripcion}
+                onChange={handleInputChange}
+                placeholder="Ingrese la descripción del proyecto"
               />
             </Form.Group>
             <Form.Group controlId="formObjetivos">
@@ -134,19 +187,31 @@ const MostrarProyectos = () => {
               <Form.Label>Fecha de Inicio</Form.Label>
               <Form.Control
                 type="date"
-                name="fechaInicio"
-                value={newProject.fechaInicio}
+                name="cronograma.fechaInicio"
+                value={newProject.cronograma.fechaInicio}
                 onChange={handleInputChange}
               />
             </Form.Group>
-            <Form.Group controlId="formFechaLimite">
-              <Form.Label>Fecha Límite</Form.Label>
+            <Form.Group controlId="formFechaFin">
+              <Form.Label>Fecha Fin</Form.Label>
               <Form.Control
                 type="date"
-                name="fechaLimite"
-                value={newProject.fechaLimite}
+                name="cronograma.fechaFin"
+                value={newProject.cronograma.fechaFin}
                 onChange={handleInputChange}
               />
+            </Form.Group>
+            <Form.Group controlId="formRecursos">
+              <Form.Label>Recursos (PDF)</Form.Label>
+              <Form.Control
+                type="file"
+                multiple
+                accept="application/pdf"
+                onChange={handleFileChange}
+              />
+              <Form.Text className="text-muted">
+                Cargar uno o más archivos PDF.
+              </Form.Text>
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -161,6 +226,6 @@ const MostrarProyectos = () => {
       </Modal>
     </div>
   );
-};
+}
 
 export default MostrarProyectos;

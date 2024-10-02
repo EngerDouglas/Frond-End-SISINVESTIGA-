@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCurrentRole, logoutUser } from "../../features/auth/authSlice";
-import "../../css/componentes/Comunes/NavAdmin.css"; // Asegúrate de que el CSS esté importado correctamente
+import "../../css/componentes/Comunes/NavAdmin.css";
 
 const AdminNav = () => {
   const role = useSelector(selectCurrentRole);
@@ -12,14 +12,14 @@ const AdminNav = () => {
   const navigate = useNavigate();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  
+
   const handleLogout = () => {
     try {
       dispatch(logoutUser()).then(() => {
-        navigate('/login')
+        navigate("/login");
       });
     } catch (error) {
-      console.error('Error al cerrar la sesion', error)
+      console.error("Error al cerrar la sesión", error);
     }
   };
 
@@ -27,32 +27,25 @@ const AdminNav = () => {
     navigate(-1);
   };
 
-  // Activar la animación cuando la página se carga
   useEffect(() => {
     setTimeout(() => {
-      setIsLoaded(true); // Esto activa la clase 'active'
-    }, 500); // Añadimos un ligero retraso para que se note la animación
+      setIsLoaded(true);
+    }, 500);
   }, []);
 
   return (
     <nav className={`nav-admin-bar ${isLoaded ? "active" : ""}`}>
       <div className="logo-admin">UCSD</div>
 
-      {/* Botón de menú hamburguesa */}
-      <div className="menu-icon" onClick={toggleMenu}>
-        <i className={`bi ${isMenuOpen ? "bi" : "bi"}`}></i>
-      </div>
-
-      {/* Lista de botones */}
       <ul className={`nav-admin-list ${isMenuOpen ? "active" : ""}`}>
         <li className="nav-admin-item">
-          <button onClick={handleLogout} className="nav-link admin-btn-logout">
+          <button onClick={handleLogout} className="nav-link admin-btn">
             <i className="bi bi-box-arrow-right"></i> Cerrar Sesión
           </button>
         </li>
 
         <li className="nav-admin-item dropdown">
-          <button className="nav-admin-link admin-btn-dropdown" onClick={toggleMenu}>
+          <button className="nav-link admin-btn" onClick={toggleMenu}>
             <i className="bi bi-list"></i> Menú
           </button>
           <ul className={`dropdown-menu ${isMenuOpen ? "show" : ""}`}>
@@ -113,7 +106,7 @@ const AdminNav = () => {
         </li>
 
         <li className="nav-admin-item">
-          <button onClick={goBack} className="nav-admin-link admin-btn-back">
+          <button onClick={goBack} className="nav-link admin-btn">
             <i className="bi bi-arrow-left"></i> Atrás
           </button>
         </li>
