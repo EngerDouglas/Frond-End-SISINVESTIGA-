@@ -12,6 +12,6 @@ const ListaProyectos = () => {
       
     </div>
   );
-}
+};
 
 export default ListaProyectos;
