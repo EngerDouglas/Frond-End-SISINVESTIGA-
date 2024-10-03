@@ -87,18 +87,12 @@ const HomeComponent = () => {
         <Carousel className="mb-4">
           <Carousel.Item interval={3000}>
             <img className="d-block w-100" src={img1} alt="First slide" />
-            <Carousel.Caption>
-            </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item interval={3000}>
             <img className="d-block w-100" src={img2} alt="Second slide" />
-            <Carousel.Caption>
-            </Carousel.Caption>
           </Carousel.Item>
           <Carousel.Item interval={3000}>
             <img className="d-block w-100" src={img3} alt="Third slide" />
-            <Carousel.Caption>
-            </Carousel.Caption>
           </Carousel.Item>
         </Carousel>
       </div>
@@ -155,16 +149,16 @@ const HomeComponent = () => {
 
           {activeTab === "Publicaciones" && (
             <div className="filter-group">
-              <label htmlFor="tipoPublicacion">Tipo de Publicación:</label>
+              <label htmlFor="tipo">Tipo:</label>
               <select
-                id="tipoPublicacion"
+                id="tipo"
                 value={selectedPublicationTipo}
                 onChange={(e) => setSelectedPublicationTipo(e.target.value)}
               >
-                <option value="">Todas</option>
-                {publicationTypes.map((tipoPublicacion) => (
-                  <option key={tipoPublicacion} value={tipoPublicacion}>
-                    {tipoPublicacion}
+                <option value="">Todos</option>
+                {publicationTypes.map((tipo) => (
+                  <option key={tipo} value={tipo}>
+                    {tipo}
                   </option>
                 ))}
               </select>
@@ -172,7 +166,7 @@ const HomeComponent = () => {
           )}
         </div>
 
-        {/* Contenido */}
+        {/* Sección de proyectos */}
         {activeTab === "Proyectos" && (
           <div className="projects-section">
             {loading ? (
@@ -184,7 +178,8 @@ const HomeComponent = () => {
                     <div className="card-image">
                       <img
                         src={
-                          project.imagen || "https://via.placeholder.com/300x200"
+                          project.imagen ||
+                          "https://via.placeholder.com/300x200"
                         }
                         alt={project.nombre}
                       />
@@ -195,10 +190,7 @@ const HomeComponent = () => {
                       <p>
                         <strong>Estado:</strong> {project.estado}
                       </p>
-                      <Link
-                        to={`/proyectos/${project._id}`}
-                        className="card-button"
-                      >
+                      <Link to={`/proyectos/${project._id}`} className="card-button">
                         Ver más
                       </Link>
                     </div>
@@ -211,6 +203,7 @@ const HomeComponent = () => {
           </div>
         )}
 
+        {/* Sección de publicaciones */}
         {activeTab === "Publicaciones" && (
           <div className="publications-section">
             {loading ? (
@@ -230,10 +223,7 @@ const HomeComponent = () => {
                     </div>
                     <div className="card-content">
                       <h3>{publication.titulo}</h3>
-                      <p>{publication.resumen.substring(0, 100)}...</p>
-                      <p>
-                        <strong>Tipo:</strong> {publication.tipoPublicacion}
-                      </p>
+                      <p>{publication.descripcion.substring(0, 100)}...</p>
                       <Link
                         to={`/publicaciones/${publication._id}`}
                         className="card-button"
