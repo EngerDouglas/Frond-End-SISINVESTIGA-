@@ -8,48 +8,87 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../../css/componentes/GestionProyectos/AddProjectView.css";
 
 const AddProjectView = () => {
-  const [nombre, setNombre] = useState("");
-  const [descripcion, setDescripcion] = useState("");
-  const [objetivos, setObjetivos] = useState("");
-  const [presupuesto, setPresupuesto] = useState(0);
-  const [fechaInicio, setFechaInicio] = useState(new Date());
-  const [fechaFin, setFechaFin] = useState(new Date());
-  const [hitos, setHitos] = useState([{ nombre: "", fecha: new Date() }]);
-  const [recursos, setRecursos] = useState([""]);
+  const [formData, setFormData] = useState({
+    nombre: "",
+    descripcion: "",
+    objetivos: "",
+    presupuesto: 0,
+    fechaInicio: new Date(),
+    fechaFin: new Date(),
+    hitos: [{ nombre: "", fecha: new Date() }],
+    recursos: [""],
+  });
+
   const navigate = useNavigate();
 
-  const handleAddHito = () => {
-    setHitos([...hitos, { nombre: "", fecha: new Date() }]);
+  // Manejo de cambios en el formulario
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
+  // Manejo de fechas
+  const handleDateChange = (name, date) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: date,
+    }));
+  };
+
+  // Agregar nuevo hito
+  const addHito = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      hitos: [...prevData.hitos, { nombre: "", fecha: new Date() }],
+    }));
+  };
+
+  // Manejo de cambios en hitos
   const handleHitoChange = (index, field, value) => {
-    const updatedHitos = hitos.map((hito, i) =>
-      i === index ? { ...hito, [field]: value } : hito
-    );
-    setHitos(updatedHitos);
+    setFormData((prevData) => ({
+      ...prevData,
+      hitos: prevData.hitos.map((hito, i) =>
+        i === index ? { ...hito, [field]: value } : hito
+      ),
+    }));
   };
 
-  const handleAddRecurso = () => {
-    setRecursos([...recursos, ""]);
+  // Agregar nuevo recurso
+  const addRecurso = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      recursos: [...prevData.recursos, ""],
+    }));
   };
 
+  // Manejo de cambios en recursos
   const handleRecursoChange = (index, value) => {
-    const updatedRecursos = recursos.map((recurso, i) =>
-      i === index ? value : recurso
-    );
-    setRecursos(updatedRecursos);
+    setFormData((prevData) => ({
+      ...prevData,
+      recursos: prevData.recursos.map((recurso, i) =>
+        i === index ? value : recurso
+      ),
+    }));
   };
 
+  // Envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Asegúrate de enviar las fechas correctamente en formato ISO
     const newProject = {
-      nombre,
-      descripcion,
-      objetivos,
-      presupuesto,
-      cronograma: { fechaInicio, fechaFin },
-      hitos,
-      recursos,
+      ...formData,
+      cronograma: {
+        fechaInicio: formData.fechaInicio.toISOString(), // Convertir la fecha a ISO
+        fechaFin: formData.fechaFin.toISOString(), // Convertir la fecha a ISO
+      },
+      hitos: formData.hitos.map((hito) => ({
+        nombre: hito.nombre,
+        fecha: hito.fecha.toISOString(), // Convertir cada fecha de hito a ISO
+      })),
     };
 
     try {
@@ -57,8 +96,10 @@ const AddProjectView = () => {
       AlertComponent.success("Proyecto agregado exitosamente");
       navigate("/proyectos");
     } catch (error) {
-      console.error("Error al agregar el proyecto", error);
-      AlertComponent.error("Error al agregar el proyecto");
+      const errorMessage =
+        error.response?.data?.error || "Error al agregar el proyecto.";
+      AlertComponent.error(errorMessage);
+      console.error("Error al agregar el proyecto:", error);
     }
   };
 
@@ -69,64 +110,79 @@ const AddProjectView = () => {
         <div className="container">
           <h2>Agregar Proyecto</h2>
           <form onSubmit={handleSubmit}>
+            {/* Nombre del proyecto */}
             <div className="form-group">
-              <label>Nombre del Proyecto</label>
+              <label htmlFor="nombre">Nombre del Proyecto</label>
               <input
                 type="text"
-                value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
+                id="nombre"
+                name="nombre"
+                value={formData.nombre}
+                onChange={handleChange}
                 required
               />
             </div>
 
+            {/* Descripción */}
             <div className="form-group">
-              <label>Descripción</label>
+              <label htmlFor="descripcion">Descripción</label>
               <textarea
-                value={descripcion}
-                onChange={(e) => setDescripcion(e.target.value)}
+                id="descripcion"
+                name="descripcion"
+                value={formData.descripcion}
+                onChange={handleChange}
                 required
               ></textarea>
             </div>
 
+            {/* Objetivos */}
             <div className="form-group">
-              <label>Objetivos</label>
+              <label htmlFor="objetivos">Objetivos</label>
               <textarea
-                value={objetivos}
-                onChange={(e) => setObjetivos(e.target.value)}
+                id="objetivos"
+                name="objetivos"
+                value={formData.objetivos}
+                onChange={handleChange}
               ></textarea>
             </div>
 
+            {/* Presupuesto */}
             <div className="form-group">
-              <label>Presupuesto</label>
+              <label htmlFor="presupuesto">Presupuesto</label>
               <input
                 type="number"
-                value={presupuesto}
-                onChange={(e) => setPresupuesto(e.target.value)}
+                id="presupuesto"
+                name="presupuesto"
+                value={formData.presupuesto}
+                onChange={handleChange}
                 required
               />
             </div>
 
+            {/* Fecha de inicio */}
             <div className="form-group">
               <label>Fecha de Inicio</label>
               <DatePicker
-                selected={fechaInicio}
-                onChange={(date) => setFechaInicio(date)}
+                selected={formData.fechaInicio}
+                onChange={(date) => handleDateChange("fechaInicio", date)}
                 required
               />
             </div>
 
+            {/* Fecha de fin */}
             <div className="form-group">
               <label>Fecha de Fin</label>
               <DatePicker
-                selected={fechaFin}
-                onChange={(date) => setFechaFin(date)}
+                selected={formData.fechaFin}
+                onChange={(date) => handleDateChange("fechaFin", date)}
                 required
               />
             </div>
 
+            {/* Hitos */}
             <div className="form-group">
               <label>Hitos</label>
-              {hitos.map((hito, index) => (
+              {formData.hitos.map((hito, index) => (
                 <div key={index} className="hito-group">
                   <input
                     type="text"
@@ -144,35 +200,34 @@ const AddProjectView = () => {
                   />
                 </div>
               ))}
-              <button
-                type="button"
-                className="add-hito-btn"
-                onClick={handleAddHito}
-              >
+              <button type="button" className="add-hito-btn" onClick={addHito}>
                 Añadir Hito
               </button>
             </div>
 
+            {/* Recursos */}
             <div className="form-group">
               <label>Recursos</label>
-              {recursos.map((recurso, index) => (
+              {formData.recursos.map((recurso, index) => (
                 <input
                   key={index}
                   type="text"
                   placeholder="Recurso"
                   value={recurso}
                   onChange={(e) => handleRecursoChange(index, e.target.value)}
+                  required
                 />
               ))}
               <button
                 type="button"
                 className="add-hito-btn"
-                onClick={handleAddRecurso}
+                onClick={addRecurso}
               >
                 Añadir Recurso
               </button>
             </div>
 
+            {/* Botón Guardar */}
             <button type="submit" className="save-btn">
               Guardar
             </button>
