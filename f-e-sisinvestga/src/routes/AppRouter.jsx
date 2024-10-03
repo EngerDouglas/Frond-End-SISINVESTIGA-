@@ -22,6 +22,8 @@ import ProjectDetails from '../views/Proyectos/ProjectDetails';
 import PublicationDetails from '../views/publicaciones/PublicationDetails';
 import AddProjectView from '../views/Investigadores/AddProjectView';
 import EditProjectView from '../views/Investigadores/EditProjectView';
+import AddPublicationView from '../views/Investigadores/AddPublicationView';
+import EditPublicationView from '../views/Investigadores/EditPublicationView';
 
 const AppRouter = () => {
 
@@ -87,6 +89,18 @@ const AppRouter = () => {
       <Route path='/publicaciones' element={
         <ProtectedRoute roles={['Investigador']}>
           <InvPublicationView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/publicaciones/agregar' element={
+        <ProtectedRoute roles={['Investigador', 'Administrador']}>
+          <AddPublicationView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/publicaciones/editar/:id' element={
+        <ProtectedRoute roles={['Investigador', 'Administrador']}>
+          <EditPublicationView />
         </ProtectedRoute>
       } />
 

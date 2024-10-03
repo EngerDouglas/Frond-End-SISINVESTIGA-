@@ -19,7 +19,7 @@ const InvProjectView = () => {
   useEffect(() => {
     const fetchProjectViews = async () => {
       try {
-        const data = await getUserData("projects", { page, limit: 10 });
+        const data = await getUserData("projects", { page, limit: 6 });
         if (data && data.data) {
           setProjects(data.data);
           setTotalPages(Math.ceil(data.total / data.limit));
