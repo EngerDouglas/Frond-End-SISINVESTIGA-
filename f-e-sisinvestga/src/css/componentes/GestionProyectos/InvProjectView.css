@@ -1,5 +1,5 @@
 .inv-project-view {
-  padding: 40px;
+  padding-top: 20px; /* Aumenta el espacio superior para evitar superposición */
   background-color: #f4f6f9;
   min-height: 100vh;
   display: flex;
@@ -7,7 +7,6 @@
   align-items: center;
   width: 100%;
 }
-
 /* Título principal */
 .inv-project-view h1 {
   font-size: 2.5rem;
@@ -53,9 +52,10 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  padding-bottom: 30px;
 }
 
-/* Estilo para los mensajes si no hay proyectos */
+/* Mensaje si no hay proyectos */
 .projects-list p {
   text-align: center;
   font-size: 1.2rem;

@@ -14,6 +14,7 @@ import {
   FaMoon,
   FaSun,
   FaTasks,
+  FaBars,
 } from "react-icons/fa";
 import logo from "../../assets/img/LogoUCSD.jpg"; // Asegúrate de que el logo esté en la ruta correcta
 import "../../css/componentes/GestionInvestigadores/NavInvestigator.css"; // Archivo CSS específico
@@ -23,13 +24,14 @@ const NavInvestigator = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   // Cerrar sesión
   const handleLogout = () => {
     try {
       dispatch(logoutUser()).then(() => {
-        navigate("/login"); // Redirige a login después de cerrar sesión
+        navigate("/login");
       });
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
@@ -41,20 +43,31 @@ const NavInvestigator = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Toggle menú móvil
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   // Alternar modo oscuro/claro
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
-    document.body.classList.toggle("dark-mode"); // Cambiar clase en el body
+    document.body.classList.toggle("dark-mode");
   };
 
   return (
     <nav className="nav-investigator">
       <div className="nav-investigator-logo">
-        <img src={logo} alt="Logo UCSD" className="nav-investigator-logo-img" />
+        <Link to="/invest">
+          <img
+            src={logo}
+            alt="Logo UCSD"
+            className="nav-investigator-logo-img"
+          />
+        </Link>
       </div>
 
       {/* Menú principal */}
-      <ul className="nav-investigator-list">
+      <ul className={`nav-investigator-list ${isMobileMenuOpen ? "open" : ""}`}>
         <li className="nav-investigator-item">
           <Link to="/proyectos" className="nav-investigator-link">
             <FaFolder /> Proyectos
@@ -76,6 +89,12 @@ const NavInvestigator = () => {
           </Link>
         </li>
       </ul>
+
+      {/* Botón para menú móvil */}
+      <FaBars
+        className="nav-investigator-mobile-menu-icon"
+        onClick={toggleMobileMenu}
+      />
 
       {/* Icono de notificaciones */}
       <div className="nav-investigator-notifications">
@@ -103,7 +122,7 @@ const NavInvestigator = () => {
           {isMenuOpen && (
             <ul className="nav-investigator-dropdown">
               <li className="nav-investigator-dropdown-item">
-                <Link to="/perfil" className="nav-investigator-dropdown-link">
+                <Link to="/perfil-investigador" className="nav-investigator-dropdown-link">
                   <FaCog /> Configurar Perfil
                 </Link>
               </li>

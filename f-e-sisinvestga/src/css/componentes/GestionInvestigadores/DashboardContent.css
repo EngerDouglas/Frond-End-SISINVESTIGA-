@@ -79,6 +79,11 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow-x: auto; /* Permitir desplazamiento horizontal en pantallas pequeñas */
+}
+
+.dashboard-recent-publications h2 {
+  text-align: center;
 }
 
 .dashboard-recent-publications h2, 
@@ -92,6 +97,7 @@
 .recent-requests-table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 600px; /* Ancho mínimo para evitar que las tablas se compriman demasiado */
 }
 
 .recent-publications-table th, 
@@ -144,5 +150,17 @@
   .chart-container {
     max-width: 100%;
     height: auto;
+  }
+
+  .dashboard-content {
+    padding-top: 20px; /* Menos espacio superior para pantallas pequeñas */
+  }
+
+  /* Asegurar que las tablas se mantengan responsive */
+  .recent-publications-table,
+  .recent-requests-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap; /* Evitar que el contenido de la tabla se ajuste en múltiples líneas */
   }
 }

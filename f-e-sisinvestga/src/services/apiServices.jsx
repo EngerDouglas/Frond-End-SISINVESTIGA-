@@ -183,6 +183,18 @@ export const putData = async (endpoint, id, body) => {
     throw error;
   }
 };
+//  -------------------------------- END ---------------------------- //
+
+// PUT a tus propios datos
+export const putSelfData = async (endpoint, body) => {
+  try {
+    const response = await api.put(`/${endpoint}/me`, body);
+    return response.data;
+  } catch (error) {
+    console.log('Error en PUT:', error);
+    throw error;
+  }
+};
 
 //  -------------------------------- END ---------------------------- //
 

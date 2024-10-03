@@ -10,7 +10,7 @@ import InvProjectView from '../views/Investigadores/InvProjectView';
 import InvPublicationView from '../views/Investigadores/InvPublicationView';
 import InvInformeView from '../views/Investigadores/InvInformeView';
 import InvRequestView from '../views/Investigadores/InvRequestView';
-import InvestigatorProfile from '../views/Investigadores/InvestigatorProfile';
+import InvProfileView from '../views/Investigadores/InvProfileView';
 import Unauthorized from '../views/Pages/Unauthorized';
 import NotFound from '../views/Pages/NotFound';
 import ProtectedRoute from '../Context/ProtectedRoute';
@@ -102,9 +102,9 @@ const AppRouter = () => {
         </ProtectedRoute>
       } />
 
-      <Route path='/perfil' element={
+      <Route path='/perfil-investigador' element={
         <ProtectedRoute roles={['Investigador']}>
-          <InvestigatorProfile />
+          <InvProfileView />
         </ProtectedRoute>
       } />
 

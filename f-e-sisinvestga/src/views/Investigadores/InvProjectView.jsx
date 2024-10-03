@@ -56,7 +56,14 @@ const InvProjectView = () => {
                 setProjects(projects.filter((project) => project._id !== projectId));
               })
               .catch((error) => {
-                AlertComponent.error("Error al eliminar el proyecto");
+                if (error.response && error.response.data) {
+                  const errorMessages = error.response.data.errors || [
+                    error.response.data.error,
+                  ];
+                  errorMessages.forEach((err) => AlertComponent.error(err.msg || err));
+                } else {
+                  AlertComponent.error("Error al eliminar el proyecto");
+                }
               });
           }
         });
@@ -74,7 +81,7 @@ const InvProjectView = () => {
   }
 
   return (
-    <div>
+    <>
       <NavInvestigator />
       <div className="inv-project-view">
         <h1>Mis Proyectos</h1>
@@ -107,7 +114,7 @@ const InvProjectView = () => {
           disabledNext={page === totalPages}
         />
       </div>
-    </div>
+    </>
   );
 };
 
