@@ -1,107 +1,110 @@
+/* Barra de navegación */
 .nav-admin-bar {
+  background: linear-gradient(to bottom, #ffffff, #f0f0f0);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #218838;
-  padding: 0.5rem 1rem;
+  padding: 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   position: relative;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  transition: all 0.8s ease-in-out;
+  overflow: visible;
+  margin: 50px auto;
+  z-index: 1000;
+}
+
+.nav-admin-bar.active {
+  width: 90%;
+  height: 60px;
+  padding: 15px 30px;
+  border-radius: 50px;
+  transition: width 0.8s ease, height 0.6s ease, border-radius 0.6s ease;
 }
 
 .logo-admin {
-  font-size: 1.5rem;
-  color: white;
-}
-
-.menu-icon {
-  display: none;
-  cursor: pointer;
-}
-
-.menu-icon i {
-  color: white;
-  font-size: 1.5rem;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #218838; /* Color verde del logo */
 }
 
 .nav-admin-list {
+  list-style: none;
   display: flex;
-  list-style: none;
+  gap: 20px;
+  justify-content: flex-end;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
 }
 
-.nav-admin-item {
-  margin-left: 1rem;
+.nav-admin-bar.active .nav-admin-list {
+  opacity: 1;
 }
 
-.nav-admin-link {
-  color: white;
-  text-decoration: none;
-  padding: 0.5rem;
-}
-
-.nav-admin-link:hover {
-  background-color: white;
-  color: #218838;
-  border-radius: 5px;
-}
-
-.admin-btn-logout, .admin-btn-back, .admin-btn-dropdown {
-  background: none;
+/* Estilos de botones */
+.admin-btn {
+  background-color: transparent; /* Sin color de fondo */
+  color: #333; /* Texto oscuro */
   border: none;
-  color: white;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 1em;
   cursor: pointer;
-  padding: 0.5rem;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  display: flex;
+  align-items: center;
 }
 
-.admin-btn-logout:hover, .admin-btn-back:hover, .admin-btn-dropdown:hover {
-  background-color: white;
-  color: #218838;
-  border-radius: 5px;
+.admin-btn i {
+  margin-right: 8px;
 }
 
+.admin-btn:hover {
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Sombra en hover */
+  transform: translateY(-5px); /* Efecto de levantamiento */
+}
+
+/* Menú desplegable */
 .dropdown-menu {
-  display: none;
   position: absolute;
-  top: 100%;
-  background-color: white;
-  color: #218838;
-  list-style: none;
-  padding: 0.5rem;
-  border-radius: 5px;
+  top: 60px;
+  right: 0;
+  background-color: #fff;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.dropdown-menu.show {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .dropdown-item {
-  padding: 0.5rem 1rem;
+  padding: 10px 15px;
 }
 
-.dropdown-item .nav-admin-link {
-  color: #218838;
+.dropdown-item a {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-.dropdown:hover .dropdown-menu {
-  display: block;
+.dropdown-item a:hover {
+  color: #555;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .nav-admin-list {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    background-color: #218838;
-    position: absolute;
-    top: 100%;
-    left: 0;
-  }
-
-  .nav-admin-list.active {
-    display: flex;
-  }
-
-  .menu-icon {
-    display: block;
-  }
-
-  .nav-admin-item {
-    margin-left: 0;
-    text-align: center;
-  }
+/* Alineación de botones */
+.nav-admin-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

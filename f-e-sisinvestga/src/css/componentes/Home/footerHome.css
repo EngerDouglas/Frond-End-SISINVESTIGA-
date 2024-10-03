@@ -1,0 +1,84 @@
+/* Contenedor del footer */
+.footer-container {
+    background-color: gray;
+    color: white;
+    padding: 40px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Contenido principal del footer */
+.footer-content {
+    display: flex;
+    justify-content: space-between; /* Alinea las secciones a los lados */
+    align-items: flex-start; /* Alinea verticalmente arriba */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    flex-wrap: wrap; /* Reorganiza en pantallas pequeñas */
+}
+
+/* Sección del footer */
+.footer-section {
+    flex: 1;
+    margin-bottom: 20px;
+    min-width: 250px;
+}
+
+/* Sección de contacto */
+.contact {
+    flex: 1;
+    margin-right: 20px;
+}
+
+/* Títulos de las secciones */
+.footer-section h3 {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+/* Sección de contacto */
+.footer-section p {
+    margin-bottom: 10px;
+}
+
+/* Estilo para los iconos */
+.footer-section i {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+/* Estilo del mapa */
+.footer-map {
+    flex: 1; /* Toma el espacio restante */
+    display: flex;
+    justify-content: flex-end; /* Mueve el mapa hacia la derecha */
+    margin: 20px 0;
+}
+
+.footer-map iframe {
+    width: 100%;
+    max-width: 350px; /* Ancho máximo para ajustar el mapa */
+    height: 250px;
+    border: 0;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: -220px;
+    margin-right: 180px;
+}
+
+.footer-map iframe:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Pie de página inferior */
+.footer-bottom {
+    background-color: #a7a7a7;
+    padding: 10px 0;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 20px;
+}

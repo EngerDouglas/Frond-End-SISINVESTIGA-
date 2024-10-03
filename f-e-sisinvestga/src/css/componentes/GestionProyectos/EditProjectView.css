@@ -1,0 +1,138 @@
+.edit-project-view-container {
+  padding-top: 20px; /* Separación del NavInvestigator */
+  padding-bottom: 20px;
+  background-color: #f4f6f9;
+  min-height: 100vh;
+}
+
+/* Ajustes para el contenedor del formulario */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Título */
+.container h2 {
+  font-size: 2.5rem;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Ajustes para el formulario */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Agrupación de campos en columnas */
+.form-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.form-group label {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Inputs y selects */
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #4caf50;
+  outline: none;
+}
+
+/* Estilo para la sección de hitos */
+.hito-group {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Botón para añadir hitos */
+.add-hito-btn {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-hito-btn:hover {
+  background-color: #45a049;
+}
+
+/* Botón Guardar */
+.save-btn {
+  padding: 15px 30px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  align-self: center;
+}
+
+.save-btn:hover {
+  background-color: #45a049;
+  transform: translateY(-3px);
+}
+
+/* Responsivo para pantallas pequeñas */
+@media (max-width: 768px) {
+  .form-group {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .save-btn {
+    width: 100%;
+  }
+
+  .hito-group {
+    flex-direction: column;
+  }
+}
+
+/* Ajustes para pantallas muy pequeñas */
+@media (max-width: 576px) {
+  .container {
+    padding: 20px;
+  }
+
+  .form-group {
+    gap: 15px;
+  }
+
+  .save-btn {
+    padding: 12px;
+  }
+}

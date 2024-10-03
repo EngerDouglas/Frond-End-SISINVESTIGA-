@@ -148,9 +148,9 @@ export const searchData = async (endpoint, params) => {
 };
 
 // Obtener recursos personalizados (ej: obtener publicaciones del usuario)
-export const getUserData = async (endpoint, userId) => {
+export const getUserData = async (endpoint, params) => {
   try {
-    const response = await api.get(`/${endpoint}/me`);
+    const response = await api.get(`/${endpoint}/me`, { params });
     return response.data;
   } catch (error) {
     console.log('Error en GET user data:', error);
@@ -177,6 +177,18 @@ export const postData = async (endpoint, body) => {
 export const putData = async (endpoint, id, body) => {
   try {
     const response = await api.put(`/${endpoint}/${id}`, body);
+    return response.data;
+  } catch (error) {
+    console.log('Error en PUT:', error);
+    throw error;
+  }
+};
+//  -------------------------------- END ---------------------------- //
+
+// PUT a tus propios datos
+export const putSelfData = async (endpoint, body) => {
+  try {
+    const response = await api.put(`/${endpoint}/me`, body);
     return response.data;
   } catch (error) {
     console.log('Error en PUT:', error);

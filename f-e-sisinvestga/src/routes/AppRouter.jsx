@@ -3,17 +3,27 @@ import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router';
 import Home from '../views/Home/Home';
 import LoginPage from '../views/Seguridad/LoginPage';
+import RegisterPage from '../views/Seguridad/RegisterPage';
 import AdminDashboard from '../views/Admin/AdminDashboard';
 import InvestDashboard from '../views/Investigadores/InvestDashboard';
+import InvProjectView from '../views/Investigadores/InvProjectView';
+import InvPublicationView from '../views/Investigadores/InvPublicationView';
+import InvInformeView from '../views/Investigadores/InvInformeView';
+import InvRequestView from '../views/Investigadores/InvRequestView';
+import InvProfileView from '../views/Investigadores/InvProfileView';
 import Unauthorized from '../views/Pages/Unauthorized';
 import NotFound from '../views/Pages/NotFound';
 import ProtectedRoute from '../Context/ProtectedRoute';
 import { selectSessionLoaded } from '../features/auth/authSlice';
-import AgregarProyecto from '../views/Proyectos/AgregarProyecto';
 import ListaProyectos from '../views/Proyectos/ListaProyectos';
-import RegisterPage from '../views/Seguridad/RegisterPage';
 import GestionInvestigadores from '../views/Admin/GestionInvestigadores/GestionInvestigadores'
 import Publicaciones from "../views/publicaciones/publicacionesViews"
+import ProjectDetails from '../views/Proyectos/ProjectDetails';
+import PublicationDetails from '../views/publicaciones/PublicationDetails';
+import AddProjectView from '../views/Investigadores/AddProjectView';
+import EditProjectView from '../views/Investigadores/EditProjectView';
+import AddPublicationView from '../views/Investigadores/AddPublicationView';
+import EditPublicationView from '../views/Investigadores/EditPublicationView';
 
 const AppRouter = () => {
 
@@ -45,9 +55,11 @@ const AppRouter = () => {
     <Routes>
       {/* Rutas Publicas */}
       <Route path='/login' element={<LoginPage />} />
-      <Route path='/registro' element={<RegisterPage/>} />
+      <Route path='/register' element={<RegisterPage />} />
       {/* Rutas Defecto de la pagina */}
       <Route path='/' element={getHome()} />
+      <Route path='proyectos/:id' element={<ProjectDetails />} />
+      <Route path='publicaciones/:id' element={<PublicationDetails />} />
       
       {/* Rutas Protegidas para Investigador */}
       <Route path='/invest' element={ 
@@ -56,6 +68,61 @@ const AppRouter = () => {
         </ProtectedRoute>
       } />
 
+      <Route path='/proyectos' element={
+        <ProtectedRoute roles={['Investigador']}>
+          <InvProjectView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/proyectos/agregar' element={
+        <ProtectedRoute roles={['Investigador', 'Administrador']}>
+          <AddProjectView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/proyectos/editar/:id' element={
+        <ProtectedRoute roles={['Investigador', 'Administrador']}>
+          <EditProjectView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/publicaciones' element={
+        <ProtectedRoute roles={['Investigador']}>
+          <InvPublicationView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/publicaciones/agregar' element={
+        <ProtectedRoute roles={['Investigador', 'Administrador']}>
+          <AddPublicationView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/publicaciones/editar/:id' element={
+        <ProtectedRoute roles={['Investigador', 'Administrador']}>
+          <EditPublicationView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/informes' element={
+        <ProtectedRoute roles={['Investigador']}>
+          <InvInformeView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/solicitudes' element={
+        <ProtectedRoute roles={['Investigador']}>
+          <InvRequestView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/perfil-investigador' element={
+        <ProtectedRoute roles={['Investigador']}>
+          <InvProfileView />
+        </ProtectedRoute>
+      } />
+
+
       {/* Rutas Protegidas para Administrador */}
       <Route path='/admin' element={ 
         <ProtectedRoute roles={['Administrador']}>
@@ -63,29 +130,18 @@ const AppRouter = () => {
         </ProtectedRoute>
       } />
 
-      {/* Rutas Protegidas para Administrador */}
       <Route path='/gestionInvestigadores' element={ 
         <ProtectedRoute roles={['Administrador']}>
           <GestionInvestigadores />
         </ProtectedRoute>
       } />
 
-
-      {/* Rutas Protegidas para Administrador */}
-      <Route path='/agregarproyecto' element={ 
-        <ProtectedRoute roles={['Administrador', 'Investigador']}>
-          <AgregarProyecto />
-        </ProtectedRoute>
-      } />
-
-       {/* Rutas Protegidas para Administrador */}
-       <Route path='/publicaciones' element={ 
+      <Route path='/publicaciones' element={ 
         <ProtectedRoute roles={['Administrador']}>
           <Publicaciones />
         </ProtectedRoute>
       } />
 
-      {/* Rutas Protegidas para Administrador */}
       <Route path='/listarproyectos' element={ 
         <ProtectedRoute roles={['Administrador', 'Investigador']}>
           <ListaProyectos />

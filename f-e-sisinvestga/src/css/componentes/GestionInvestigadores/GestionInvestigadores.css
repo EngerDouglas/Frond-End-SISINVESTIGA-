@@ -1,5 +1,4 @@
 .investigadores-container {
-  background: linear-gradient(135deg, #218838 0%, #5bc0be 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,7 +7,7 @@
 }
 
 .titulo {
-  color: #ffffff;
+  color: black;
   font-size: 2.5em;
   margin-bottom: 20px;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
@@ -26,7 +25,7 @@
 }
 
 .invest-search-bar:focus {
-  border-color: #ffffff;
+  border-color: #218838;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 

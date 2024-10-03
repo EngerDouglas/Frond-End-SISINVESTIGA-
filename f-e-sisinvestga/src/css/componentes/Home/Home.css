@@ -1,3 +1,4 @@
+/* Contenedor principal */
 .home-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -16,69 +17,76 @@
   border: 1px solid #ccc;
   border-radius: 25px;
   font-size: 16px;
-  transition: border-color 0.3s;
+  transition: width 0.3s ease;
 }
 
 .home-search-bar:focus {
-  border-color: #0077b6;
-  outline: none;
+  width: 70%;
+}
+
+/* Carrusel */
+.carousel .carousel-item {
+  position: relative;
+}
+
+.carousel .carousel-item img {
+  max-height: 400px;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* Agregar gradiente sobre la imagen para crear el efecto de desvanecimiento */
+.carousel .carousel-item img {
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
 }
 
 /* Pestañas */
 .home-tabs {
   display: flex;
   justify-content: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .home-tab {
-  background-color: #f1f1f1;
-  border: none;
-  padding: 12px 25px;
-  margin: 0 5px;
+  padding: 10px 20px;
   cursor: pointer;
-  font-size: 16px;
-  border-radius: 25px;
-  transition: background-color 0.3s, color 0.3s;
+  border: none;
+  background-color: #f8f9fa;
+  transition: background-color 0.3s ease;
 }
 
 .home-tab.active {
-  background-color: #0077b6;
-  color: #fff;
-}
-
-.home-tab:hover {
-  background-color: #ddd;
-}
-
-/* Contenedor de tarjetas */
-.cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  background-color: #218838;
+  color: white;
 }
 
 /* Tarjetas */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
 .project-card,
 .publication-card {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  width: 300px;
-  margin: 15px;
-  border-radius: 8px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
+  transition: transform 0.3s ease;
 }
 
 .project-card:hover,
 .publication-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-10px);
 }
 
 .card-image img {
   width: 100%;
-  height: 180px;
+  height: 150px;
   object-fit: cover;
 }
 
@@ -86,78 +94,34 @@
   padding: 15px;
 }
 
-.card-content h3 {
-  font-size: 1.2em;
-  color: #0077b6;
-  margin-bottom: 10px;
-}
-
-.card-content p {
-  color: #555;
-  margin-bottom: 10px;
-}
-
 .card-button {
-  background-color: #0077b6;
-  color: #fff;
+  background-color: #218838;
+  color: white;
   border: none;
-  padding: 8px 15px;
-  border-radius: 20px;
+  padding: 10px;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 0.9em;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
 }
 
 .card-button:hover {
-  background-color: #005f87;
+  background-color: #196f2e;
 }
 
-.filters-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
+/* Contenedor del carrusel */
+.carousel-container {
+  width: 100vw; /* Ocupa todo el ancho de la ventana */
+  margin-left: calc(-50vw + 50%); /* Centra el carrusel */
 }
 
-.filter-group {
-  margin: 0 10px;
+.carousel img {
+  width: 100vw; /* Asegura que las imágenes ocupen todo el ancho de la ventana */
+  height: auto; /* Mantiene la proporción de la imagen */
 }
 
-.filter-group label {
-  margin-right: 5px;
-  font-weight: bold;
-}
-
-.filter-group select {
-  padding: 6px 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-/* Ajustes para dispositivos móviles */
+/* Ajustes adicionales para responsividad */
 @media (max-width: 768px) {
-  .filters-container {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .filter-group {
-    margin: 10px 0;
-  }
-}
-
-/* Responsividad */
-@media (max-width: 768px) {
-  .home-search-bar {
-    width: 80%;
-  }
-
-  .home-tab {
-    padding: 10px 20px;
-    font-size: 14px;
-  }
-
-  .project-card,
-  .publication-card {
-    width: 90%;
+  .carousel img {
+    height: auto; /* Mantener las proporciones correctas en pantallas pequeñas */
   }
 }

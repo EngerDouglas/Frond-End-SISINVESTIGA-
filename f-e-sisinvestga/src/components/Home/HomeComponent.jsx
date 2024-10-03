@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Nav from "../Comunes/Nav";
 import { getDataParams } from "../../services/apiServices";
 import "../../css/componentes/Home/Home.css";
+import img1 from "../../img/invest.jpg";
+import img2 from "../../img/invest2.jpg";
+import img3 from "../../img/invest3.jpg";
+import { useDebounce } from "use-debounce";
+import { Carousel } from "react-bootstrap";
 
 const HomeComponent = () => {
   const [projects, setProjectData] = useState([]);
@@ -11,6 +17,7 @@ const HomeComponent = () => {
   const [selectedProjectState, setSelectedProjectState] = useState("");
   const [selectedPublicationTipo, setSelectedPublicationTipo] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm] = useDebounce(searchTerm, 400);
   const [activeTab, setActiveTab] = useState("Proyectos");
   const [loading, setLoading] = useState(true);
 
@@ -23,16 +30,12 @@ const HomeComponent = () => {
           if (selectedProjectState) {
             projectParams.estado = selectedProjectState;
           }
-          if (searchTerm) {
-            projectParams.nombre = searchTerm;
+          if (debouncedSearchTerm) {
+            projectParams.nombre = debouncedSearchTerm;
           }
-          const fetchedProjects = await getDataParams(
-            "projects",
-            projectParams
-          );
+          const fetchedProjects = await getDataParams("projects", projectParams);
           setProjectData(fetchedProjects);
 
-          // Extraer los estados únicos de los proyectos
           const uniqueStates = [
             ...new Set(fetchedProjects.map((project) => project.estado)),
           ];
@@ -42,8 +45,8 @@ const HomeComponent = () => {
           if (selectedPublicationTipo) {
             publicationParams.tipoPublicacion = selectedPublicationTipo;
           }
-          if (searchTerm) {
-            publicationParams.titulo = searchTerm;
+          if (debouncedSearchTerm) {
+            publicationParams.titulo = debouncedSearchTerm;
           }
 
           const fetchedPublications = await getDataParams(
@@ -52,11 +55,8 @@ const HomeComponent = () => {
           );
           setPublicationData(fetchedPublications);
 
-          // Extraer los tipos únicos de publicaciones
           const uniqueTypes = [
-            ...new Set(
-              fetchedPublications.map((pub) => pub.tipoPublicacion)
-            ),
+            ...new Set(fetchedPublications.map((pub) => pub.tipoPublicacion)),
           ];
           setPublicationTypes(uniqueTypes);
         }
@@ -68,7 +68,7 @@ const HomeComponent = () => {
     };
     fetchData();
   }, [
-    searchTerm,
+    debouncedSearchTerm,
     selectedProjectState,
     selectedPublicationTipo,
     activeTab,
@@ -78,17 +78,31 @@ const HomeComponent = () => {
     setSearchTerm(e.target.value);
   };
 
-  if (loading) {
-    return (
-      <div>
-        <p>Cargando...</p>
-      </div>
-    );
-  }
-
   return (
     <div>
       <Nav />
+      
+      {/* Carrusel de lado a lado */}
+      <div className="carousel-container">
+        <Carousel className="mb-4">
+          <Carousel.Item interval={3000}>
+            <img className="d-block w-100" src={img1} alt="First slide" />
+            <Carousel.Caption>
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item interval={3000}>
+            <img className="d-block w-100" src={img2} alt="Second slide" />
+            <Carousel.Caption>
+            </Carousel.Caption>
+          </Carousel.Item>
+          <Carousel.Item interval={3000}>
+            <img className="d-block w-100" src={img3} alt="Third slide" />
+            <Carousel.Caption>
+            </Carousel.Caption>
+          </Carousel.Item>
+        </Carousel>
+      </div>
+
       <div className="home-container">
         {/* Barra de búsqueda */}
         <div className="home-search-container">
@@ -161,16 +175,16 @@ const HomeComponent = () => {
         {/* Contenido */}
         {activeTab === "Proyectos" && (
           <div className="projects-section">
-            {projects.length > 0 ? (
+            {loading ? (
+              <p>Cargando proyectos...</p>
+            ) : projects.length > 0 ? (
               <div className="cards-container">
                 {projects.map((project) => (
                   <div key={project._id} className="project-card">
-                    {/* Imagen del proyecto */}
                     <div className="card-image">
                       <img
                         src={
-                          project.imagen ||
-                          "https://via.placeholder.com/300x200"
+                          project.imagen || "https://via.placeholder.com/300x200"
                         }
                         alt={project.nombre}
                       />
@@ -181,8 +195,12 @@ const HomeComponent = () => {
                       <p>
                         <strong>Estado:</strong> {project.estado}
                       </p>
-                      {/* Botón "Ver más" */}
-                      <button className="card-button">Ver más</button>
+                      <Link
+                        to={`/proyectos/${project._id}`}
+                        className="card-button"
+                      >
+                        Ver más
+                      </Link>
                     </div>
                   </div>
                 ))}
@@ -195,11 +213,12 @@ const HomeComponent = () => {
 
         {activeTab === "Publicaciones" && (
           <div className="publications-section">
-            {publications.length > 0 ? (
+            {loading ? (
+              <p>Cargando publicaciones...</p>
+            ) : publications.length > 0 ? (
               <div className="cards-container">
                 {publications.map((publication) => (
                   <div key={publication._id} className="publication-card">
-                    {/* Imagen de la publicación */}
                     <div className="card-image">
                       <img
                         src={
@@ -215,8 +234,12 @@ const HomeComponent = () => {
                       <p>
                         <strong>Tipo:</strong> {publication.tipoPublicacion}
                       </p>
-                      {/* Botón "Ver más" */}
-                      <button className="card-button">Ver más</button>
+                      <Link
+                        to={`/publicaciones/${publication._id}`}
+                        className="card-button"
+                      >
+                        Ver más
+                      </Link>
                     </div>
                   </div>
                 ))}

@@ -31,7 +31,6 @@ const Login = () => {
         `Bienvenido, ${user.nombre} ${user.apellido}. Rol: ${role}`
       );
 
-      // Redirigir según el rol
       switch (role) {
         case "Administrador":
           navigate("/admin");
@@ -43,12 +42,11 @@ const Login = () => {
           navigate("/");
       }
     }
-  }, [user, role, error, navigate]); // Asegúrate de incluir navigate en la dependencia
+  }, [user, role, error, navigate]); 
 
   return (
     <div className="login-page">
       <div className="login-left">
-        {/* Imagen de fondo */}
         <img
           src={backgroundStudy}
           alt="Background"
@@ -84,7 +82,6 @@ const Login = () => {
               {status === "loading" ? "Iniciando..." : "Iniciar Sesión"}
             </button>
 
-            {/* Botón para recuperar contraseña */}
             <button
               type="button"
               className="forgot-password-btn"
@@ -108,11 +105,10 @@ const Login = () => {
           </form>
           <div className="signup-option">
             <span>Don't have an account?</span>{" "}
-            <Link to="/registro" className="signup-link">
+            <Link to="/register" className="signup-link">
               Sign up
             </Link>
           </div>
-          {/* Pie de página */}
           <footer className="footer">
             © 2024 Universidad Católica Santo Domingo - Todos los Derechos
             Reservados
