@@ -7,11 +7,26 @@
 }
 
 .name {
-  color: white;
-  justify-content: center;
+  font-family: 'Poppins', sans-serif; /* Tipografía moderna y limpia */
+  font-size: 3.2rem; /* Tamaño grande pero ajustado */
+  font-weight: 500; /* Peso medio para darle cuerpo */
+  color: #6c757d; /* Un gris neutro que armoniza con la paleta general */
   display: flex;
+  justify-content: center;
   margin-bottom: 40px;
+
+  /* Efecto de difuminado sutil */
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), rgba(108, 117, 125, 1)); /* Degradado suave de blanco a gris oscuro */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-fill-color: transparent;
+  
+  /* Sombra sutil para darle profundidad */
+  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra difuminada muy suave */
 }
+
+
+
 
 .dashboard-title {
   text-align: center;

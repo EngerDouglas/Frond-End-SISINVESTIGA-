@@ -76,15 +76,14 @@ const AdminDashboard = () => {
 
           <div className="dashboard-card">
             <h2><i className="bi bi-bell"></i> Solicitudes</h2>
-            <p>Solicitud para agregar investigadores a proyectos</p>
+            <p>Solicitud para agregar investigadores a proyectos.</p>
             <button
-              onClick={() => handleNavigation("/publicaciones")}
+              onClick={() => handleNavigation("/solicitudes")}
               className="admin-btn-card"
             >
-              <i className="bi bi-arrow-right"></i> Ir a Publicaciones
+              <i className="bi bi-arrow-right"></i> Ir a Solicitudes
             </button>
           </div>
-
 
           <div className="dashboard-card">
             <h2><i className="bi bi-file-earmark-bar-graph"></i> Informes</h2>
@@ -96,6 +95,19 @@ const AdminDashboard = () => {
               <i className="bi bi-arrow-right"></i> Ir a Informes
             </button> 
           </div>
+
+          {/* Nueva carta de Configuración de Perfil */}
+          <div className="dashboard-card">
+            <h2><i className="bi bi-gear"></i> Configuración de Perfil</h2>
+            <p>Administrar y actualizar la configuración del perfil.</p>
+            <button
+              onClick={() => handleNavigation("/configuracion-perfil")}
+              className="admin-btn-card"
+            >
+              <i className="bi bi-arrow-right"></i> Ir a Configuración
+            </button>
+          </div>
+          
         </div>
       </div>
     </div>
