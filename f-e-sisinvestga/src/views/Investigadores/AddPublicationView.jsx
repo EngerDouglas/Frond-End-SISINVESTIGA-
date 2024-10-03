@@ -8,15 +8,17 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../../css/componentes/Publicaciones/AddPublicationView.css";
 
 const AddPublicationView = () => {
-  const [titulo, setTitulo] = useState("");
-  const [fecha, setFecha] = useState(new Date());
-  const [proyecto, setProyecto] = useState("");
-  const [revista, setRevista] = useState("");
-  const [resumen, setResumen] = useState("");
-  const [palabrasClave, setPalabrasClave] = useState("");
-  const [tipoPublicacion, setTipoPublicacion] = useState("");
-  const [idioma, setIdioma] = useState("Español");
-  const [anexos, setAnexos] = useState("");
+  const [formData, setFormData] = useState({
+    titulo: "",
+    fecha: new Date(),
+    proyecto: "",
+    revista: "",
+    resumen: "",
+    palabrasClave: "",
+    tipoPublicacion: "",
+    idioma: "Español",
+    anexos: "",
+  });
   const [proyectos, setProyectos] = useState([]); // Proyectos obtenidos del usuario
   const [tiposPublicacion, setTiposPublicacion] = useState([]); // Tipos de publicación
   const navigate = useNavigate();
@@ -26,32 +28,43 @@ const AddPublicationView = () => {
     const fetchData = async () => {
       try {
         // Obtener proyectos asociados al usuario
-        const proyectosData = await getUserData("users");
+        const proyectosData = await getUserData("projects");
         setProyectos(proyectosData.data || []);
 
         // Obtener los tipos de publicación desde el backend
         const tiposData = await getUserData("publications"); // Ajusta este endpoint según tu API
         setTiposPublicacion(tiposData.data || []);
+        setTiposPublicacion(tiposData.tiposPublicacion || []);
       } catch (error) {
         AlertComponent.error("Error al cargar los datos del formulario");
+        console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
   }, []);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+
+  const handleDateChange = (date) => {
+    setFormData(prevData => ({
+      ...prevData,
+      fecha: date
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newPublication = {
-      titulo,
-      fecha,
-      proyecto,
-      revista,
-      resumen,
-      palabrasClave: palabrasClave.split(","),
-      tipoPublicacion,
-      idioma,
-      anexos: anexos.split(","),
+      ...formData,
+      palabrasClave: formData.palabrasClave.split(",").map(palabra => palabra.trim()),
+      anexos: formData.anexos.split(",").map(anexo => anexo.trim()),
     };
 
     try {
@@ -73,11 +86,13 @@ const AddPublicationView = () => {
           <h2>Agregar Publicación</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label>Título de la Publicación</label>
+              <label htmlFor="titulo">Título de la Publicación</label>
               <input
                 type="text"
-                value={titulo}
-                onChange={(e) => setTitulo(e.target.value)}
+                id="titulo"
+                name="titulo"
+                value={formData.titulo}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -85,22 +100,24 @@ const AddPublicationView = () => {
             <div className="form-group">
               <label>Fecha de Publicación</label>
               <DatePicker
-                selected={fecha}
-                onChange={(date) => setFecha(date)}
+                selected={formData.fecha}
+                onChange={handleDateChange}
                 required
               />
             </div>
 
             <div className="form-group">
-              <label>Proyecto Asociado</label>
+              <label htmlFor="proyecto">Proyecto Asociado</label>
               <select
-                value={proyecto}
-                onChange={(e) => setProyecto(e.target.value)}
+                id="proyecto"
+                name="proyecto"
+                value={formData.proyecto}
+                onChange={handleChange}
                 required
               >
                 <option value="">Seleccionar Proyecto</option>
-                {proyectos.map((proyecto, index) => (
-                  <option key={index} value={proyecto.nombre}>
+                {proyectos.map((proyecto) => (
+                  <option key={proyecto._id} value={proyecto._id}>
                     {proyecto.nombre}
                   </option>
                 ))}
@@ -108,43 +125,51 @@ const AddPublicationView = () => {
             </div>
 
             <div className="form-group">
-              <label>Revista</label>
+              <label htmlFor="revista">Revista</label>
               <input
                 type="text"
-                value={revista}
-                onChange={(e) => setRevista(e.target.value)}
+                id="revista"
+                name="revista"
+                value={formData.revista}
+                onChange={handleChange}
                 required
               />
             </div>
 
             <div className="form-group">
-              <label>Resumen</label>
+              <label htmlFor="resumen">Resumen</label>
               <textarea
-                value={resumen}
-                onChange={(e) => setResumen(e.target.value)}
+                id="resumen"
+                name="resumen"
+                value={formData.resumen}
+                onChange={handleChange}
               ></textarea>
             </div>
 
             <div className="form-group">
-              <label>Palabras Clave (separadas por coma)</label>
+              <label htmlFor="palabrasClave">Palabras Clave (separadas por coma)</label>
               <input
                 type="text"
-                value={palabrasClave}
-                onChange={(e) => setPalabrasClave(e.target.value)}
+                id="palabrasClave"
+                name="palabrasClave"
+                value={formData.palabrasClave}
+                onChange={handleChange}
               />
             </div>
 
             <div className="form-group">
-              <label>Tipo de Publicación</label>
+              <label htmlFor="tipoPublicacion">Tipo de Publicación</label>
               <select
-                value={tipoPublicacion}
-                onChange={(e) => setTipoPublicacion(e.target.value)}
+                id="tipoPublicacion"
+                name="tipoPublicacion"
+                value={formData.tipoPublicacion}
+                onChange={handleChange}
                 required
               >
                 <option value="">Seleccionar Tipo de Publicación</option>
-                {tiposPublicacion.map((tipo, index) => (
-                  <option key={index} value={tipo.tipoPublicacion}>
-                    {tipo.tipoPublicacion}
+                {tiposPublicacion.map((tipo) => (
+                  <option key={tipo} value={tipo}>
+                    {tipo}
                     {/* Asegúrate de que `tipo.nombre` sea una cadena */}
                   </option>
                 ))}
@@ -152,21 +177,25 @@ const AddPublicationView = () => {
             </div>
 
             <div className="form-group">
-              <label>Idioma</label>
+              <label htmlFor="idioma">Idioma</label>
               <input
                 type="text"
-                value={idioma}
-                onChange={(e) => setIdioma(e.target.value)}
+                id="idioma"
+                name="idioma"
+                value={formData.idioma}
+                onChange={handleChange}
                 required
               />
             </div>
 
             <div className="form-group">
-              <label>Anexos (URLs separadas por coma)</label>
+              <label htmlFor="anexos">Anexos (URLs separadas por coma)</label>
               <input
                 type="text"
-                value={anexos}
-                onChange={(e) => setAnexos(e.target.value)}
+                id="anexos"
+                name="anexos"
+                value={formData.anexos}
+                onChange={handleChange}
               />
             </div>
 
