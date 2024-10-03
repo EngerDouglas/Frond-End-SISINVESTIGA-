@@ -1,9 +1,221 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import { getUserData, putData } from "../../services/apiServices";
+import NavInvestigator from "../../components/Comunes/NavInvestigator";
+import AlertComponent from "../../components/Comunes/AlertComponent";
+import "react-datepicker/dist/react-datepicker.css";
+import "../../css/componentes/Publicaciones/EditPublicationView.css";
 
 const EditPublicationView = () => {
-  return (
-    <div>EditPublicationView</div>
-  )
-}
+  const { id } = useParams();
+  const [formData, setFormData] = useState({
+    titulo: "",
+    fecha: new Date(),
+    proyecto: "",
+    revista: "",
+    resumen: "",
+    palabrasClave: "",
+    tipoPublicacion: "",
+    idioma: "Español",
+    anexos: "",
+  });
 
-export default EditPublicationView
+  const [proyectoNombre, setProyectoNombre] = useState("");
+  const [tiposPublicacion, setTiposPublicacion] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+
+        const userPublicationsData = await getUserData("publications");
+        setTiposPublicacion(userPublicationsData.tiposPublicacion || []);
+
+        // Cargar la publicación a editar
+        const publicationData = userPublicationsData.data.find(
+          (pub) => pub._id === id
+        );
+        if (publicationData) {
+          setFormData({
+            titulo: publicationData.titulo,
+            fecha: new Date(publicationData.fecha),
+            proyecto: publicationData.proyecto._id, // Almacena solo el ID del proyecto
+            revista: publicationData.revista,
+            resumen: publicationData.resumen,
+            palabrasClave: publicationData.palabrasClave.join(", "),
+            tipoPublicacion: publicationData.tipoPublicacion,
+            idioma: publicationData.idioma,
+            anexos: publicationData.anexos.join(", "),
+          });
+          setProyectoNombre(publicationData.proyecto.nombre); // Almacena el nombre del proyecto para mostrarlo
+        }
+      } catch (error) {
+        AlertComponent.error("Error al cargar los datos del formulario.");
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleDateChange = (date) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      fecha: date,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const updatedPublication = {
+      ...formData,
+      palabrasClave: formData.palabrasClave.split(",").map((p) => p.trim()),
+      anexos: formData.anexos.split(",").map((a) => a.trim()),
+    };
+
+    try {
+      await putData('publications',  id, updatedPublication);
+      AlertComponent.success("Publicación actualizada exitosamente.");
+      navigate("/publicaciones");
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.error || "Error al actualizar la publicación.";
+      AlertComponent.error(errorMessage);
+    }
+  };
+
+  return (
+    <>
+      <NavInvestigator />
+      <div className="edit-publication-view-container">
+        <div className="container">
+          <h2>Editar Publicación</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="titulo">Título de la Publicación</label>
+              <input
+                type="text"
+                id="titulo"
+                name="titulo"
+                value={formData.titulo}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Fecha de Publicación</label>
+              <DatePicker
+                selected={formData.fecha}
+                onChange={handleDateChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="proyecto">Proyecto Asociado</label>
+              <input
+                type="text"
+                id="proyecto"
+                name="proyecto"
+                value={proyectoNombre || "No asociado"} // Mostrar el nombre del proyecto
+                readOnly
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="revista">Revista</label>
+              <input
+                type="text"
+                id="revista"
+                name="revista"
+                value={formData.revista}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="resumen">Resumen</label>
+              <textarea
+                id="resumen"
+                name="resumen"
+                value={formData.resumen}
+                onChange={handleChange}
+              ></textarea>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="palabrasClave">
+                Palabras Clave (separadas por coma)
+              </label>
+              <input
+                type="text"
+                id="palabrasClave"
+                name="palabrasClave"
+                value={formData.palabrasClave}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="tipoPublicacion">Tipo de Publicación</label>
+              <select
+                id="tipoPublicacion"
+                name="tipoPublicacion"
+                value={formData.tipoPublicacion}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Seleccionar Tipo de Publicación</option>
+                {tiposPublicacion.map((tipo) => (
+                  <option key={tipo} value={tipo}>
+                    {tipo}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="idioma">Idioma</label>
+              <input
+                type="text"
+                id="idioma"
+                name="idioma"
+                value={formData.idioma}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="anexos">Anexos (URLs separadas por coma)</label>
+              <input
+                type="text"
+                id="anexos"
+                name="anexos"
+                value={formData.anexos}
+                onChange={handleChange}
+              />
+            </div>
+
+            <button type="submit" className="save-btn">
+              Actualizar
+            </button>
+          </form>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default EditPublicationView;
