@@ -210,3 +210,14 @@ export const deleteData = async (endpoint, id) => {
 };
 
 //  -------------------------------- END ---------------------------- //
+
+// PATCH (actualizar parcialmente un recurso)
+export const updateData = async (endpoint, id, body) => {
+  try {
+    const response = await api.patch(`/${endpoint}/${id}`, body);
+    return response.data;
+  } catch (error) {
+    console.log('Error en PATCH:', error);
+    throw error;
+  }
+};

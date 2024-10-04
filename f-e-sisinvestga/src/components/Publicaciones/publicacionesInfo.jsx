@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../css/componentes/Publicaciones/publicacionesInfo.css";
-import { getData, deleteData, updateData } from "../../services/apiServices"; // Asume que updateData existe
+import { getData, deleteData,updateData } from "../../services/apiServices"; // Asume que updateData existe
 
 function PublicacionesInfo() {
   const [publicacionesData, setPublicacionesData] = useState([]);
