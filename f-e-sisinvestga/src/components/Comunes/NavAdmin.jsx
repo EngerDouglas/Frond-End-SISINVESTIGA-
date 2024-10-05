@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCurrentRole, logoutUser } from "../../features/auth/authSlice";
+import AlertComponent from "./AlertComponent";
 import "../../css/componentes/Comunes/NavAdmin.css";
 
 const AdminNav = () => {
@@ -19,7 +20,21 @@ const AdminNav = () => {
         navigate("/login");
       });
     } catch (error) {
-      console.error("Error al cerrar la sesión", error);
+      let errorMessage =
+        "Ocurrió un error durante el proceso.";
+      let detailedErrors = [];
+
+      try {
+        // Intentamos analizar el error recibido del backend
+        const parsedError = JSON.parse(error.message);
+        errorMessage = parsedError.message;
+        detailedErrors = parsedError.errors || [];
+      } catch (parseError) {
+        // Si no se pudo analizar, usamos el mensaje de error general
+        errorMessage = error.message;
+      }
+      AlertComponent.error(errorMessage);
+      detailedErrors.forEach((err) => AlertComponent.error(err));
     }
   };
 
@@ -92,7 +107,8 @@ const AdminNav = () => {
               <>
                 <li className="dropdown-item">
                   <Link to="/registro" className="nav-admin-link">
-                    <i className="bi bi-person-plus"></i> Registro de Investigadores
+                    <i className="bi bi-person-plus"></i> Registro de
+                    Investigadores
                   </Link>
                 </li>
                 <li className="dropdown-item">

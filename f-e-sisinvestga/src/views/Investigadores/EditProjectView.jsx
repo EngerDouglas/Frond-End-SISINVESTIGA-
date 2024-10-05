@@ -46,8 +46,20 @@ const EditProjectView = () => {
           });
         }
       } catch (error) {
-        AlertComponent.error("Error al cargar los datos del proyecto.");
-        console.error("Error fetching project data:", error);
+        let errorMessage = "Ocurrió un error al cargar los datos del proyecto.";
+        let detailedErrors = [];
+
+        try {
+          // Intentamos analizar el error recibido del backend
+          const parsedError = JSON.parse(error.message);
+          errorMessage = parsedError.message;
+          detailedErrors = parsedError.errors || [];
+        } catch (parseError) {
+          // Si no se pudo analizar, usamos el mensaje de error general
+          errorMessage = error.message;
+        }
+        AlertComponent.error(errorMessage);
+        detailedErrors.forEach((err) => AlertComponent.error(err));
       }
     };
 
@@ -86,8 +98,21 @@ const EditProjectView = () => {
       AlertComponent.success("Proyecto actualizado exitosamente.");
       navigate("/proyectos");
     } catch (error) {
-      AlertComponent.error("Error al actualizar el proyecto.");
-      console.error("Error al actualizar el proyecto:", error);
+      let errorMessage =
+        "Ocurrió un error al actualizar el Proyecto.";
+      let detailedErrors = [];
+
+      try {
+        // Intentamos analizar el error recibido del backend
+        const parsedError = JSON.parse(error.message);
+        errorMessage = parsedError.message;
+        detailedErrors = parsedError.errors || [];
+      } catch (parseError) {
+        // Si no se pudo analizar, usamos el mensaje de error general
+        errorMessage = error.message;
+      }
+      AlertComponent.error(errorMessage);
+      detailedErrors.forEach((err) => AlertComponent.error(err));
     }
   };
 

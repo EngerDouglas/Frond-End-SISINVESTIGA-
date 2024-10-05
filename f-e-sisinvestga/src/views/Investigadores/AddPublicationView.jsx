@@ -36,8 +36,20 @@ const AddPublicationView = () => {
         setTiposPublicacion(tiposData.data || []);
         setTiposPublicacion(tiposData.tiposPublicacion || []);
       } catch (error) {
-        AlertComponent.error("Error al cargar los datos del formulario");
-        console.error("Error fetching data:", error);
+        let errorMessage = "Error al cargar los datos al Formulario";
+        let detailedErrors = [];
+
+        try {
+          // Intentamos analizar el error recibido del backend
+          const parsedError = JSON.parse(error.message);
+          errorMessage = parsedError.message;
+          detailedErrors = parsedError.errors || [];
+        } catch (parseError) {
+          // Si no se pudo analizar, usamos el mensaje de error general
+          errorMessage = error.message;
+        }
+        AlertComponent.error(errorMessage);
+        detailedErrors.forEach((err) => AlertComponent.error(err));
       }
     };
 
@@ -46,16 +58,16 @@ const AddPublicationView = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleDateChange = (date) => {
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
-      fecha: date
+      fecha: date,
     }));
   };
 
@@ -63,8 +75,10 @@ const AddPublicationView = () => {
     e.preventDefault();
     const newPublication = {
       ...formData,
-      palabrasClave: formData.palabrasClave.split(",").map(palabra => palabra.trim()),
-      anexos: formData.anexos.split(",").map(anexo => anexo.trim()),
+      palabrasClave: formData.palabrasClave
+        .split(",")
+        .map((palabra) => palabra.trim()),
+      anexos: formData.anexos.split(",").map((anexo) => anexo.trim()),
     };
 
     try {
@@ -72,9 +86,21 @@ const AddPublicationView = () => {
       AlertComponent.success("Publicación agregada exitosamente");
       navigate("/publicaciones");
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.error || "Error al agregar la publicación";
+      let errorMessage =
+        "Ocurrió un error al crear la Publicacion.";
+      let detailedErrors = [];
+
+      try {
+        // Intentamos analizar el error recibido del backend
+        const parsedError = JSON.parse(error.message);
+        errorMessage = parsedError.message;
+        detailedErrors = parsedError.errors || [];
+      } catch (parseError) {
+        // Si no se pudo analizar, usamos el mensaje de error general
+        errorMessage = error.message;
+      }
       AlertComponent.error(errorMessage);
+      detailedErrors.forEach((err) => AlertComponent.error(err));
     }
   };
 
@@ -147,7 +173,9 @@ const AddPublicationView = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="palabrasClave">Palabras Clave (separadas por coma)</label>
+              <label htmlFor="palabrasClave">
+                Palabras Clave (separadas por coma)
+              </label>
               <input
                 type="text"
                 id="palabrasClave"

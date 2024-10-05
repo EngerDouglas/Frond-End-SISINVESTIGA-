@@ -28,7 +28,6 @@ const EditPublicationView = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-
         const userPublicationsData = await getUserData("publications");
         setTiposPublicacion(userPublicationsData.tiposPublicacion || []);
 
@@ -51,8 +50,21 @@ const EditPublicationView = () => {
           setProyectoNombre(publicationData.proyecto.nombre); // Almacena el nombre del proyecto para mostrarlo
         }
       } catch (error) {
-        AlertComponent.error("Error al cargar los datos del formulario.");
-        console.error("Error fetching data:", error);
+        let errorMessage =
+          "Ocurrió un error al cargar los datos al formulario.";
+        let detailedErrors = [];
+
+        try {
+          // Intentamos analizar el error recibido del backend
+          const parsedError = JSON.parse(error.message);
+          errorMessage = parsedError.message;
+          detailedErrors = parsedError.errors || [];
+        } catch (parseError) {
+          // Si no se pudo analizar, usamos el mensaje de error general
+          errorMessage = error.message;
+        }
+        AlertComponent.error(errorMessage);
+        detailedErrors.forEach((err) => AlertComponent.error(err));
       }
     };
 
@@ -83,13 +95,25 @@ const EditPublicationView = () => {
     };
 
     try {
-      await putData('publications',  id, updatedPublication);
+      await putData("publications", id, updatedPublication);
       AlertComponent.success("Publicación actualizada exitosamente.");
       navigate("/publicaciones");
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.error || "Error al actualizar la publicación.";
+      let errorMessage =
+        "Ocurrió un error al tratar de actualizar la publicacion.";
+      let detailedErrors = [];
+
+      try {
+        // Intentamos analizar el error recibido del backend
+        const parsedError = JSON.parse(error.message);
+        errorMessage = parsedError.message;
+        detailedErrors = parsedError.errors || [];
+      } catch (parseError) {
+        // Si no se pudo analizar, usamos el mensaje de error general
+        errorMessage = error.message;
+      }
       AlertComponent.error(errorMessage);
+      detailedErrors.forEach((err) => AlertComponent.error(err));
     }
   };
 

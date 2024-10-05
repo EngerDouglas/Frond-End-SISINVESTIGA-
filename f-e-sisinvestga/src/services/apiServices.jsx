@@ -64,8 +64,7 @@ export const login = async (credentials) => {
     const { user, token, role } = response.data; // Desestructuramos role y user de la respuesta
 
     if (!token || !role || !user) {
-      console.error('El token, el rol o el usuario no se recibieron correctamente.');
-      return;
+      throw new Error('El token, el rol o el usuario no se recibieron correctamente.');
     }
 
     // Guardar el token y el rol en localStorage
@@ -74,7 +73,7 @@ export const login = async (credentials) => {
     // Devuelve el token, el rol y el usuario al Redux
     return { user, token, role };
   } catch (error) {
-    const errorMessage = error.response?.data?.error || error.message || 'Error desconocido';
+    const errorMessage = error.response?.data?.error?.message || error.message || 'Error desconocido';
     throw new Error(errorMessage);
   }
 };
@@ -85,8 +84,8 @@ export const logout = async () => {
     await api.post('/users/logout');
     deleteSession();
   } catch (error) {
-    console.log('Error al cerrar sesión:', error.response?.data || error.message);
-    throw error;
+    const errorMessage = error.response?.data?.error || error.response?.data || error.message || 'Error desconocido';
+    throw new Error(JSON.stringify(errorMessage));
   }
 };
 
@@ -96,8 +95,8 @@ export const logoutAll = async () => {
     await api.post('/users/logout-all');
     deleteSession(); 
   } catch (error) {
-    console.log('Error al cerrar todas las sesiones:', error.response?.data || error.message);
-    throw error;
+    const errorMessage = error.response?.data?.error || error.response?.data || error.message || 'Error desconocido';
+    throw new Error(JSON.stringify(errorMessage));
   }
 };
 
@@ -109,8 +108,8 @@ export const getData = async (endpoint) => {
     const response = await api.get(`/${endpoint}`);
     return response.data;
   } catch (error) {
-    console.log('Error en GET:', error);
-    throw error;
+    const errorMessage = error.response?.data?.error || error.response?.data || error.message || 'Error desconocido';
+    throw new Error(JSON.stringify(errorMessage));
   }
 };
 
@@ -120,8 +119,8 @@ export const getDataParams = async (endpoint, params = {}) => {
     const response = await api.get(`/${endpoint}`, { params });
     return response.data;
   } catch (error) {
-    console.log('Error en GET:', error);
-    throw error;
+    const errorMessage = error.response?.data?.error || error.response?.data || error.message || 'Error desconocido';
+    throw new Error(JSON.stringify(errorMessage));
   }
 };
 
@@ -131,8 +130,8 @@ export const getDataById = async (endpoint, id) => {
     const response = await api.get(`/${endpoint}/${id}`);
     return response.data;
   } catch (error) {
-    console.log('Error en GET by ID:', error);
-    throw error;
+    const errorMessage = error.response?.data?.error || error.response?.data || error.message || 'Error desconocido';
+    throw new Error(JSON.stringify(errorMessage));
   }
 };
 
@@ -142,8 +141,8 @@ export const searchData = async (endpoint, params) => {
     const response = await api.get(`/${endpoint}/search`, { params });
     return response.data;
   } catch (error) {
-    console.log('Error en SEARCH:', error);
-    throw error;
+    const errorMessage = error.response?.data?.error || error.response?.data || error.message || 'Error desconocido';
+    throw new Error(JSON.stringify(errorMessage));
   }
 };
 
@@ -153,8 +152,8 @@ export const getUserData = async (endpoint, params) => {
     const response = await api.get(`/${endpoint}/me`, { params });
     return response.data;
   } catch (error) {
-    console.log('Error en GET user data:', error);
-    throw error;
+    const errorMessage = error.response?.data?.error || error.response?.data || error.message || 'Error desconocido';
+    throw new Error(JSON.stringify(errorMessage));
   }
 };
 
@@ -166,8 +165,12 @@ export const postData = async (endpoint, body) => {
     const response = await api.post(`/${endpoint}`, body);
     return response.data;
   } catch (error) {
-    console.log('Error en POST:', error);
-    throw error;
+    // Capturamos y descomponemos el error según la estructura del backend
+    const errorMessage = error.response?.data?.error?.message || error.message || 'Error desconocido';
+    const detailedErrors = error.response?.data?.error?.errors || [];
+    
+    // Lanzamos el mensaje de error y los errores detallados si los hay
+    throw new Error(JSON.stringify({ message: errorMessage, errors: detailedErrors }));
   }
 };
 
@@ -179,8 +182,8 @@ export const putData = async (endpoint, id, body) => {
     const response = await api.put(`/${endpoint}/${id}`, body);
     return response.data;
   } catch (error) {
-    console.log('Error en PUT:', error);
-    throw error;
+    const errorMessage = error.response?.data?.error || error.response?.data || error.message || 'Error desconocido';
+    throw new Error(JSON.stringify(errorMessage));
   }
 };
 //  -------------------------------- END ---------------------------- //
@@ -191,8 +194,8 @@ export const putSelfData = async (endpoint, body) => {
     const response = await api.put(`/${endpoint}/me`, body);
     return response.data;
   } catch (error) {
-    console.log('Error en PUT:', error);
-    throw error;
+    const errorMessage = error.response?.data?.error || error.response?.data || error.message || 'Error desconocido';
+    throw new Error(JSON.stringify(errorMessage));
   }
 };
 
@@ -204,8 +207,8 @@ export const deleteData = async (endpoint, id) => {
     const response = await api.delete(`/${endpoint}/${id}`);
     return response.data;
   } catch (error) {
-    console.log('Error en DELETE:', error);
-    throw error;
+    const errorMessage = error.response?.data?.error || error.response?.data || error.message || 'Error desconocido';
+    throw new Error(JSON.stringify(errorMessage));
   }
 };
 
@@ -217,7 +220,7 @@ export const updateData = async (endpoint, id, body) => {
     const response = await api.patch(`/${endpoint}/${id}`, body);
     return response.data;
   } catch (error) {
-    console.log('Error en PATCH:', error);
-    throw error;
+    const errorMessage = error.response?.data?.error || error.response?.data || error.message || 'Error desconocido';
+    throw new Error(JSON.stringify(errorMessage));
   }
 };

@@ -53,7 +53,7 @@ const HomeComponent = () => {
             "publications",
             publicationParams
           );
-          setPublicationData(fetchedPublications);
+          setPublicationData(fetchedPublications.publications || []);
 
           const uniqueTypes = [
             ...new Set(fetchedPublications.map((pub) => pub.tipoPublicacion)),
@@ -222,8 +222,8 @@ const HomeComponent = () => {
                       />
                     </div>
                     <div className="card-content">
-                      <h3>{publication.titulo}</h3>
-                      <p>{publication.descripcion.substring(0, 100)}...</p>
+                      <h3>{publication.titulo || "Sin título"}</h3>
+                      <p>{(publication.descripcion || "Sin descripción").substring(0, 100)}...</p>
                       <Link
                         to={`/publicaciones/${publication._id}`}
                         className="card-button"

@@ -47,26 +47,37 @@ const InvProjectView = () => {
 
   const handleDeleteProject = async (projectId) => {
     try {
-      AlertComponent.warning("¿Estás seguro que deseas eliminar este proyecto?")
-        .then((result) => {
-          if (result.isConfirmed) {
-            deleteData('projects', projectId)
-              .then(() => {
-                AlertComponent.success("El proyecto ha sido eliminado correctamente.");
-                setProjects(projects.filter((project) => project._id !== projectId));
-              })
-              .catch((error) => {
-                if (error.response && error.response.data) {
-                  const errorMessages = error.response.data.errors || [
-                    error.response.data.error,
-                  ];
-                  errorMessages.forEach((err) => AlertComponent.error(err.msg || err));
-                } else {
-                  AlertComponent.error("Error al eliminar el proyecto");
-                }
-              });
-          }
-        });
+      AlertComponent.warning(
+        "¿Estás seguro que deseas eliminar este proyecto?"
+      ).then((result) => {
+        if (result.isConfirmed) {
+          deleteData("projects", projectId)
+            .then(() => {
+              AlertComponent.success(
+                "El proyecto ha sido eliminado correctamente."
+              );
+              setProjects(
+                projects.filter((project) => project._id !== projectId)
+              );
+            })
+            .catch((error) => {
+              let errorMessage = "Ocurrió un error durante la eliminacion del registro.";
+              let detailedErrors = [];
+
+              try {
+                // Intentamos analizar el error recibido del backend
+                const parsedError = JSON.parse(error.message);
+                errorMessage = parsedError.message;
+                detailedErrors = parsedError.errors || [];
+              } catch (parseError) {
+                // Si no se pudo analizar, usamos el mensaje de error general
+                errorMessage = error.message;
+              }
+              AlertComponent.error(errorMessage);
+              detailedErrors.forEach((err) => AlertComponent.error(err));
+            });
+        }
+      });
     } catch (error) {
       console.error("Error al eliminar el proyecto", error);
     }

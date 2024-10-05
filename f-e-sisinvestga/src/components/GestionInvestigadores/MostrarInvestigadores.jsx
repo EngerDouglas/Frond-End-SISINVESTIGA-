@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getData, putData } from "../../services/apiServices";
 import "../../css/componentes/GestionInvestigadores/GestionInvestigadores.css";
+import AlertComponent from "../Comunes/AlertComponent";
 import Modal from "./Modal"; // Asegúrate de que la ruta sea correcta
 
 function MostrarInvestigadores() {
@@ -16,14 +17,29 @@ function MostrarInvestigadores() {
     const fetchInvestigadores = async () => {
       try {
         const users = await getData("users");
-        const investigadores = users.filter(user => user.role.roleName === "Investigador");
+        const investigadores = users.filter(
+          (user) => user.role.roleName === "Investigador"
+        );
         setInvestigadoresData(investigadores);
 
-         // Obtener roles desde la API
-         const roles = await getData("roles"); // Asegúrate de tener esta ruta en tu API
-         setRolesData(roles);
+        // Obtener roles desde la API
+        const roles = await getData("roles"); // Asegúrate de tener esta ruta en tu API
+        setRolesData(roles);
       } catch (error) {
-        console.error("Error al obtener los investigadores:", error);
+        let errorMessage = "Ocurrió un error al obtener los roles.";
+        let detailedErrors = [];
+
+        try {
+          // Intentamos analizar el error recibido del backend
+          const parsedError = JSON.parse(error.message);
+          errorMessage = parsedError.message;
+          detailedErrors = parsedError.errors || [];
+        } catch (parseError) {
+          // Si no se pudo analizar, usamos el mensaje de error general
+          errorMessage = error.message;
+        }
+        AlertComponent.error(errorMessage);
+        detailedErrors.forEach((err) => AlertComponent.error(err));
       }
     };
     fetchInvestigadores();
@@ -33,7 +49,7 @@ function MostrarInvestigadores() {
     try {
       // Aquí puedes cambiar el estado a habilitado o deshabilitado
       await putData(`users`, id, { isDisabled: !isDisabled });
-      
+
       // Actualiza el estado local
       const updatedInvestigadores = investigadoresData.map((investigador) =>
         investigador._id === id
@@ -42,7 +58,21 @@ function MostrarInvestigadores() {
       );
       setInvestigadoresData(updatedInvestigadores);
     } catch (error) {
-      console.error("Error al cambiar el estado del investigador:", error);
+      let errorMessage =
+        "Ocurrió un error al cambiar el estado de un Investigador.";
+      let detailedErrors = [];
+
+      try {
+        // Intentamos analizar el error recibido del backend
+        const parsedError = JSON.parse(error.message);
+        errorMessage = parsedError.message;
+        detailedErrors = parsedError.errors || [];
+      } catch (parseError) {
+        // Si no se pudo analizar, usamos el mensaje de error general
+        errorMessage = error.message;
+      }
+      AlertComponent.error(errorMessage);
+      detailedErrors.forEach((err) => AlertComponent.error(err));
     }
   };
 
@@ -51,7 +81,6 @@ function MostrarInvestigadores() {
     setNewRol(investigador.role._id); // Prellenar el rol actual con el ID del rol
     setIsModalOpen(true); // Abrir la modal
   };
-
 
   const handleSave = async () => {
     if (editingInvestigador) {
@@ -70,7 +99,21 @@ function MostrarInvestigadores() {
         setInvestigadoresData(updatedInvestigadores);
         setEditingInvestigador(null);
       } catch (error) {
-        console.error("Error al actualizar el rol del investigador:", error);
+        let errorMessage =
+          "Ocurrió un error al editar el rol del Investigador.";
+        let detailedErrors = [];
+
+        try {
+          // Intentamos analizar el error recibido del backend
+          const parsedError = JSON.parse(error.message);
+          errorMessage = parsedError.message;
+          detailedErrors = parsedError.errors || [];
+        } catch (parseError) {
+          // Si no se pudo analizar, usamos el mensaje de error general
+          errorMessage = error.message;
+        }
+        AlertComponent.error(errorMessage);
+        detailedErrors.forEach((err) => AlertComponent.error(err));
       }
     }
   };
@@ -113,8 +156,17 @@ function MostrarInvestigadores() {
                   Modificar
                 </button>
                 <button
-                  className={investigador.isDisabled ? "invest-btn-deshabilitar" : "invest-btn-modificar"}
-                  onClick={() => handleToggleStatus(investigador._id, investigador.isDisabled)}
+                  className={
+                    investigador.isDisabled
+                      ? "invest-btn-deshabilitar"
+                      : "invest-btn-modificar"
+                  }
+                  onClick={() =>
+                    handleToggleStatus(
+                      investigador._id,
+                      investigador.isDisabled
+                    )
+                  }
                 >
                   {investigador.isDisabled ? "Habilitar" : "Deshabilitar"}
                 </button>
@@ -125,29 +177,28 @@ function MostrarInvestigadores() {
       </table>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <h2>Editar Rol</h2>
-          {editingInvestigador && (
-            <>
-              <p>
-                <strong>Nombre:</strong> {editingInvestigador.nombre}
-              </p>
-              <p>
-                <strong>Especialización:</strong> {editingInvestigador.especializacion}
-              </p>
-              <select value={newRol} onChange={(e) => setNewRol(e.target.value)}>
-                {rolesData.map((role) => (
-                  <option key={role._id} value={role._id}>
-                    {role.roleName}
-                  </option>
-                ))}
-              </select>
-              <button onClick={handleSave}>Guardar</button>
-            </>
-          )}
-          <button onClick={() => setIsModalOpen(false)}>Cancelar</button>
+        <h2>Editar Rol</h2>
+        {editingInvestigador && (
+          <>
+            <p>
+              <strong>Nombre:</strong> {editingInvestigador.nombre}
+            </p>
+            <p>
+              <strong>Especialización:</strong>{" "}
+              {editingInvestigador.especializacion}
+            </p>
+            <select value={newRol} onChange={(e) => setNewRol(e.target.value)}>
+              {rolesData.map((role) => (
+                <option key={role._id} value={role._id}>
+                  {role.roleName}
+                </option>
+              ))}
+            </select>
+            <button onClick={handleSave}>Guardar</button>
+          </>
+        )}
+        <button onClick={() => setIsModalOpen(false)}>Cancelar</button>
       </Modal>
-
-  
     </div>
   );
 }

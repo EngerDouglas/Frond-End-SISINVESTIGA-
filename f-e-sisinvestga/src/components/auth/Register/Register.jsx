@@ -33,20 +33,20 @@ export default function Register() {
 
       resetForm();
     } catch (error) {
-      if (error.response && error.response.data) {
-        // Verificamos si hay múltiples errores devueltos (por ejemplo, con express-validator)
-        const errorMessages = error.response.data.errors || [
-          error.response.data.error,
-        ];
+      let errorMessage = "Ocurrió un error durante el registro.";
+      let detailedErrors = [];
 
-        // Mostramos cada error individual usando un alert de error
-        errorMessages.forEach((err) => AlertComponent.error(err.msg || err));
-      } else {
-        // Si no hay un error claro, mostramos un mensaje genérico
-        AlertComponent.error(
-          "Ocurrió un error durante el registro. Inténtalo de nuevo."
-        );
+      try {
+        // Intentamos analizar el error recibido del backend
+        const parsedError = JSON.parse(error.message);
+        errorMessage = parsedError.message;
+        detailedErrors = parsedError.errors || [];
+      } catch (parseError) {
+        // Si no se pudo analizar, usamos el mensaje de error general
+        errorMessage = error.message;
       }
+      AlertComponent.error(errorMessage);
+      detailedErrors.forEach((err) => AlertComponent.error(err));
     }
   };
 

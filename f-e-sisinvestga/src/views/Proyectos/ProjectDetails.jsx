@@ -81,9 +81,6 @@ const ProjectDetails = () => {
             <strong>Estado:</strong> {project.estado}
           </p>
           <p>
-            <strong>Presupuesto:</strong> ${project.presupuesto}
-          </p>
-          <p>
             <FaCalendarAlt /> <strong>Fecha de Inicio:</strong>{" "}
             {format(new Date(project.cronograma.fechaInicio), "dd/MM/yyyy")}
           </p>

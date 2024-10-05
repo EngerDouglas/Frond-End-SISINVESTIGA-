@@ -96,10 +96,21 @@ const AddProjectView = () => {
       AlertComponent.success("Proyecto agregado exitosamente");
       navigate("/proyectos");
     } catch (error) {
-      const errorMessage =
-        error.response?.data?.error || "Error al agregar el proyecto.";
+      let errorMessage =
+        "Error al crear el Proyecto.";
+      let detailedErrors = [];
+
+      try {
+        // Intentamos analizar el error recibido del backend
+        const parsedError = JSON.parse(error.message);
+        errorMessage = parsedError.message;
+        detailedErrors = parsedError.errors || [];
+      } catch (parseError) {
+        // Si no se pudo analizar, usamos el mensaje de error general
+        errorMessage = error.message;
+      }
       AlertComponent.error(errorMessage);
-      console.error("Error al agregar el proyecto:", error);
+      detailedErrors.forEach((err) => AlertComponent.error(err));
     }
   };
 

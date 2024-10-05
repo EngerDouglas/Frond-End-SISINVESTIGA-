@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCurrentRole, logoutUser } from "../../features/auth/authSlice";
+import AlertComponent from "./AlertComponent";
 import {
   FaUserCircle,
   FaChevronDown,
@@ -34,7 +35,21 @@ const NavInvestigator = () => {
         navigate("/login");
       });
     } catch (error) {
-      console.error("Error al cerrar sesión:", error);
+      let errorMessage =
+        "Ocurrió un error durante el proceso.";
+      let detailedErrors = [];
+
+      try {
+        // Intentamos analizar el error recibido del backend
+        const parsedError = JSON.parse(error.message);
+        errorMessage = parsedError.message;
+        detailedErrors = parsedError.errors || [];
+      } catch (parseError) {
+        // Si no se pudo analizar, usamos el mensaje de error general
+        errorMessage = error.message;
+      }
+      AlertComponent.error(errorMessage);
+      detailedErrors.forEach((err) => AlertComponent.error(err));
     }
   };
 
@@ -122,7 +137,10 @@ const NavInvestigator = () => {
           {isMenuOpen && (
             <ul className="nav-investigator-dropdown">
               <li className="nav-investigator-dropdown-item">
-                <Link to="/perfil-investigador" className="nav-investigator-dropdown-link">
+                <Link
+                  to="/perfil-investigador"
+                  className="nav-investigator-dropdown-link"
+                >
                   <FaCog /> Configurar Perfil
                 </Link>
               </li>
