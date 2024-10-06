@@ -10,6 +10,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const DashboardContent = () => {
   const [projects, setProjects] = useState([]);
   const [publications, setPublications] = useState([]);
+  const [totalPublications, setTotalPublications] = useState(0);
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -22,7 +23,8 @@ const DashboardContent = () => {
         setProjects(proyectos.data || []); // Verificar que data exista
 
         const publicaciones = await getUserData("publications");
-        setPublications(publicaciones.data || []);
+        setPublications(publicaciones.publications || []);
+        setTotalPublications(publicaciones.total || 0);
 
         const solicitudes = await getUserData("requests");
         setRequests(solicitudes.data || []);
@@ -80,7 +82,7 @@ const DashboardContent = () => {
           <FaFileAlt className="summary-icon" />
           <div className="summary-info">
             <h3>Publicaciones</h3>
-            <p>{publications.length || 0}</p>
+            <p>{totalPublications}</p>
           </div>
         </div>
         <div className="summary-card">

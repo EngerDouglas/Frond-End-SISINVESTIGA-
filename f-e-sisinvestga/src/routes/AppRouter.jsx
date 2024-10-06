@@ -143,7 +143,7 @@ const AppRouter = () => {
       } />
 
       <Route path='/admin/listarproyectos' element={ 
-        <ProtectedRoute roles={['Administrador', 'Investigador']}>
+        <ProtectedRoute roles={['Administrador']}>
           <ListaProyectos />
         </ProtectedRoute>
       } />
