@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { login, logout, logoutAll, getSession } from "../../services/apiServices";
+import { login, logout, logoutAll, getSession, forgotPassword, resetPassword } from "../../services/apiServices";
 
 const initialState = {
   user: null,
@@ -65,6 +65,30 @@ export const logoutAllUser = createAsyncThunk(
   }
 );
 
+export const requestPasswordReset = createAsyncThunk(
+  'passwordReset/requestReset',
+  async (email, thunkAPI) => {
+    try {
+      const response = await forgotPassword(email);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data?.error || error.message);
+    }
+  }
+);
+
+export const confirmPasswordReset = createAsyncThunk(
+  'passwordReset/confirmReset',
+  async ({ token, password }, thunkAPI) => {
+    try {
+      const response = await resetPassword(token, password);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response?.data?.error || error.message);
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -80,6 +104,11 @@ export const authSlice = createSlice({
     },
     clearSuccess(state) {
       state.success = null; // Limpiar el mensaje de éxito
+    },
+    clearPasswordResetStatus: (state) => {
+      state.status = 'idle';
+      state.error = null;
+      state.success = null;
     },
   },
   extraReducers: (builder) => {
@@ -120,11 +149,33 @@ export const authSlice = createSlice({
       .addCase(logoutAllUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
+      })
+      .addCase(requestPasswordReset.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(requestPasswordReset.fulfilled, (state) => {
+        state.status = 'succeeded';
+        state.success = 'Se ha enviado un correo electrónico con instrucciones para restablecer su contraseña.';
+      })
+      .addCase(requestPasswordReset.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+      .addCase(confirmPasswordReset.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(confirmPasswordReset.fulfilled, (state) => {
+        state.status = 'succeeded';
+        state.success = 'Su contraseña ha sido restablecida con éxito.';
+      })
+      .addCase(confirmPasswordReset.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
       });
   },
 });
 
-export const { loadSession, clearError } = authSlice.actions;
+export const { loadSession, clearError, clearPasswordResetStatus } = authSlice.actions;
 
 export const selectCurrentToken = (state) => state.auth.token;
 export const selectCurrentRole = (state) => state.auth.role;

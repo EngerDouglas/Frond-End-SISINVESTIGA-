@@ -19,6 +19,10 @@ const Login = () => {
     dispatch(loginUser({ email, password }));
   };
 
+  const goToForgotPassword = () => {
+    navigate('/forgot-password')
+  }
+
   useEffect(() => {
     if (error) {
       AlertComponent.error(error);
@@ -86,9 +90,7 @@ const Login = () => {
               type="button"
               className="forgot-password-btn"
               onClick={() =>
-                alert(
-                  "Funcionalidad de recuperación de contraseña aún no implementada."
-                )
+                goToForgotPassword()
               }
             >
               Se me olvidó la contraseña
