@@ -93,13 +93,13 @@ const AppRouter = () => {
       } />
 
       <Route path='/invest/publicaciones/agregar' element={
-        <ProtectedRoute roles={['Investigador', 'Administrador']}>
+        <ProtectedRoute roles={['Investigador']}>
           <AddPublicationView />
         </ProtectedRoute>
       } />
 
       <Route path='/invest/publicaciones/editar/:id' element={
-        <ProtectedRoute roles={['Investigador', 'Administrador']}>
+        <ProtectedRoute roles={['Investigador']}>
           <EditPublicationView />
         </ProtectedRoute>
       } />
@@ -130,19 +130,19 @@ const AppRouter = () => {
         </ProtectedRoute>
       } />
 
-      <Route path='/gestionInvestigadores' element={ 
+      <Route path='/admin/gestionInvestigadores' element={ 
         <ProtectedRoute roles={['Administrador']}>
           <GestionInvestigadores />
         </ProtectedRoute>
       } />
 
-      <Route path='/publicaciones' element={ 
+      <Route path='/admin/publicaciones' element={ 
         <ProtectedRoute roles={['Administrador']}>
           <Publicaciones />
         </ProtectedRoute>
       } />
 
-      <Route path='/listarproyectos' element={ 
+      <Route path='/admin/listarproyectos' element={ 
         <ProtectedRoute roles={['Administrador', 'Investigador']}>
           <ListaProyectos />
         </ProtectedRoute>

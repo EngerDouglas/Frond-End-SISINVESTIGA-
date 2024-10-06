@@ -23,7 +23,7 @@ const AdminDashboard = () => {
             <h2><i className="bi bi-folder2"></i> Gestión de Proyectos</h2>
             <p>Administrar todos los proyectos en la plataforma.</p>
             <button
-              onClick={() => handleNavigation("/listarproyectos")}
+              onClick={() => handleNavigation("/admin/listarproyectos")}
               className="admin-btn-card"
             >
               <i className="bi bi-arrow-right"></i> Ir a Proyectos
@@ -34,7 +34,7 @@ const AdminDashboard = () => {
             <h2><i className="bi bi-person-lines-fill"></i> Gestión de Investigadores</h2>
             <p>Administrar investigadores y su información.</p>
             <button
-              onClick={() => handleNavigation("/gestionInvestigadores")}
+              onClick={() => handleNavigation("/admin/gestionInvestigadores")}
               className="admin-btn-card"
             >
               <i className="bi bi-arrow-right"></i> Ir a Investigadores
@@ -45,7 +45,7 @@ const AdminDashboard = () => {
             <h2><i className="bi bi-file-earmark-text"></i> Auditoría</h2>
             <p>Revisar el historial de actividades.</p>
             <button
-              onClick={() => handleNavigation("/auditoria")}
+              onClick={() => handleNavigation("/admin/auditoria")}
               className="admin-btn-card"
             >
               <i className="bi bi-arrow-right"></i> Ir a Auditoría
@@ -56,7 +56,7 @@ const AdminDashboard = () => {
             <h2><i className="bi bi-journal-text"></i> Gestión de Logs</h2>
             <p>Revisar y gestionar logs del sistema.</p>
             <button
-              onClick={() => handleNavigation("/gestion-logs")}
+              onClick={() => handleNavigation("/admin/gestion-logs")}
               className="admin-btn-card"
             >
               <i className="bi bi-arrow-right"></i> Ir a Logs
@@ -67,7 +67,7 @@ const AdminDashboard = () => {
             <h2><i className="bi bi-file-earmark-person"></i> Publicaciones</h2>
             <p>Administrar las publicaciones de los investigadores.</p>
             <button
-              onClick={() => handleNavigation("/publicaciones")}
+              onClick={() => handleNavigation("/admin/publicaciones")}
               className="admin-btn-card"
             >
               <i className="bi bi-arrow-right"></i> Ir a Publicaciones
@@ -78,7 +78,7 @@ const AdminDashboard = () => {
             <h2><i className="bi bi-bell"></i> Solicitudes</h2>
             <p>Solicitud para agregar investigadores a proyectos.</p>
             <button
-              onClick={() => handleNavigation("/solicitudes")}
+              onClick={() => handleNavigation("/admin/solicitudes")}
               className="admin-btn-card"
             >
               <i className="bi bi-arrow-right"></i> Ir a Solicitudes
@@ -89,7 +89,7 @@ const AdminDashboard = () => {
             <h2><i className="bi bi-file-earmark-bar-graph"></i> Informes</h2>
             <p>Generar y revisar informes de actividades.</p>
             <button
-              onClick={() => handleNavigation("/informes")}
+              onClick={() => handleNavigation("/admin/informes")}
               className="admin-btn-card"
             >
               <i className="bi bi-arrow-right"></i> Ir a Informes
@@ -101,7 +101,7 @@ const AdminDashboard = () => {
             <h2><i className="bi bi-gear"></i> Configuración de Perfil</h2>
             <p>Administrar y actualizar la configuración del perfil.</p>
             <button
-              onClick={() => handleNavigation("/configuracion-perfil")}
+              onClick={() => handleNavigation("/admin/configuracion-perfil")}
               className="admin-btn-card"
             >
               <i className="bi bi-arrow-right"></i> Ir a Configuración
