@@ -1,126 +1,100 @@
 import React, { useState, useEffect } from "react";
 import { getData, putData } from "../../services/apiServices";
-import "../../css/componentes/GestionInvestigadores/GestionInvestigadores.css";
 import AlertComponent from "../Comunes/AlertComponent";
-import Modal from "./Modal"; // Asegúrate de que la ruta sea correcta
+import Modal from "./Modal";
+import "../../css/componentes/GestionInvestigadores/GestionInvestigadores.css";
 
-function MostrarInvestigadores() {
-  const [investigadoresData, setInvestigadoresData] = useState([]);
+export default function MostrarInvestigadores() {
+  const [investigadores, setInvestigadores] = useState([]);
+  const [roles, setRoles] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [editingInvestigador, setEditingInvestigador] = useState(null);
-  const [newRol, setNewRol] = useState("");
+  const [editingUser, setEditingUser] = useState(null);
+  const [newRoleName, setNewRoleName] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [rolesData, setRolesData] = useState([]); // Para almacenar los roles desde la base de datos
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Cargar los investigadores desde la API
   useEffect(() => {
-    const fetchInvestigadores = async () => {
-      try {
-        const users = await getData("users");
-        const investigadores = users.filter(
-          (user) => user.role.roleName === "Investigador"
-        );
-        setInvestigadoresData(investigadores);
-
-        // Obtener roles desde la API
-        const roles = await getData("roles"); // Asegúrate de tener esta ruta en tu API
-        setRolesData(roles);
-      } catch (error) {
-        let errorMessage = "Ocurrió un error al obtener los roles.";
-        let detailedErrors = [];
-
-        try {
-          // Intentamos analizar el error recibido del backend
-          const parsedError = JSON.parse(error.message);
-          errorMessage = parsedError.message;
-          detailedErrors = parsedError.errors || [];
-        } catch (parseError) {
-          // Si no se pudo analizar, usamos el mensaje de error general
-          errorMessage = error.message;
-        }
-        AlertComponent.error(errorMessage);
-        detailedErrors.forEach((err) => AlertComponent.error(err));
-      }
-    };
-    fetchInvestigadores();
+    fetchData();
   }, []);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const [usersData, rolesData] = await Promise.all([
+        getData("users"),
+        getData("roles"),
+      ]);
+      const investigadoresData = usersData.filter(
+        (user) => user.role.roleName === "Investigador"
+      );
+      setInvestigadores(investigadoresData);
+      setRoles(rolesData);
+    } catch (error) {
+      setError("Error al cargar los datos. Por favor, intente de nuevo.");
+      AlertComponent.error(
+        "Error al cargar los datos. Por favor, intente de nuevo."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleToggleStatus = async (id, isDisabled) => {
     try {
-      // Aquí puedes cambiar el estado a habilitado o deshabilitado
-      await putData(`users`, id, { isDisabled: !isDisabled });
-
-      // Actualiza el estado local
-      const updatedInvestigadores = investigadoresData.map((investigador) =>
+      const action = isDisabled ? "enable" : "disable";
+      await putData(`users/${id}`, `${action}`);
+      const updatedInvestigadores = investigadores.map((investigador) =>
         investigador._id === id
           ? { ...investigador, isDisabled: !isDisabled }
           : investigador
       );
-      setInvestigadoresData(updatedInvestigadores);
+      setInvestigadores(updatedInvestigadores);
+      AlertComponent.success(
+        `Usuario ${isDisabled ? "habilitado" : "deshabilitado"} exitosamente.`
+      );
     } catch (error) {
-      let errorMessage =
-        "Ocurrió un error al cambiar el estado de un Investigador.";
-      let detailedErrors = [];
-
-      try {
-        // Intentamos analizar el error recibido del backend
-        const parsedError = JSON.parse(error.message);
-        errorMessage = parsedError.message;
-        detailedErrors = parsedError.errors || [];
-      } catch (parseError) {
-        // Si no se pudo analizar, usamos el mensaje de error general
-        errorMessage = error.message;
-      }
-      AlertComponent.error(errorMessage);
-      detailedErrors.forEach((err) => AlertComponent.error(err));
+      AlertComponent.error(
+        "Error al cambiar el estado del usuario. Por favor, intente de nuevo."
+      );
     }
   };
 
   const handleEdit = (investigador) => {
-    setEditingInvestigador(investigador);
-    setNewRol(investigador.role._id); // Prellenar el rol actual con el ID del rol
-    setIsModalOpen(true); // Abrir la modal
+    setEditingUser(investigador);
+    setNewRoleName(investigador.role.roleName);
+    setIsModalOpen(true);
   };
 
   const handleSave = async () => {
-    if (editingInvestigador) {
+    if (editingUser && newRoleName) {
       try {
-        await putData(`users`, editingInvestigador._id, {
-          role: newRol,
-        });
-
-        alert(`Rol actualizado de ${editingInvestigador.nombre} correctamente`);
-
-        const updatedInvestigadores = investigadoresData.map((investigador) =>
-          investigador._id === editingInvestigador._id
-            ? { ...investigador, role: { ...investigador.role, _id: newRol } }
+        await putData('users', editingUser._id, { roleName: newRoleName });
+        const updatedInvestigadores = investigadores.map((investigador) =>
+          investigador._id === editingUser._id
+            ? {
+                ...investigador,
+                role: { ...investigador.role, roleName: newRoleName },
+              }
             : investigador
         );
-        setInvestigadoresData(updatedInvestigadores);
-        setEditingInvestigador(null);
+        setInvestigadores(updatedInvestigadores);
+        setIsModalOpen(false);
+        AlertComponent.success("Rol actualizado exitosamente.");
       } catch (error) {
-        let errorMessage =
-          "Ocurrió un error al editar el rol del Investigador.";
-        let detailedErrors = [];
-
-        try {
-          // Intentamos analizar el error recibido del backend
-          const parsedError = JSON.parse(error.message);
-          errorMessage = parsedError.message;
-          detailedErrors = parsedError.errors || [];
-        } catch (parseError) {
-          // Si no se pudo analizar, usamos el mensaje de error general
-          errorMessage = error.message;
-        }
-        AlertComponent.error(errorMessage);
-        detailedErrors.forEach((err) => AlertComponent.error(err));
+        AlertComponent.error(
+          "Error al actualizar el rol. Por favor, intente de nuevo."
+        );
       }
     }
   };
 
-  const filteredInvestigadores = investigadoresData.filter((investigador) =>
+  const filteredInvestigadores = investigadores.filter((investigador) =>
     investigador.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (loading) return <div>Cargando...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className="investigadores-container">
@@ -139,6 +113,7 @@ function MostrarInvestigadores() {
             <th>Nombre</th>
             <th>Especialización</th>
             <th>Rol</th>
+            <th>Estado</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -149,17 +124,20 @@ function MostrarInvestigadores() {
               <td>{investigador.especializacion}</td>
               <td>{investigador.role.roleName}</td>
               <td>
+                {investigador.isDisabled ? "Deshabilitado" : "Habilitado"}
+              </td>
+              <td>
                 <button
                   className="invest-btn-modificar"
                   onClick={() => handleEdit(investigador)}
                 >
-                  Modificar
+                  Modificar Rol
                 </button>
                 <button
                   className={
                     investigador.isDisabled
-                      ? "invest-btn-deshabilitar"
-                      : "invest-btn-modificar"
+                      ? "invest-btn-habilitar"
+                      : "invest-btn-deshabilitar"
                   }
                   onClick={() =>
                     handleToggleStatus(
@@ -178,29 +156,39 @@ function MostrarInvestigadores() {
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <h2>Editar Rol</h2>
-        {editingInvestigador && (
+        {editingUser && (
           <>
             <p>
-              <strong>Nombre:</strong> {editingInvestigador.nombre}
+              <strong>Nombre:</strong> {editingUser.nombre}
             </p>
             <p>
-              <strong>Especialización:</strong>{" "}
-              {editingInvestigador.especializacion}
+              <strong>Especialización:</strong> {editingUser.especializacion}
             </p>
-            <select value={newRol} onChange={(e) => setNewRol(e.target.value)}>
-              {rolesData.map((role) => (
-                <option key={role._id} value={role._id}>
+            <select
+              value={newRoleName}
+              onChange={(e) => setNewRoleName(e.target.value)}
+              className="role-select"
+            >
+              {roles.map((role) => (
+                <option key={role._id} value={role.roleName}>
                   {role.roleName}
                 </option>
               ))}
             </select>
-            <button onClick={handleSave}>Guardar</button>
+            <div className="modal-buttons">
+              <button onClick={handleSave} className="btn-save">
+                Guardar
+              </button>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="btn-cancel"
+              >
+                Cancelar
+              </button>
+            </div>
           </>
         )}
-        <button onClick={() => setIsModalOpen(false)}>Cancelar</button>
       </Modal>
-    </div>
+    </div> 
   );
 }
-
-export default MostrarInvestigadores;
