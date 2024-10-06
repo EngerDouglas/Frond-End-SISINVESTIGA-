@@ -94,7 +94,7 @@ const AddProjectView = () => {
     try {
       await postData("projects", newProject);
       AlertComponent.success("Proyecto agregado exitosamente");
-      navigate("/proyectos");
+      navigate("/invest/proyectos");
     } catch (error) {
       let errorMessage =
         "Error al crear el Proyecto.";

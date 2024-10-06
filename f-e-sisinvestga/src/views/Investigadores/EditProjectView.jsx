@@ -96,7 +96,7 @@ const EditProjectView = () => {
     try {
       await putData("projects", id, formData);
       AlertComponent.success("Proyecto actualizado exitosamente.");
-      navigate("/proyectos");
+      navigate("/invest/proyectos");
     } catch (error) {
       let errorMessage =
         "Ocurrió un error al actualizar el Proyecto.";

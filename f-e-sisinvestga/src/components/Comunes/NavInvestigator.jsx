@@ -84,22 +84,22 @@ const NavInvestigator = () => {
       {/* Menú principal */}
       <ul className={`nav-investigator-list ${isMobileMenuOpen ? "open" : ""}`}>
         <li className="nav-investigator-item">
-          <Link to="/proyectos" className="nav-investigator-link">
+          <Link to="/invest/proyectos" className="nav-investigator-link">
             <FaFolder /> Proyectos
           </Link>
         </li>
         <li className="nav-investigator-item">
-          <Link to="/publicaciones" className="nav-investigator-link">
+          <Link to="/invest/publicaciones" className="nav-investigator-link">
             <FaFileAlt /> Publicaciones
           </Link>
         </li>
         <li className="nav-investigator-item">
-          <Link to="/informes" className="nav-investigator-link">
+          <Link to="/invest/informes" className="nav-investigator-link">
             <FaChartBar /> Informes
           </Link>
         </li>
         <li className="nav-investigator-item">
-          <Link to="/solicitudes" className="nav-investigator-link">
+          <Link to="/invest/solicitudes" className="nav-investigator-link">
             <FaTasks /> Solicitudes
           </Link>
         </li>
@@ -138,7 +138,7 @@ const NavInvestigator = () => {
             <ul className="nav-investigator-dropdown">
               <li className="nav-investigator-dropdown-item">
                 <Link
-                  to="/perfil-investigador"
+                  to="/invest/perfil-investigador"
                   className="nav-investigator-dropdown-link"
                 >
                   <FaCog /> Configurar Perfil

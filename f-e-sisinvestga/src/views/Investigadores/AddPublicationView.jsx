@@ -84,7 +84,7 @@ const AddPublicationView = () => {
     try {
       await postData("publications", newPublication);
       AlertComponent.success("Publicación agregada exitosamente");
-      navigate("/publicaciones");
+      navigate("/invest/publicaciones");
     } catch (error) {
       let errorMessage =
         "Ocurrió un error al crear la Publicacion.";

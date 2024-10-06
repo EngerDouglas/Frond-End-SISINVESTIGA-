@@ -39,11 +39,11 @@ const InvPublicationView = () => {
   }, [page]);
 
   const handleAddPublication = () => {
-    navigate("/publicaciones/agregar");
+    navigate("/invest/publicaciones/agregar");
   };
 
   const handleEditPublication = (publicationId) => {
-    navigate(`/publicaciones/editar/${publicationId}`);
+    navigate(`/invest/publicaciones/editar/${publicationId}`);
   };
 
   const handleDeletePublication = async (publicationId) => {

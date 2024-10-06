@@ -38,11 +38,11 @@ const InvProjectView = () => {
   }, [page]);
 
   const handleAddProject = () => {
-    navigate("/proyectos/agregar"); // Redirigir a la página de agregar
+    navigate("/invest/proyectos/agregar"); // Redirigir a la página de agregar
   };
 
   const handleEditProject = (projectId) => {
-    navigate(`/proyectos/editar/${projectId}`); // Redirigir a la página de editar
+    navigate(`/invest/proyectos/editar/${projectId}`); // Redirigir a la página de editar
   };
 
   const handleDeleteProject = async (projectId) => {

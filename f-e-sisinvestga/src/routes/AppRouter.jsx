@@ -68,55 +68,55 @@ const AppRouter = () => {
         </ProtectedRoute>
       } />
 
-      <Route path='/proyectos' element={
+      <Route path='/invest/proyectos' element={
         <ProtectedRoute roles={['Investigador']}>
           <InvProjectView />
         </ProtectedRoute>
       } />
 
-      <Route path='/proyectos/agregar' element={
-        <ProtectedRoute roles={['Investigador', 'Administrador']}>
+      <Route path='/invest/proyectos/agregar' element={
+        <ProtectedRoute roles={['Investigador']}>
           <AddProjectView />
         </ProtectedRoute>
       } />
 
-      <Route path='/proyectos/editar/:id' element={
-        <ProtectedRoute roles={['Investigador', 'Administrador']}>
+      <Route path='/invest/proyectos/editar/:id' element={
+        <ProtectedRoute roles={['Investigador']}>
           <EditProjectView />
         </ProtectedRoute>
       } />
 
-      <Route path='/publicaciones' element={
+      <Route path='/invest/publicaciones' element={
         <ProtectedRoute roles={['Investigador']}>
           <InvPublicationView />
         </ProtectedRoute>
       } />
 
-      <Route path='/publicaciones/agregar' element={
+      <Route path='/invest/publicaciones/agregar' element={
         <ProtectedRoute roles={['Investigador', 'Administrador']}>
           <AddPublicationView />
         </ProtectedRoute>
       } />
 
-      <Route path='/publicaciones/editar/:id' element={
+      <Route path='/invest/publicaciones/editar/:id' element={
         <ProtectedRoute roles={['Investigador', 'Administrador']}>
           <EditPublicationView />
         </ProtectedRoute>
       } />
 
-      <Route path='/informes' element={
+      <Route path='/invest/informes' element={
         <ProtectedRoute roles={['Investigador']}>
           <InvInformeView />
         </ProtectedRoute>
       } />
 
-      <Route path='/solicitudes' element={
+      <Route path='/invest/solicitudes' element={
         <ProtectedRoute roles={['Investigador']}>
           <InvRequestView />
         </ProtectedRoute>
       } />
 
-      <Route path='/perfil-investigador' element={
+      <Route path='/invest/perfil-investigador' element={
         <ProtectedRoute roles={['Investigador']}>
           <InvProfileView />
         </ProtectedRoute>

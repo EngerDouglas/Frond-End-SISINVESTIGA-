@@ -96,7 +96,7 @@ const EditPublicationView = () => {
     try {
       await putData("publications", id, updatedPublication);
       AlertComponent.success("Publicación actualizada exitosamente.");
-      navigate("/publicaciones");
+      navigate("/invest/publicaciones");
     } catch (error) {
       let errorMessage =
         "Ocurrió un error al tratar de actualizar la publicacion.";
