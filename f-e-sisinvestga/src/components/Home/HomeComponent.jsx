@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import Nav from "../Comunes/Nav";
 import { getDataParams } from "../../services/apiServices";
+import Pagination from "../Comunes/Pagination";
 import "../../css/componentes/Home/Home.css";
 import img1 from "../../img/invest.jpg";
 import img2 from "../../img/invest2.jpg";
@@ -20,69 +21,91 @@ const HomeComponent = () => {
   const [debouncedSearchTerm] = useDebounce(searchTerm, 400);
   const [activeTab, setActiveTab] = useState("Proyectos");
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        if (activeTab === "Proyectos") {
-          const projectParams = {};
-          if (selectedProjectState) {
-            projectParams.estado = selectedProjectState;
-          }
-          if (debouncedSearchTerm) {
-            projectParams.nombre = debouncedSearchTerm;
-          }
-          const fetchedProjects = await getDataParams("projects", projectParams);
-          setProjectData(fetchedProjects);
-
-          const uniqueStates = [
-            ...new Set(fetchedProjects.map((project) => project.estado)),
-          ];
-          setProjectStates(uniqueStates);
-        } else if (activeTab === "Publicaciones") {
-          const publicationParams = {};
-          if (selectedPublicationTipo) {
-            publicationParams.tipoPublicacion = selectedPublicationTipo;
-          }
-          if (debouncedSearchTerm) {
-            publicationParams.titulo = debouncedSearchTerm;
-          }
-
-          const fetchedPublications = await getDataParams(
-            "publications",
-            publicationParams
-          );
-          setPublicationData(fetchedPublications.publications || []);
-
-          const uniqueTypes = [
-            ...new Set(fetchedPublications.map((pub) => pub.tipoPublicacion)),
-          ];
-          setPublicationTypes(uniqueTypes);
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    try {
+      if (activeTab === "Proyectos") {
+        const projectParams = {
+          page: currentPage,
+          limit: 5,
+        };
+        if (selectedProjectState) {
+          projectParams.estado = selectedProjectState;
         }
-        setLoading(false);
-      } catch (error) {
-        console.error("Error al traer los datos", error);
-        setLoading(false);
+        if (debouncedSearchTerm) {
+          projectParams.nombre = debouncedSearchTerm;
+        }
+        const result = await getDataParams("projects", projectParams);
+        setProjectData(result.projects || []);
+        setTotalPages(result.totalPages || 1);
+
+        const uniqueStates = [
+          ...new Set((result.projects || []).map((project) => project.estado)),
+        ];
+        setProjectStates(uniqueStates);
+      } else if (activeTab === "Publicaciones") {
+        const publicationParams = {
+          page: currentPage,
+          limit: 5,
+        };
+        if (selectedPublicationTipo) {
+          publicationParams.tipoPublicacion = selectedPublicationTipo;
+        }
+        if (debouncedSearchTerm) {
+          publicationParams.titulo = debouncedSearchTerm;
+        }
+
+        const result = await getDataParams("publications", publicationParams);
+        setPublicationData(result.publications || []);
+        setTotalPages(result.totalPages || 1);
+
+        const uniqueTypes = [
+          ...new Set(
+            (result.publications || []).map((pub) => pub.tipoPublicacion)
+          ),
+        ];
+        setPublicationTypes(uniqueTypes);
       }
-    };
-    fetchData();
+    } catch (error) {
+      console.error("Error al traer los datos", error);
+      setProjectData([]);
+      setPublicationData([]);
+      setTotalPages(1);
+    } finally {
+      setLoading(false);
+    }
   }, [
+    activeTab,
+    currentPage,
     debouncedSearchTerm,
     selectedProjectState,
     selectedPublicationTipo,
-    activeTab,
   ]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+    setCurrentPage(1);
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
   return (
     <div>
       <Nav />
-      
-      {/* Carrusel de lado a lado */}
+
       <div className="carousel-container">
         <Carousel className="mb-4">
           <Carousel.Item interval={3000}>
@@ -98,7 +121,6 @@ const HomeComponent = () => {
       </div>
 
       <div className="home-container">
-        {/* Barra de búsqueda */}
         <div className="home-search-container">
           <input
             type="text"
@@ -109,11 +131,13 @@ const HomeComponent = () => {
           />
         </div>
 
-        {/* Pestañas */}
         <div className="home-tabs">
           <button
             className={`home-tab ${activeTab === "Proyectos" ? "active" : ""}`}
-            onClick={() => setActiveTab("Proyectos")}
+            onClick={() => {
+              setActiveTab("Proyectos");
+              setCurrentPage(1);
+            }}
           >
             Proyectos
           </button>
@@ -121,13 +145,15 @@ const HomeComponent = () => {
             className={`home-tab ${
               activeTab === "Publicaciones" ? "active" : ""
             }`}
-            onClick={() => setActiveTab("Publicaciones")}
+            onClick={() => {
+              setActiveTab("Publicaciones");
+              setCurrentPage(1);
+            }}
           >
             Publicaciones
           </button>
         </div>
 
-        {/* Filtros */}
         <div className="filters-container">
           {activeTab === "Proyectos" && (
             <div className="filter-group">
@@ -135,7 +161,10 @@ const HomeComponent = () => {
               <select
                 id="estado"
                 value={selectedProjectState}
-                onChange={(e) => setSelectedProjectState(e.target.value)}
+                onChange={(e) => {
+                  setSelectedProjectState(e.target.value);
+                  setCurrentPage(1);
+                }}
               >
                 <option value="">Todos</option>
                 {projectStates.map((estado) => (
@@ -153,7 +182,10 @@ const HomeComponent = () => {
               <select
                 id="tipo"
                 value={selectedPublicationTipo}
-                onChange={(e) => setSelectedPublicationTipo(e.target.value)}
+                onChange={(e) => {
+                  setSelectedPublicationTipo(e.target.value);
+                  setCurrentPage(1);
+                }}
               >
                 <option value="">Todos</option>
                 {publicationTypes.map((tipo) => (
@@ -166,7 +198,6 @@ const HomeComponent = () => {
           )}
         </div>
 
-        {/* Sección de proyectos */}
         {activeTab === "Proyectos" && (
           <div className="projects-section">
             {loading ? (
@@ -186,11 +217,18 @@ const HomeComponent = () => {
                     </div>
                     <div className="card-content">
                       <h3>{project.nombre}</h3>
-                      <p>{project.descripcion.substring(0, 100)}...</p>
+                      <p>
+                        {project.descripcion
+                          ? project.descripcion.substring(0, 100) + "..."
+                          : "No hay descripción disponible"}
+                      </p>
                       <p>
                         <strong>Estado:</strong> {project.estado}
                       </p>
-                      <Link to={`/proyectos/${project._id}`} className="card-button">
+                      <Link
+                        to={`/proyectos/${project._id}`}
+                        className="card-button"
+                      >
                         Ver más
                       </Link>
                     </div>
@@ -203,7 +241,6 @@ const HomeComponent = () => {
           </div>
         )}
 
-        {/* Sección de publicaciones */}
         {activeTab === "Publicaciones" && (
           <div className="publications-section">
             {loading ? (
@@ -222,8 +259,15 @@ const HomeComponent = () => {
                       />
                     </div>
                     <div className="card-content">
-                      <h3>{publication.titulo || "Sin título"}</h3>
-                      <p>{(publication.descripcion || "Sin descripción").substring(0, 100)}...</p>
+                      <h3>{publication.titulo}</h3>
+                      <p>
+                        {publication.resumen
+                          ? publication.resumen.substring(0, 100) + "..."
+                          : "No hay resumen disponible"}
+                      </p>
+                      <p>
+                        <strong>Tipo:</strong> {publication.tipoPublicacion}
+                      </p>
                       <Link
                         to={`/publicaciones/${publication._id}`}
                         className="card-button"
@@ -239,6 +283,15 @@ const HomeComponent = () => {
             )}
           </div>
         )}
+
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onNext={handleNextPage}
+          onPrev={handlePrevPage}
+          disabledPrev={currentPage === 1}
+          disabledNext={currentPage === totalPages}
+        />
       </div>
     </div>
   );

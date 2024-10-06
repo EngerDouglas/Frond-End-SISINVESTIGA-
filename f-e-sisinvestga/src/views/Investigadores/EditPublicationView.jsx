@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
-import { getUserData, putData } from "../../services/apiServices";
+import { getDataById, getUserData, putData } from "../../services/apiServices";
 import NavInvestigator from "../../components/Comunes/NavInvestigator";
 import AlertComponent from "../../components/Comunes/AlertComponent";
 import "react-datepicker/dist/react-datepicker.css";
@@ -28,18 +28,17 @@ const EditPublicationView = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Obtener los tipos de publicación
         const userPublicationsData = await getUserData("publications");
         setTiposPublicacion(userPublicationsData.tiposPublicacion || []);
 
-        // Cargar la publicación a editar
-        const publicationData = userPublicationsData.data.find(
-          (pub) => pub._id === id
-        );
+        // Obtener los datos de la publicación específica
+        const publicationData = await getDataById('publications/getpublication', id);
         if (publicationData) {
           setFormData({
             titulo: publicationData.titulo,
             fecha: new Date(publicationData.fecha),
-            proyecto: publicationData.proyecto._id, // Almacena solo el ID del proyecto
+            proyecto: publicationData.proyecto?._id || "",
             revista: publicationData.revista,
             resumen: publicationData.resumen,
             palabrasClave: publicationData.palabrasClave.join(", "),
@@ -47,7 +46,7 @@ const EditPublicationView = () => {
             idioma: publicationData.idioma,
             anexos: publicationData.anexos.join(", "),
           });
-          setProyectoNombre(publicationData.proyecto.nombre); // Almacena el nombre del proyecto para mostrarlo
+          setProyectoNombre(publicationData.proyecto?.nombre || "No asociado");
         }
       } catch (error) {
         let errorMessage =

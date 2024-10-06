@@ -20,11 +20,12 @@ const InvPublicationView = () => {
     const fetchPublicationViews = async () => {
       try {
         const data = await getUserData("publications", { page, limit: 6 });
-        if (data && data.data) {
-          setPublications(data.data);
-          setTotalPages(Math.ceil(data.total / data.limit));
+        if (data && data.publications) {
+          setPublications(data.publications);
+          setTotalPages(data.totalPages);
         } else {
           setPublications([]);
+          setTotalPages(1);
         }
         setLoading(false);
       } catch (error) {
@@ -101,7 +102,7 @@ const InvPublicationView = () => {
         <h1>Mis Publicaciones</h1>
 
         <button className="add-publication-btn" onClick={handleAddPublication}>
-          <FaPlus /> Agregar Publication
+          <FaPlus /> Agregar Publicación
         </button>
 
         <div className="publications-list">
@@ -115,15 +116,17 @@ const InvPublicationView = () => {
               />
             ))
           ) : (
-            <p>No tienes publicaciones aún. ¡Agrega una nuevo!</p>
+            <p>No tienes publicaciones aún. ¡Agrega una nueva!</p>
           )}
         </div>
 
         <Pagination
           currentPage={page}
           totalPages={totalPages}
-          onNext={() => setPage(page + 1)}
-          onPrev={() => setPage(page - 1)}
+          onNext={() =>
+            setPage((prevPage) => Math.min(prevPage + 1, totalPages))
+          }
+          onPrev={() => setPage((prevPage) => Math.max(prevPage - 1, 1))}
           disabledPrev={page === 1}
           disabledNext={page === totalPages}
         />
