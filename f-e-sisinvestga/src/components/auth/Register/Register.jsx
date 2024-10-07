@@ -14,9 +14,11 @@ export default function Register() {
   const [especializacion, setEspecializacion] = useState("");
   const [responsabilidades, setResponsabilidades] = useState("");
   const [responsabilidadesList, setResponsabilidadesList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       await postData("users/register", {
         nombre: nombre,
@@ -47,6 +49,8 @@ export default function Register() {
       }
       AlertComponent.error(errorMessage);
       detailedErrors.forEach((err) => AlertComponent.error(err));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -150,7 +154,7 @@ export default function Register() {
               ))}
             </ul>
             <button type="submit" className="register-btn">
-              Registrar Investigador
+              {isLoading  ? "Registrando..." : "Registrar Investigador"}
             </button>
           </form>
           <div className="signin-option">
