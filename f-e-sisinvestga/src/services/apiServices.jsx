@@ -106,7 +106,7 @@ export const forgotPassword = async (email) => {
     const response = await api.post('/users/forgot-password', { email });
     return response.data;
   } catch (error) {
-    const errorMessage = error.response?.data?.error || error.message || 'Error desconocido';
+    const errorMessage = error.response?.data?.error?.message || error.message ;
     throw new Error(errorMessage);
   }
 };
@@ -117,7 +117,7 @@ export const resetPassword = async (token, password) => {
     const response = await api.post(`/users/reset-password/${token}`, { password });
     return response.data;
   } catch (error) {
-    const errorMessage = error.response?.data?.error || error.message || 'Error desconocido';
+    const errorMessage = error.response?.data?.error?.message || error.message ;
     throw new Error(errorMessage);
   }
 };
