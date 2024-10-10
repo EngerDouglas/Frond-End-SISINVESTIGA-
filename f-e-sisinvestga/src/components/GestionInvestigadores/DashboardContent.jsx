@@ -27,7 +27,7 @@ const DashboardContent = () => {
         setTotalPublications(publicaciones.total || 0);
 
         const solicitudes = await getUserData("requests");
-        setRequests(solicitudes.data || []);
+        setRequests(solicitudes.solicitudes || []);
       } catch (error) {
         setError("Error al cargar los datos del dashboard");
         console.error(error); // Mostrar el error en la consola
@@ -156,8 +156,8 @@ const DashboardContent = () => {
               </tr>
             </thead>
             <tbody>
-              {requests.slice(0, 5).map((request, index) => (
-                <tr key={index}>
+              {requests.slice(0, 5).map((request) => (
+                <tr key={request._id}>
                   <td>{new Date(request.createdAt).toLocaleDateString()}</td>
                   <td>{request.tipoSolicitud}</td>
                   <td>{request.estado}</td>
