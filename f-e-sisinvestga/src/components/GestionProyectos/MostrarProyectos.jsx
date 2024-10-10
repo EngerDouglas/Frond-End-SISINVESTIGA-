@@ -26,7 +26,7 @@ function MostrarProyectos() {
     const fetchProyectos = async () => {
       try {
         const proyectos = await getData("projects");
-        setProyectoData(proyectos);
+        setProyectoData(proyectos.projects || []);
       } catch (error) {
         console.error("Error al obtener los proyectos", error);
       }
