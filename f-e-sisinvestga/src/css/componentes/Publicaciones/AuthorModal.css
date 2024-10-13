@@ -1,7 +1,4 @@
-/* AuthorModal.css */
-
-/* Overlay del modal */
-.author-modal-overlay {
+.author-modal__overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -14,11 +11,10 @@
   z-index: 1000;
 }
 
-/* Contenedor del modal */
 .author-modal {
   background-color: #fff;
-  padding: 20px 30px;
-  border-radius: 8px;
+  padding: 30px;
+  border-radius: 10px;
   width: 400px;
   max-width: 90%;
   position: relative;
@@ -26,8 +22,7 @@
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Botón de cierre */
-.author-modal-close {
+.author-modal__close {
   position: absolute;
   top: 15px;
   right: 15px;
@@ -36,44 +31,47 @@
   font-size: 1.2em;
   cursor: pointer;
   color: #555;
+  transition: color 0.3s ease;
 }
 
-.author-modal-close:hover {
+.author-modal__close:hover {
   color: #000;
 }
 
-/* Contenido del modal */
-.author-modal-content {
+.author-modal__content {
   text-align: center;
-  margin-top: 20px;
 }
 
-/* Foto del autor */
-.author-modal-photo {
+.author-modal__photo {
   width: 120px;
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   border: 3px solid #0077b6;
 }
 
-/* Nombre del autor */
-.author-modal-content h2 {
+.author-modal__name {
   font-size: 1.8em;
   color: #0077b6;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
-/* Detalles del autor */
-.author-modal-content p {
+.author-modal__info {
   font-size: 1em;
   color: #555;
   line-height: 1.5;
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
-/* Animación de aparición */
+.author-modal__icon {
+  color: #0077b6;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -85,17 +83,16 @@
   }
 }
 
-/* Responsividad */
 @media (max-width: 480px) {
   .author-modal {
-    padding: 15px 20px;
+    padding: 20px;
   }
 
-  .author-modal-content h2 {
+  .author-modal__name {
     font-size: 1.5em;
   }
 
-  .author-modal-photo {
+  .author-modal__photo {
     width: 100px;
     height: 100px;
   }

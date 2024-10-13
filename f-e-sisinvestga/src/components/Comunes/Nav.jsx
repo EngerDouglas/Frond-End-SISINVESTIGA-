@@ -1,59 +1,73 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectCurrentRole } from "../../features/auth/authSlice";
 import logo from "../../assets/img/LogoWebUCSD.png";
+import { FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
 import "../../css/componentes/Comunes/Nav.css";
 
 function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const role = useSelector(selectCurrentRole);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 10;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+
+    document.addEventListener('scroll', handleScroll);
+    return () => {
+      document.removeEventListener('scroll', handleScroll);
+    };
+  }, [scrolled]);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+    setDropdownOpen(false); // Cerrar el dropdown al abrir/cerrar el menú móvil
+  };
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+    setDropdownOpen(false);
+  };
+
   return (
-    <nav className="common-nav-bar">
-      <div className="common-nav-container">
-        <ul className="common-nav-list common-nav-left">
-          <li className="common-nav-item">
-            <Link to="/" className="common-nav-link">
-              Inicio
-            </Link>
-          </li>
-          <li className="common-nav-item">
-            <Link to="/proyectos" className="common-nav-link">
-              Proyectos
-            </Link>
-          </li>
-          <li className="common-nav-item">
-            <Link to="/publicaciones" className="common-nav-link">
-              Publicaciones
-            </Link>
-          </li>
-        </ul>
-
-        <div className="common-logo-container">
-          <Link to="/">
-            <img src={logo} alt="UCSD Logo" className="common-nav-logo" />
-          </Link>
-        </div>
-
-        <ul className="common-nav-list common-nav-right">
-          {!role && (
-            <li className="common-nav-item common-login-btn">
-              <Link to="/login" className="common-nav-link">
-                Iniciar Sesión
-              </Link>
-            </li>
-          )}
-          <li className="common-nav-item common-search-item">
-            <div className="common-search-container">
-              <input
-                type="text"
-                placeholder="Buscar..."
-                className="common-search-input"
-              />
-              <button className="common-search-btn">🔍</button>
+    <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+      <div className="navbar-container">
+        <Link to="/" className="navbar-logo" onClick={closeMenu}>
+          <img src={logo} alt="UCSD Logo" />
+        </Link>
+        <div className={`navbar-menu ${menuOpen ? 'active' : ''}`}>
+          <Link to="/" className="navbar-item" onClick={closeMenu}>Inicio</Link>
+          <Link to="/proyectos" className="navbar-item" onClick={closeMenu}>Proyectos</Link>
+          <Link to="/publicaciones" className="navbar-item" onClick={closeMenu}>Publicaciones</Link>
+          <div className="navbar-item dropdown">
+            <span onClick={toggleDropdown}>
+              Recursos <FaChevronDown className={`chevron ${dropdownOpen ? 'rotate' : ''}`} />
+            </span>
+            <div className={`dropdown-content ${dropdownOpen ? 'active' : ''}`}>
+              <Link to="/biblioteca" onClick={closeMenu}>Biblioteca</Link>
+              <Link to="/investigacion" onClick={closeMenu}>Investigación</Link>
             </div>
-          </li>
-        </ul>
+          </div>
+          {!role && (
+            <Link to="/login" className="navbar-item login-btn" onClick={closeMenu}>
+              Iniciar Sesión
+            </Link>
+          )}
+        </div>
+        <div className="navbar-toggle" onClick={toggleMenu}>
+          {menuOpen ? <FaTimes /> : <FaBars />}
+        </div>
       </div>
     </nav>
   );

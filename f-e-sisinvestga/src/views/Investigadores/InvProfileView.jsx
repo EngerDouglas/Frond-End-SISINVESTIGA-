@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logoutAllUser } from "../../features/auth/authSlice";
 import PasswordChecklist from "react-password-checklist";
-import { getUserData, putSelfData } from "../../services/apiServices"; // Tu apiService
+import { getUserData, putSelfData } from "../../services/apiServices";
 import NavInvestigator from "../../components/Comunes/NavInvestigator";
 import AlertComponent from "../../components/Comunes/AlertComponent";
+import { FaUser, FaEnvelope, FaGraduationCap, FaTasks, FaKey, FaSignOutAlt } from "react-icons/fa";
 import "../../css/componentes/GestionInvestigadores/InvProfileView.css";
 
 const InvProfileView = () => {
@@ -14,7 +15,7 @@ const InvProfileView = () => {
     apellido: "",
     email: "",
     especializacion: "",
-    responsabilidades: [], // Inicializamos responsabilidades como un array vacío
+    responsabilidades: [],
     fotoPerfil: "",
   });
   const dispatch = useDispatch();
@@ -22,13 +23,14 @@ const InvProfileView = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const data = await getUserData("users");
-        setUser({ ...data, responsabilidades: data.responsabilidades || [], });
+        setUser({ ...data, responsabilidades: data.responsabilidades || [] });
       } catch (error) {
         AlertComponent.error("Error al cargar el perfil del usuario");
       }
@@ -55,16 +57,23 @@ const InvProfileView = () => {
       await putSelfData("users", updates);
       AlertComponent.success("Perfil actualizado correctamente");
       setIsUpdating(false);
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
     } catch (error) {
-      if (error.response && error.response.data) {
-        const errorMessages = error.response.data.errors || [
-          error.response.data.error,
-        ];
-        errorMessages.forEach((err) => AlertComponent.error(err.msg || err));
-      } else {
-        AlertComponent.error("Error al actualizar el perfil");
-        setIsUpdating(false);
+      let errorMessage = "Error al crear el Proyecto.";
+      let detailedErrors = [];
+
+      try {
+        const parsedError = JSON.parse(error.message);
+        errorMessage = parsedError.message;
+        detailedErrors = parsedError.errors || [];
+      } catch (parseError) {
+        errorMessage = error.message;
       }
+      AlertComponent.error(errorMessage);
+      detailedErrors.forEach((err) => AlertComponent.error(err));
+      setIsUpdating(false);
     }
   };
 
@@ -74,10 +83,18 @@ const InvProfileView = () => {
         navigate("/login");
       });
     } catch (error) {
-      console.error(
-        "Error al cerrar las sesiones en todos los dispositivos:",
-        error
-      );
+      console.error("Error al cerrar las sesiones en todos los dispositivos:", error);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUser({ ...user, fotoPerfil: reader.result });
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -89,87 +106,113 @@ const InvProfileView = () => {
         <div className="profile-card">
           <div className="profile-avatar">
             <img src={user.fotoPerfil || "/default-avatar.png"} alt="Avatar" />
-            <label className="profile-label">Subir nueva foto</label>
-            <input type="file" className="profile-input" />
+            <label className="profile-label" htmlFor="profile-photo-upload">
+              Subir nueva foto
+            </label>
+            <input
+              id="profile-photo-upload"
+              type="file"
+              className="profile-input"
+              onChange={handleFileChange}
+              accept="image/*"
+            />
           </div>
           <form onSubmit={handleUpdateUser} className="profile-form">
-            <label>Nombre</label>
-            <input
-              type="text"
-              value={user.nombre}
-              onChange={(e) => setUser({ ...user, nombre: e.target.value })}
-              required
-            />
+            <div className="form-group">
+              <FaUser className="form-icon" />
+              <input
+                type="text"
+                value={user.nombre}
+                onChange={(e) => setUser({ ...user, nombre: e.target.value })}
+                placeholder="Nombre"
+                required
+              />
+            </div>
 
-            <label>Apellido</label>
-            <input
-              type="text"
-              value={user.apellido}
-              onChange={(e) => setUser({ ...user, apellido: e.target.value })}
-              required
-            />
+            <div className="form-group">
+              <FaUser className="form-icon" />
+              <input
+                type="text"
+                value={user.apellido}
+                onChange={(e) => setUser({ ...user, apellido: e.target.value })}
+                placeholder="Apellido"
+                required
+              />
+            </div>
 
-            <label>Email</label>
-            <input
-              type="email"
-              value={user.email}
-              onChange={(e) => setUser({ ...user, email: e.target.value })}
-              required
-            />
+            <div className="form-group">
+              <FaEnvelope className="form-icon" />
+              <input
+                type="email"
+                value={user.email}
+                onChange={(e) => setUser({ ...user, email: e.target.value })}
+                placeholder="Email"
+                required
+              />
+            </div>
 
-            <label>Especialización</label>
-            <input
-              type="text"
-              value={user.especializacion}
-              onChange={(e) =>
-                setUser({ ...user, especializacion: e.target.value })
-              }
-              required
-            />
+            <div className="form-group">
+              <FaGraduationCap className="form-icon" />
+              <input
+                type="text"
+                value={user.especializacion}
+                onChange={(e) => setUser({ ...user, especializacion: e.target.value })}
+                placeholder="Especialización"
+                required
+              />
+            </div>
 
-            <label>Responsabilidades</label>
-            <textarea
-              value={user.responsabilidades.join(", ")}
-              onChange={(e) =>
-                setUser({
-                  ...user,
-                  responsabilidades: e.target.value.split(", "),
-                })
-              }
-              required
-            />
+            <div className="form-group">
+              <FaTasks className="form-icon" />
+              <textarea
+                value={user.responsabilidades.join(", ")}
+                onChange={(e) => setUser({ ...user, responsabilidades: e.target.value.split(", ") })}
+                placeholder="Responsabilidades (separadas por coma)"
+                required
+              />
+            </div>
 
-            {/* Cambiar Contraseña */}
-            <label>Cambiar Contraseña</label>
-            <input
-              type="password"
-              placeholder="Contraseña actual"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-            />
+            <h3 className="section-title">Cambiar Contraseña</h3>
 
-            <input
-              type="password"
-              placeholder="Nueva contraseña"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
+            <div className="form-group">
+              <FaKey className="form-icon" />
+              <input
+                type="password"
+                placeholder="Contraseña actual"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                required
+              />
+            </div>
 
-            <input
-              type="password"
-              placeholder="Confirmar nueva contraseña"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
+            <div className="form-group">
+              <FaKey className="form-icon" />
+              <input
+                type="password"
+                placeholder="Nueva contraseña"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+            </div>
+
+            <div className="form-group">
+              <FaKey className="form-icon" />
+              <input
+                type="password"
+                placeholder="Confirmar nueva contraseña"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </div>
 
             <PasswordChecklist
-              rules={["minLength", "specialChar", "number", "capital"]}
+              rules={["minLength", "specialChar", "number", "capital", "match"]}
               minLength={8}
               value={newPassword}
               valueAgain={confirmPassword}
-              onChange={(isValid) => console.log(isValid)}
+              onChange={(isValid) => setIsPasswordValid(isValid)}
               messages={{
-                minLength: "La contraseña tiene más de 8 caracteres.",
+                minLength: "La contraseña tiene al menos 8 caracteres.",
                 specialChar: "La contraseña tiene caracteres especiales.",
                 number: "La contraseña tiene un número.",
                 capital: "La contraseña tiene una letra mayúscula.",
@@ -177,14 +220,13 @@ const InvProfileView = () => {
               }}
             />
 
-            <button type="submit" className="save-btn" disabled={isUpdating}>
+            <button type="submit" className="save-btn" disabled={isUpdating || (newPassword && !isPasswordValid)}>
               {isUpdating ? "Actualizando..." : "Guardar cambios"}
             </button>
           </form>
 
-          {/* Cerrar sesiones */}
           <button className="logout-all-btn" onClick={handleLogoutAllSessions}>
-            Cerrar sesiones en todos los dispositivos
+            <FaSignOutAlt /> Cerrar sesiones en todos los dispositivos
           </button>
         </div>
       </div>

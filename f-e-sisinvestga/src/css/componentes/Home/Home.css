@@ -1,147 +1,177 @@
-/* Contenedor principal */
+.home-page {
+  font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .home-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 40px 20px;
 }
 
-/* Barra de búsqueda */
-.home-search-container {
-  text-align: center;
-  margin-bottom: 20px;
+.home-carousel {
+  margin-bottom: 40px;
 }
 
-.home-search-bar {
-  width: 60%;
-  padding: 12px 20px;
-  border: 1px solid #ccc;
-  border-radius: 25px;
-  font-size: 16px;
-  transition: width 0.3s ease;
-}
-
-.home-search-bar:focus {
-  width: 70%;
-}
-
-/* Carrusel */
-.carousel .carousel-item {
-  position: relative;
-}
-
-.carousel .carousel-item img {
-  max-height: 400px;
+.home-carousel .carousel-item img {
+  height: 60vh;
   object-fit: cover;
-  width: 100%;
-  height: 100%;
-  position: relative;
+  filter: brightness(0.7);
 }
 
-/* Agregar gradiente sobre la imagen para crear el efecto de desvanecimiento */
-.carousel .carousel-item img {
-  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
+.home-carousel .carousel-caption {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  border-radius: 10px;
 }
 
-/* Pestañas */
+.home-carousel .carousel-caption h3 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.home-carousel .carousel-caption p {
+  font-size: 1.2rem;
+}
+
 .home-tabs {
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .home-tab {
-  padding: 10px 20px;
-  cursor: pointer;
+  padding: 12px 24px;
+  font-size: 16px;
   border: none;
-  background-color: #f8f9fa;
-  transition: background-color 0.3s ease;
+  background-color: #f0f0f0;
+  color: #004d40;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.home-tab:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.home-tab:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .home-tab.active {
-  background-color: #218838;
+  background-color: #004d40;
   color: white;
 }
 
-/* Tarjetas */
-.cards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
+.filters-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px;
 }
 
-.project-card,
-.publication-card {
+.filter-icon {
+  margin-right: 10px;
+  color: #004d40;
+}
+
+.filters-container select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 200px;
+  color: #004d40;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.card {
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.project-card:hover,
-.publication-card:hover {
-  transform: translateY(-10px);
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .card-image img {
   width: 100%;
-  height: 150px;
+  height: 200px;
   object-fit: cover;
 }
 
 .card-content {
-  padding: 15px;
+  padding: 20px;
+}
+
+.card-content h3 {
+  margin-bottom: 10px;
+  color: #004d40;
 }
 
 .card-button {
-  background-color: #218838;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #004d40;
   color: white;
-  border: none;
-  padding: 10px;
+  text-decoration: none;
   border-radius: 5px;
-  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .card-button:hover {
-  background-color: #196f2e;
+  background-color: #00695c;
 }
 
-/* Contenedor del carrusel */
-.carousel-container {
-  width: 100vw; /* Ocupa todo el ancho de la ventana */
-  margin-left: calc(-50vw + 50%); /* Centra el carrusel */
+.loading-spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #004d40;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 40px auto;
 }
 
-.carousel img {
-  width: 100vw; /* Asegura que las imágenes ocupen todo el ancho de la ventana */
-  height: auto; /* Mantiene la proporción de la imagen */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-/* Ajustes adicionales para responsividad */
 @media (max-width: 768px) {
-  .carousel img {
-    height: auto; /* Mantener las proporciones correctas en pantallas pequeñas */
+  .home-container {
+    padding: 20px;
   }
-}
 
-/* Ajustes para el contenedor de filtros */
-.filters-container {
-  display: flex;
-  justify-content: center; /* Centra los filtros */
-  margin-bottom: 20px; /* Espacio inferior */
-}
+  .home-carousel .carousel-item img {
+    height: 40vh;
+  }
 
-.filter-group {
-  margin: 0 10px; /* Espacio entre los filtros */
-}
+  .cards-container {
+    grid-template-columns: 1fr;
+  }
 
-.filter-group select {
-  padding: 8px; /* Espaciado interno */
-  border: 1px solid #ccc; /* Borde */
-  border-radius: 5px; /* Bordes redondeados */
-  font-size: 14px; /* Tamaño de fuente */
-  width: 150px; /* Ancho fijo para la barra de estado */
-  max-width: 100%; /* Asegura que no se desborde en pantallas pequeñas */
+  .home-tab {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .filters-container select {
+    width: 100%;
+  }
 }

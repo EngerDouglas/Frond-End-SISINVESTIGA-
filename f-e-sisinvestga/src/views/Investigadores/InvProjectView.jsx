@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { FaPlus, FaSearch } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import NavInvestigator from "../../components/Comunes/NavInvestigator";
 import ProjectCard from "../../components/GestionProyectos/ProjectCard";
 import Pagination from "../../components/Comunes/Pagination";
+import SearchBar from "../../components/Comunes/SearchBar";
 import { getUserData, deleteData } from "../../services/apiServices";
 import AlertComponent from "../../components/Comunes/AlertComponent";
 import "../../css/componentes/GestionProyectos/InvProjectView.css";
@@ -101,16 +102,11 @@ const InvProjectView = () => {
           </button>
         </div>
 
-        <div className="search-container">
-          <FaSearch className="search-icon" />
-          <input
-            type="text"
-            placeholder="Buscar proyectos..."
-            value={searchTerm}
-            onChange={handleSearch}
-            className="search-input"
-          />
-        </div>
+        <SearchBar
+          value={searchTerm}
+          onChange={handleSearch}
+          placeholder="Buscar proyectos..."
+        />
 
         <div className="projects-list">
           {projects.length > 0 ? (
