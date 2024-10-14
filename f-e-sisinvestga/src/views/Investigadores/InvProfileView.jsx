@@ -24,6 +24,7 @@ const InvProfileView = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isUpdating, setIsUpdating] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,25 +44,32 @@ const InvProfileView = () => {
     e.preventDefault();
     setIsUpdating(true);
 
-    const updates = {
-      nombre: user.nombre,
-      apellido: user.apellido,
-      email: user.email,
-      especializacion: user.especializacion,
-      responsabilidades: user.responsabilidades,
-      currentPassword,
-      newPassword,
-    };
+    const formData = new FormData();
+    formData.append('nombre', user.nombre);
+    formData.append('apellido', user.apellido);
+    formData.append('email', user.email);
+    formData.append('especializacion', user.especializacion);
+    formData.append('responsabilidades', user.responsabilidades.join(', ')); 
+    
+    if (currentPassword && newPassword) {
+      formData.append('currentPassword', currentPassword);
+      formData.append('newPassword', newPassword);
+    }
+  
+    if (selectedFile) {
+      formData.append('fotoPerfil', selectedFile);
+    }
 
     try {
-      await putSelfData("users", updates);
+      const updatedUser = await putSelfData('users', formData);
+      setUser({ ...user, ...updatedUser.user });
       AlertComponent.success("Perfil actualizado correctamente");
       setIsUpdating(false);
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
     } catch (error) {
-      let errorMessage = "Error al crear el Proyecto.";
+      let errorMessage = "Error al actualizar el usuario.";
       let detailedErrors = [];
 
       try {
@@ -90,6 +98,7 @@ const InvProfileView = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setSelectedFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setUser({ ...user, fotoPerfil: reader.result });
@@ -105,7 +114,7 @@ const InvProfileView = () => {
         <h2 className="profile-title">Perfil de Usuario</h2>
         <div className="profile-card">
           <div className="profile-avatar">
-            <img src={user.fotoPerfil || "/default-avatar.png"} alt="Avatar" />
+            <img src={user.fotoPerfil || '/default-avatar.png'} alt="Avatar" />
             <label className="profile-label" htmlFor="profile-photo-upload">
               Subir nueva foto
             </label>
@@ -181,7 +190,6 @@ const InvProfileView = () => {
                 placeholder="Contraseña actual"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                required
               />
             </div>
 

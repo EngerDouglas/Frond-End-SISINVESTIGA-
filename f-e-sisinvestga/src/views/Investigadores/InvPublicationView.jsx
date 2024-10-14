@@ -106,7 +106,7 @@ const InvPublicationView = () => {
         <SearchBar
           value={searchTerm}
           onChange={handleSearch}
-          placeholder="Buscar proyectos..."
+          placeholder="Buscar publicaciones..."
         />
 
         <div className="publications-list">

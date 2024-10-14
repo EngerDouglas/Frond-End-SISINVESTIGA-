@@ -113,6 +113,15 @@
   text-decoration: underline;
 }
 
+.publication-details__attachment-item a {
+  color: #0077b6;
+  text-decoration: none;
+}
+
+.publication-details__attachment-item a:hover {
+  text-decoration: underline;
+}
+
 .publication-details__keywords {
   display: flex;
   flex-wrap: wrap;

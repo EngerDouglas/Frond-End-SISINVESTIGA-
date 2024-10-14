@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import { getDataById, getUserData, putData } from "../../services/apiServices";
 import NavInvestigator from "../../components/Comunes/NavInvestigator";
 import AlertComponent from "../../components/Comunes/AlertComponent";
-import { FaArrowLeft, FaArrowRight, FaSave } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaSave, FaUpload, FaTrash } from "react-icons/fa";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../css/componentes/Publicaciones/EditPublicationView.css";
 
@@ -19,12 +19,15 @@ const EditPublicationView = () => {
     resumen: "",
     palabrasClave: "",
     tipoPublicacion: "",
-    idioma: "Español",
-    anexos: "",
+    idioma: 'Español',
   });
 
   const [proyectoNombre, setProyectoNombre] = useState("");
   const [tiposPublicacion, setTiposPublicacion] = useState([]);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [existingAnexos, setExistingAnexos] = useState([]);
+  const [newAnexos, setNewAnexos] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,9 +47,11 @@ const EditPublicationView = () => {
             palabrasClave: publicationData.palabrasClave.join(", "),
             tipoPublicacion: publicationData.tipoPublicacion,
             idioma: publicationData.idioma,
-            anexos: publicationData.anexos.join(", "),
+            imagen: publicationData.imagen,
           });
           setProyectoNombre(publicationData.proyecto?.nombre || "No asociado");
+          setPreviewImage(publicationData.imagen);
+          setExistingAnexos(publicationData.anexos || []);
         }
       } catch (error) {
         handleError(error, "Ocurrió un error al cargar los datos al formulario.");
@@ -64,6 +69,31 @@ const EditPublicationView = () => {
     }));
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  
+  const handleAnexoChange = (e) => {
+    const files = Array.from(e.target.files);
+    setNewAnexos((prevAnexos) => [...prevAnexos, ...files]);
+  };
+
+  const removeExistingAnexo = (index) => {
+    setExistingAnexos((prevAnexos) => prevAnexos.filter((_, i) => i !== index));
+  };
+
+  const removeNewAnexo = (index) => {
+    setNewAnexos((prevAnexos) => prevAnexos.filter((_, i) => i !== index));
+  };
+
   const handleDateChange = (date) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -73,14 +103,34 @@ const EditPublicationView = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const updatedPublication = {
-      ...formData,
-      palabrasClave: formData.palabrasClave.split(",").map((p) => p.trim()),
-      anexos: formData.anexos.split(",").map((a) => a.trim()),
-    };
+    const formDataToSend = new FormData();
+    formDataToSend.append('titulo', formData.titulo);
+    formDataToSend.append('revista', formData.revista);
+    formDataToSend.append('resumen', formData.resumen);
+
+    // Procesar 'palabrasClave' como un arreglo
+    const palabrasClaveArray = formData.palabrasClave.split(',').map((p) => p.trim());
+    formDataToSend.append('palabrasClave', JSON.stringify(palabrasClaveArray));
+
+    formDataToSend.append('tipoPublicacion', formData.tipoPublicacion);
+    formDataToSend.append('idioma', formData.idioma);
+    formDataToSend.append('fecha', formData.fecha.toISOString());
+
+    // Si se seleccionó una nueva imagen
+    if (selectedFile) {
+      formDataToSend.append('imagen', selectedFile);
+    }
+
+    // Agregar nuevos anexos
+    newAnexos.forEach((anexo) => {
+      formDataToSend.append('anexos', anexo);
+    });
+
+    // Enviar los anexos existentes (los que no se eliminaron)
+    formDataToSend.append('existingAnexos', JSON.stringify(existingAnexos));
 
     try {
-      await putData("publications", id, updatedPublication);
+      await putData("publications", id, formDataToSend);
       AlertComponent.success("Publicación actualizada exitosamente.");
       navigate("/invest/publicaciones");
     } catch (error) {
@@ -110,17 +160,18 @@ const EditPublicationView = () => {
     <>
       <NavInvestigator />
       <div className="edit-publication-view-container">
-        <div className="wizard-container">
-          <h2>Editar Publicación</h2>
-          <div className="step-indicator">
-            <div className={`step ${currentStep >= 1 ? 'active' : ''}`}>Información Básica</div>
-            <div className={`step ${currentStep >= 2 ? 'active' : ''}`}>Detalles</div>
-            <div className={`step ${currentStep >= 3 ? 'active' : ''}`}>Contenido y Anexos</div>
+        <div className="edit-wizard-container">
+          <h2 className="edit-h2">Editar Publicación</h2>
+          <div className="edit-step-indicator">
+            <div className={`edit-step ${currentStep >= 1 ? 'active' : ''}`}>Información Básica</div>
+            <div className={`edit-step ${currentStep >= 2 ? 'active' : ''}`}>Detalles</div>
+            <div className={`edit-step ${currentStep >= 3 ? 'active' : ''}`}>Contenido y Anexos</div>
+            <div className={`edit-step ${currentStep >= 4 ? 'active' : ''}`}>Imagen</div>
           </div>
           <form onSubmit={handleSubmit}>
             {currentStep === 1 && (
-              <div className="form-step">
-                <div className="form-group">
+              <div className="edit-form-step">
+                <div className="edit-form-group">
                   <label htmlFor="titulo">Título de la Publicación</label>
                   <input
                     type="text"
@@ -129,17 +180,19 @@ const EditPublicationView = () => {
                     value={formData.titulo}
                     onChange={handleChange}
                     required
+                    className="edit-input"
                   />
                 </div>
-                <div className="form-group">
+                <div className="edit-form-group">
                   <label>Fecha de Publicación</label>
                   <DatePicker
                     selected={formData.fecha}
                     onChange={handleDateChange}
                     required
+                    className="edit-datepicker"
                   />
                 </div>
-                <div className="form-group">
+                <div className="edit-form-group">
                   <label htmlFor="proyecto">Proyecto Asociado</label>
                   <input
                     type="text"
@@ -147,14 +200,15 @@ const EditPublicationView = () => {
                     name="proyecto"
                     value={proyectoNombre}
                     readOnly
+                    className="edit-input edit-readonly"
                   />
                 </div>
               </div>
             )}
 
             {currentStep === 2 && (
-              <div className="form-step">
-                <div className="form-group">
+              <div className="edit-form-step">
+                <div className="edit-form-group">
                   <label htmlFor="revista">Revista</label>
                   <input
                     type="text"
@@ -163,9 +217,10 @@ const EditPublicationView = () => {
                     value={formData.revista}
                     onChange={handleChange}
                     required
+                    className="edit-input"
                   />
                 </div>
-                <div className="form-group">
+                <div className="edit-form-group">
                   <label htmlFor="tipoPublicacion">Tipo de Publicación</label>
                   <select
                     id="tipoPublicacion"
@@ -173,6 +228,7 @@ const EditPublicationView = () => {
                     value={formData.tipoPublicacion}
                     onChange={handleChange}
                     required
+                    className="edit-select"
                   >
                     <option value="">Seleccionar Tipo de Publicación</option>
                     {tiposPublicacion.map((tipo) => (
@@ -182,7 +238,7 @@ const EditPublicationView = () => {
                     ))}
                   </select>
                 </div>
-                <div className="form-group">
+                <div className="edit-form-group">
                   <label htmlFor="idioma">Idioma</label>
                   <input
                     type="text"
@@ -191,23 +247,25 @@ const EditPublicationView = () => {
                     value={formData.idioma}
                     onChange={handleChange}
                     required
+                    className="edit-input"
                   />
                 </div>
               </div>
             )}
 
             {currentStep === 3 && (
-              <div className="form-step">
-                <div className="form-group">
+              <div className="edit-form-step">
+                <div className="edit-form-group">
                   <label htmlFor="resumen">Resumen</label>
                   <textarea
                     id="resumen"
                     name="resumen"
                     value={formData.resumen}
                     onChange={handleChange}
+                    className="edit-textarea"
                   ></textarea>
                 </div>
-                <div className="form-group">
+                <div className="edit-form-group">
                   <label htmlFor="palabrasClave">Palabras Clave (separadas por coma)</label>
                   <input
                     type="text"
@@ -215,34 +273,83 @@ const EditPublicationView = () => {
                     name="palabrasClave"
                     value={formData.palabrasClave}
                     onChange={handleChange}
+                    className="edit-input"
                   />
                 </div>
-                <div className="form-group">
-                  <label htmlFor="anexos">Anexos (URLs separadas por coma)</label>
+                <div className="edit-form-group">
+                  <label htmlFor="anexos">Anexos</label>
                   <input
-                    type="text"
+                    type="file"
                     id="anexos"
                     name="anexos"
-                    value={formData.anexos}
-                    onChange={handleChange}
+                    onChange={handleAnexoChange}
+                    multiple
+                    className="edit-file-input"
                   />
+                  <label htmlFor="anexos" className="edit-file-label">
+                    <FaUpload /> Subir Nuevos Anexos
+                  </label>
+                  <div className="edit-anexos-list">
+                    {/* Anexos Existentes */}
+                    {existingAnexos.map((anexo, index) => (
+                      <div key={`existing-${index}`} className="edit-anexo-item">
+                        <span>{anexo.nombre}</span>
+                        <button type="button" onClick={() => removeExistingAnexo(index)} className="edit-remove-btn">
+                          <FaTrash />
+                        </button>
+                      </div>
+                    ))}
+                    {/* Nuevos Anexos */}
+                    {newAnexos.map((anexo, index) => (
+                      <div key={`new-${index}`} className="edit-anexo-item">
+                        <span>{anexo.name}</span>
+                        <button type="button" onClick={() => removeNewAnexo(index)} className="edit-remove-btn">
+                          <FaTrash />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
 
-            <div className="form-navigation">
+            {currentStep === 4 && (
+              <div className="edit-form-step">
+                <div className="edit-form-group">
+                  <label htmlFor="imagen">Imagen de la Publicación</label>
+                  <input
+                    type="file"
+                    id="imagen"
+                    name="imagen"
+                    onChange={handleImageChange}
+                    accept="image/*"
+                    className="edit-file-input"
+                  />
+                  <label htmlFor="imagen" className="edit-file-label">
+                    <FaUpload /> Cambiar Imagen
+                  </label>
+                  {previewImage && (
+                    <div className="edit-image-preview">
+                      <img src={previewImage} alt="Vista previa" />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            <div className="edit-form-navigation">
               {currentStep > 1 && (
-                <button type="button" onClick={prevStep} className="nav-btn prev-btn">
+                <button type="button" onClick={prevStep} className="edit-nav-btn edit-prev-btn">
                   <FaArrowLeft /> Anterior
                 </button>
               )}
-              {currentStep < 3 && (
-                <button type="button" onClick={nextStep} className="nav-btn next-btn">
+              {currentStep < 4 && (
+                <button type="button" onClick={nextStep} className="edit-nav-btn edit-next-btn">
                   Siguiente <FaArrowRight />
                 </button>
               )}
-              {currentStep === 3 && (
-                <button type="submit" className="nav-btn save-btn">
+              {currentStep === 4 && (
+                <button type="submit" className="edit-nav-btn edit-save-btn">
                   <FaSave /> Actualizar Publicación
                 </button>
               )}

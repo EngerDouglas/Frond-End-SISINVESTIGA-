@@ -1,13 +1,13 @@
 .add-publication-view-container {
   padding: 20px;
   background-color: #f4f6f9;
-  min-height: calc(100vh - 60px); /* Adjust based on your nav height */
+  min-height: calc(100vh - 60px);
   display: flex;
   justify-content: center;
   align-items: flex-start;
 }
 
-.wizard-container {
+.add-wizard-container {
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -16,20 +16,20 @@
   max-width: 800px;
 }
 
-h2 {
+.add-h2 {
   color: #333;
   font-size: 24px;
   text-align: center;
   margin-bottom: 20px;
 }
 
-.step-indicator {
+.add-step-indicator {
   display: flex;
   justify-content: space-between;
   margin-bottom: 30px;
 }
 
-.step {
+.add-step {
   flex: 1;
   text-align: center;
   padding: 10px;
@@ -40,32 +40,32 @@ h2 {
   transition: all 0.3s ease;
 }
 
-.step.active {
+.add-step.active {
   background-color: #4caf50;
   color: white;
 }
 
-.form-step {
+.add-form-step {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.form-group {
+.add-form-group {
   display: flex;
   flex-direction: column;
 }
 
-label {
+.add-form-group label {
   font-weight: 600;
   margin-bottom: 5px;
   color: #333;
 }
 
-input,
-textarea,
-select,
-.react-datepicker-wrapper {
+.add-input,
+.add-textarea,
+.add-select,
+.add-datepicker {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
@@ -73,12 +73,66 @@ select,
   font-size: 16px;
 }
 
-textarea {
+.add-textarea {
   min-height: 100px;
   resize: vertical;
 }
 
-.nav-btn {
+.add-file-input {
+  display: none;
+}
+
+.add-file-label {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-file-label:hover {
+  background-color: #45a049;
+}
+
+.add-image-preview {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.add-image-preview img {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-anexos-list {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.add-anexo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items:  center;
+  padding: 5px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+
+.add-remove-btn {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.add-nav-btn {
   padding: 10px 15px;
   border: none;
   border-radius: 4px;
@@ -89,57 +143,57 @@ textarea {
   gap: 5px;
 }
 
-.form-navigation {
+.add-form-navigation {
   display: flex;
   justify-content: space-between;
   margin-top: 30px;
 }
 
-.prev-btn {
+.add-prev-btn {
   background-color: #607d8b;
   color: white;
 }
 
-.next-btn,
-.save-btn {
+.add-next-btn,
+.add-save-btn {
   background-color: #4caf50;
   color: white;
 }
 
 @media (max-width: 768px) {
-  .wizard-container {
+  .add-wizard-container {
     padding: 20px;
   }
 
-  .step-indicator {
+  .add-step-indicator {
     flex-direction: column;
     gap: 10px;
   }
 
-  .step {
+  .add-step {
     width: 100%;
   }
 
-  .form-navigation {
+  .add-form-navigation {
     flex-direction: column;
     gap: 10px;
   }
 
-  .nav-btn {
+  .add-nav-btn {
     width: 100%;
   }
 }
 
 @media (max-width: 480px) {
-  .wizard-container {
+  .add-wizard-container {
     padding: 15px;
   }
 
-  h2 {
+  .add-h2 {
     font-size: 20px;
   }
 
-  .step {
+  .add-step {
     font-size: 12px;
   }
 }

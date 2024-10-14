@@ -131,7 +131,14 @@ const PublicationDetails = () => {
             <ul className="publication-details__attachments-list">
               {publication.anexos.map((anexo, index) => (
                 <li key={index} className="publication-details__attachment-item">
-                  <FaPaperclip /> {anexo}
+                  <FaPaperclip />{' '}
+                  {anexo.url && anexo.nombre ? (
+                    <a href={anexo.url} target="_blank" rel="noopener noreferrer">
+                      {anexo.nombre}
+                    </a>
+                  ) : (
+                    <span>{anexo.nombre || 'Anexo sin nombre'}</span>
+                  )}
                 </li>
               ))}
             </ul>

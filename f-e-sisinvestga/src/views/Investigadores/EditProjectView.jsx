@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import { getUserData, putData } from "../../services/apiServices";
 import NavInvestigator from "../../components/Comunes/NavInvestigator";
 import AlertComponent from "../../components/Comunes/AlertComponent";
-import { FaArrowLeft, FaArrowRight, FaSave, FaPlus, FaTrash } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaSave, FaPlus, FaTrash, FaUpload } from "react-icons/fa";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../css/componentes/GestionProyectos/EditProjectView.css";
 
@@ -23,7 +23,11 @@ const EditProjectView = () => {
     fechaFin: new Date(),
     hitos: [{ nombre: "", fecha: new Date() }],
     recursos: [""],
+    imagen: ""
   });
+
+  const [previewImage, setPreviewImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -44,7 +48,9 @@ const EditProjectView = () => {
               ? project.hitos.map(h => ({ ...h, fecha: new Date(h.fecha) }))
               : [{ nombre: "", fecha: new Date() }],
             recursos: project.recursos.length > 0 ? project.recursos : [""],
+            imagen: project.imagen,
           });
+          setPreviewImage(project.imagen);
         }
       } catch (error) {
         handleError(error, "Ocurrió un error al cargar los datos del proyecto.");
@@ -60,6 +66,18 @@ const EditProjectView = () => {
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleDateChange = (name, date) => {
@@ -117,8 +135,32 @@ const EditProjectView = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const updatedProject = new FormData();
+
+    updatedProject.append('nombre', formData.nombre);
+    updatedProject.append('descripcion', formData.descripcion);
+    updatedProject.append('objetivos', formData.objetivos);
+    updatedProject.append('presupuesto', formData.presupuesto);
+    updatedProject.append('estado', formData.estado);
+
+    updatedProject.append('cronograma[fechaInicio]', formData.fechaInicio.toISOString());
+    updatedProject.append('cronograma[fechaFin]', formData.fechaFin.toISOString());
+
+    formData.hitos.forEach((hito, index) => {
+      updatedProject.append(`hitos[${index}][nombre]`, hito.nombre);
+      updatedProject.append(`hitos[${index}][fecha]`, hito.fecha.toISOString());
+    });
+
+    formData.recursos.forEach((recurso, index) => {
+      updatedProject.append(`recursos[${index}]`, recurso);
+    });
+
+    if (selectedFile) {
+      updatedProject.append('imagen', selectedFile);
+    }
+
     try {
-      await putData("projects", id, formData);
+      await putData("projects", id, updatedProject);
       AlertComponent.success("Proyecto actualizado exitosamente.");
       navigate("/invest/proyectos");
     } catch (error) {
@@ -148,17 +190,18 @@ const EditProjectView = () => {
     <>
       <NavInvestigator />
       <div className="edit-project-view-container">
-        <div className="wizard-container">
-          <h2>Editar Proyecto</h2>
-          <div className="step-indicator">
-            <div className={`step ${currentStep >= 1 ? 'active' : ''}`}>Información Básica</div>
-            <div className={`step ${currentStep >= 2 ? 'active' : ''}`}>Cronograma</div>
-            <div className={`step ${currentStep >= 3 ? 'active' : ''}`}>Hitos y Recursos</div>
+        <div className="edit-wizard-container">
+          <h2 className="edit-h2">Editar Proyecto</h2>
+          <div className="edit-step-indicator">
+            <div className={`edit-step ${currentStep >= 1 ? 'active' : ''}`}>Información Básica</div>
+            <div className={`edit-step ${currentStep >= 2 ? 'active' : ''}`}>Cronograma</div>
+            <div className={`edit-step ${currentStep >= 3 ? 'active' : ''}`}>Hitos y Recursos</div>
+            <div className={`edit-step ${currentStep >= 4 ? 'active' : ''}`}>Imagen</div>
           </div>
           <form onSubmit={handleSubmit}>
             {currentStep === 1 && (
-              <div className="form-step">
-                <div className="form-group">
+              <div className="edit-form-step">
+                <div className="edit-form-group">
                   <label htmlFor="nombre">Nombre del Proyecto</label>
                   <input
                     type="text"
@@ -167,9 +210,10 @@ const EditProjectView = () => {
                     value={formData.nombre}
                     onChange={handleChange}
                     required
+                    className="edit-input"
                   />
                 </div>
-                <div className="form-group">
+                <div className="edit-form-group">
                   <label htmlFor="descripcion">Descripción</label>
                   <textarea
                     id="descripcion"
@@ -177,18 +221,20 @@ const EditProjectView = () => {
                     value={formData.descripcion}
                     onChange={handleChange}
                     required
+                    className="edit-textarea"
                   ></textarea>
                 </div>
-                <div className="form-group">
+                <div className="edit-form-group">
                   <label htmlFor="objetivos">Objetivos</label>
                   <textarea
                     id="objetivos"
                     name="objetivos"
                     value={formData.objetivos}
                     onChange={handleChange}
+                    className="edit-textarea"
                   ></textarea>
                 </div>
-                <div className="form-group">
+                <div className="edit-form-group">
                   <label htmlFor="presupuesto">Presupuesto</label>
                   <input
                     type="number"
@@ -197,9 +243,10 @@ const EditProjectView = () => {
                     value={formData.presupuesto}
                     onChange={handleChange}
                     required
+                    className="edit-input"
                   />
                 </div>
-                <div className="form-group">
+                <div className="edit-form-group">
                   <label htmlFor="estado">Estado del Proyecto</label>
                   <input
                     type="text"
@@ -207,96 +254,125 @@ const EditProjectView = () => {
                     name="estado"
                     value={formData.estado}
                     readOnly
-                    className="readonly-input"
+                    className="edit-readonly-input"
                   />
                 </div>
               </div>
             )}
 
             {currentStep === 2 && (
-              <div className="form-step">
-                <div className="form-group">
+              <div className="edit-form-step">
+                <div className="edit-form-group">
                   <label>Fecha de Inicio</label>
                   <DatePicker
                     selected={formData.fechaInicio}
                     onChange={(date) => handleDateChange("fechaInicio", date)}
                     required
+                    className="edit-datepicker"
                   />
                 </div>
-                <div className="form-group">
+                <div className="edit-form-group">
                   <label>Fecha de Fin</label>
                   <DatePicker
                     selected={formData.fechaFin}
                     onChange={(date) => handleDateChange("fechaFin", date)}
                     required
+                    className="edit-datepicker"
                   />
                 </div>
               </div>
             )}
 
             {currentStep === 3 && (
-              <div className="form-step">
-                <div className="form-group">
+              <div className="edit-form-step">
+                <div className="edit-form-group">
                   <label>Hitos</label>
                   {formData.hitos.map((hito, index) => (
-                    <div key={index} className="hito-group">
+                    <div key={index} className="edit-hito-group">
                       <input
                         type="text"
                         placeholder="Nombre del hito"
                         value={hito.nombre}
                         onChange={(e) => handleHitoChange(index, "nombre", e.target.value)}
                         required
+                        className="edit-input"
                       />
                       <DatePicker
                         selected={hito.fecha}
                         onChange={(date) => handleHitoChange(index, "fecha", date)}
                         required
+                        className="edit-datepicker"
                       />
-                      <button type="button" className="remove-btn" onClick={() => removeHito(index)}>
+                      <button type="button" className="edit-remove-btn" onClick={() => removeHito(index)}>
                         <FaTrash />
                       </button>
                     </div>
                   ))}
-                  <button type="button" className="add-btn" onClick={addHito}>
+                  <button type="button" className="edit-add-btn" onClick={addHito}>
                     <FaPlus /> Añadir Hito
                   </button>
                 </div>
-                <div className="form-group">
+                <div className="edit-form-group">
                   <label>Recursos</label>
                   {formData.recursos.map((recurso, index) => (
-                    <div key={index} className="recurso-group">
+                    <div key={index} className="edit-recurso-group">
                       <input
                         type="text"
                         placeholder="Recurso"
                         value={recurso}
                         onChange={(e) => handleRecursoChange(index, e.target.value)}
                         required
+                        className="edit-input"
                       />
-                      <button type="button" className="remove-btn" onClick={() => removeRecurso(index)}>
+                      <button type="button" className="edit-remove-btn" onClick={() => removeRecurso(index)}>
                         <FaTrash />
                       </button>
                     </div>
                   ))}
-                  <button type="button" className="add-btn" onClick={addRecurso}>
+                  <button type="button" className="edit-add-btn" onClick={addRecurso}>
                     <FaPlus /> Añadir Recurso
                   </button>
                 </div>
               </div>
             )}
 
-            <div className="form-navigation">
+            {currentStep === 4 && (
+              <div className="edit-form-step">
+                <div className="edit-form-group">
+                  <label htmlFor="imagen">Imagen del Proyecto</label>
+                  <input
+                    type="file"
+                    id="imagen"
+                    name="imagen"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="edit-file-input"
+                  />
+                  <label htmlFor="imagen" className="edit-file-label">
+                    <FaUpload /> Cambiar Imagen
+                  </label>
+                  {previewImage && (
+                    <div className="edit-image-preview">
+                      <img src={previewImage} alt="Vista previa" />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            <div className="edit-form-navigation">
               {currentStep > 1 && (
-                <button type="button" onClick={prevStep} className="nav-btn prev-btn">
+                <button type="button" onClick={prevStep} className="edit-nav-btn edit-prev-btn">
                   <FaArrowLeft /> Anterior
                 </button>
               )}
-              {currentStep < 3 && (
-                <button type="button" onClick={nextStep} className="nav-btn next-btn">
+              {currentStep < 4 && (
+                <button type="button" onClick={nextStep} className="edit-nav-btn edit-next-btn">
                   Siguiente <FaArrowRight />
                 </button>
               )}
-              {currentStep === 3 && (
-                <button type="submit" className="nav-btn save-btn">
+              {currentStep === 4 && (
+                <button type="submit" className="edit-nav-btn edit-save-btn">
                   <FaSave /> Guardar Cambios
                 </button>
               )}
