@@ -110,7 +110,7 @@ export const logoutAll = async () => {
 // Verify Email
 export const verifyEmail = async (token) => {
   try {
-    const response = await api.get(`/users/verify-email/${token}`);
+    const response = await api.post(`/users/verify-email`, { token });
     return response.data;
   } catch (error) {
     const errorMessage = error.response?.data?.error?.message || error.message || 'Error desconocido';
