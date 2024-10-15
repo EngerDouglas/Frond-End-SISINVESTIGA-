@@ -26,6 +26,7 @@ import AddPublicationView from '../views/Investigadores/AddPublicationView';
 import EditPublicationView from '../views/Investigadores/EditPublicationView';
 import ForgotPasswordPage from '../views/Seguridad/ForgotPasswordPage';
 import ResetPasswordPage from '../views/Seguridad/ResetPasswordPage';
+import VerifyEmailPage from '../views/Seguridad/VerifyEmailPage';
 
 const AppRouter = () => {
 
@@ -58,6 +59,7 @@ const AppRouter = () => {
       {/* Rutas Publicas */}
       <Route path='/login' element={<LoginPage />} />
       <Route path='/register' element={<RegisterPage />} />
+      <Route path='/verify-email/:token' element={<VerifyEmailPage />} />
       <Route path='/forgot-password' element={<ForgotPasswordPage />} />
       <Route path='/reset-password/:token' element={<ResetPasswordPage />} />
 

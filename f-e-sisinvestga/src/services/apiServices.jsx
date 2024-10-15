@@ -107,6 +107,17 @@ export const logoutAll = async () => {
   }
 };
 
+// Verify Email
+export const verifyEmail = async (token) => {
+  try {
+    const response = await api.get(`/users/verify-email/${token}`);
+    return response.data;
+  } catch (error) {
+    const errorMessage = error.response?.data?.error?.message || error.message || 'Error desconocido';
+    throw new Error(errorMessage);
+  }
+};
+
 // Forgot Password
 export const forgotPassword = async (email) => {
   try {

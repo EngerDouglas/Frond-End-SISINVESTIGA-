@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { login, logout, logoutAll, getSession, forgotPassword, resetPassword } from "../../services/apiServices";
+import { login, logout, logoutAll, getSession, forgotPassword, resetPassword, verifyEmail    } from "../../services/apiServices";
 
 const initialState = {
   user: null,
@@ -35,6 +35,19 @@ export const loginUser = createAsyncThunk(
       return response; // Retorna los datos del usuario
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response?.data?.error || error.message);
+    }
+  }
+);
+
+// Async thunk para verificar email
+export const verifyUserEmail = createAsyncThunk(
+  'auth/verifyEmail',
+  async (token, thunkAPI) => {
+    try {
+      const response = await verifyEmail(token);
+      return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
 );
@@ -148,6 +161,17 @@ export const authSlice = createSlice({
       })
       .addCase(logoutAllUser.rejected, (state, action) => {
         state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(verifyUserEmail.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(verifyUserEmail.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.success = action.payload.message;
+      })
+      .addCase(verifyUserEmail.rejected, (state, action) => {
+        state.status = 'failed';
         state.error = action.payload;
       })
       .addCase(requestPasswordReset.pending, (state) => {
