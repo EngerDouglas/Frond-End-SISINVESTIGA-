@@ -18,6 +18,7 @@ function PublicacionesInfo() {
       } catch (error) {
         console.log("ERROR AL CARGAR PUBLICACIONES", error);
         setPublicacionesData([]); // En caso de error, se establece un array vacío
+        setIsLoading(false)
       }
     };
 
