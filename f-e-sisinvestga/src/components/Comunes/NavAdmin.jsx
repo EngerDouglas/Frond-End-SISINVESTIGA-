@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCurrentRole, logoutUser } from "../../features/auth/authSlice";
-import AlertComponent from "./AlertComponent";
 import "../../css/componentes/Comunes/NavAdmin.css";
+import logo from '../../assets/img/LogoWebUCSD.png'; // Update this import statement
 
 const AdminNav = () => {
   const role = useSelector(selectCurrentRole);
@@ -14,27 +14,13 @@ const AdminNav = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
-      dispatch(logoutUser()).then(() => {
-        navigate("/login");
-      });
+      await dispatch(logoutUser());
+      navigate("/login");
     } catch (error) {
-      let errorMessage =
-        "Ocurrió un error durante el proceso.";
-      let detailedErrors = [];
-
-      try {
-        // Intentamos analizar el error recibido del backend
-        const parsedError = JSON.parse(error.message);
-        errorMessage = parsedError.message;
-        detailedErrors = parsedError.errors || [];
-      } catch (parseError) {
-        // Si no se pudo analizar, usamos el mensaje de error general
-        errorMessage = error.message;
-      }
-      AlertComponent.error(errorMessage);
-      detailedErrors.forEach((err) => AlertComponent.error(err));
+      console.error("Error al cerrar sesión:", error);
+      alert("Ocurrió un error durante el proceso de cierre de sesión.");
     }
   };
 
@@ -50,15 +36,12 @@ const AdminNav = () => {
 
   return (
     <nav className={`nav-admin-bar ${isLoaded ? "active" : ""}`}>
-      <div className="logo-admin">UCSD</div>
+      <div className="logo-admin">
+        <img src={logo} alt="UCSD Logo" className="nav-logo" />
+      </div>
 
       <ul className={`nav-admin-list ${isMenuOpen ? "active" : ""}`}>
-        <li className="nav-admin-item">
-          <button onClick={handleLogout} className="nav-link admin-btn">
-            <i className="bi bi-box-arrow-right"></i> Cerrar Sesión
-          </button>
-        </li>
-
+        {/* Move the menu button before the logout button */}
         <li className="nav-admin-item dropdown">
           <button className="nav-link admin-btn" onClick={toggleMenu}>
             <i className="bi bi-list"></i> Menú
@@ -77,28 +60,38 @@ const AdminNav = () => {
                   </Link>
                 </li>
                 <li className="dropdown-item">
-                  <Link to="/proyectos" className="nav-admin-link">
+                  <Link to="/admin/listarproyectos" className="nav-admin-link">
                     <i className="bi bi-folder"></i> Proyectos
                   </Link>
                 </li>
                 <li className="dropdown-item">
-                  <Link to="/gestion-logs" className="nav-admin-link">
+                  <Link to="/admin/gestion-logs" className="nav-admin-link">
                     <i className="bi bi-file-earmark-lock"></i> Gestión de Logs
                   </Link>
                 </li>
                 <li className="dropdown-item">
-                  <Link to="/publicaciones" className="nav-admin-link">
+                  <Link to="/admin/publicaciones" className="nav-admin-link">
                     <i className="bi bi-file-earmark-post"></i> Publicaciones
                   </Link>
                 </li>
                 <li className="dropdown-item">
-                  <Link to="/informes" className="nav-admin-link">
+                  <Link to="/admin/informes" className="nav-admin-link">
                     <i className="bi bi-file-earmark-bar-graph"></i> Informes
                   </Link>
                 </li>
                 <li className="dropdown-item">
-                  <Link to="/perfil" className="nav-admin-link">
-                    <i className="bi bi-person"></i> Perfil
+                  <Link to="/admin/gestionInvestigadores" className="nav-admin-link">
+                    <i className="bi bi-person-lines-fill"></i> Gestión de Investigadores
+                  </Link>
+                </li>
+                <li className="dropdown-item">
+                  <Link to="/admin/solicitudes" className="nav-admin-link">
+                    <i className="bi bi-bell"></i> Solicitudes
+                  </Link>
+                </li>
+                <li className="dropdown-item">
+                  <Link to="/admin/configuracion-perfil" className="nav-admin-link">
+                    <i className="bi bi-gear"></i> Configuración de Perfil
                   </Link>
                 </li>
               </>
@@ -107,8 +100,7 @@ const AdminNav = () => {
               <>
                 <li className="dropdown-item">
                   <Link to="/registro" className="nav-admin-link">
-                    <i className="bi bi-person-plus"></i> Registro de
-                    Investigadores
+                    <i className="bi bi-person-plus"></i> Registro de Investigadores
                   </Link>
                 </li>
                 <li className="dropdown-item">
@@ -119,6 +111,12 @@ const AdminNav = () => {
               </>
             )}
           </ul>
+        </li>
+
+        <li className="nav-admin-item">
+          <button onClick={handleLogout} className="nav-link admin-btn">
+            <i className="bi bi-box-arrow-right"></i> Cerrar Sesión
+          </button>
         </li>
 
         <li className="nav-admin-item">

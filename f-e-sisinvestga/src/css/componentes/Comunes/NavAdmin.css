@@ -1,110 +1,121 @@
-/* Barra de navegación */
 .nav-admin-bar {
-  background: linear-gradient(to bottom, #ffffff, #f0f0f0);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+  background-color: #f8f9fa; /* Color de fondo más claro */
+  color: #333; /* Color de texto más oscuro */
+  transition: all 0.3s ease;
   position: relative;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  transition: all 0.8s ease-in-out;
-  overflow: visible;
-  margin: 50px auto;
-  z-index: 1000;
+  z-index: 10; /* Asegúrate de que esté por encima de otros elementos */
 }
 
 .nav-admin-bar.active {
-  width: 90%;
-  height: 60px;
-  padding: 15px 30px;
-  border-radius: 50px;
-  transition: width 0.8s ease, height 0.6s ease, border-radius 0.6s ease;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .logo-admin {
-  font-size: 1.5em;
+  font-size: 24px;
   font-weight: bold;
-  color: #218838; /* Color verde del logo */
+}
+
+.nav-logo {
+  width: auto; /* Auto width to maintain aspect ratio */
+  height: 40px; /* Set a fixed height */
+  max-width: 100%; /* Ensure it doesn't overflow its container */
 }
 
 .nav-admin-list {
   list-style: none;
   display: flex;
-  gap: 20px;
-  justify-content: flex-end;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
+  gap: 15px;
 }
 
-.nav-admin-bar.active .nav-admin-list {
-  opacity: 1;
+.nav-admin-item {
+  position: relative;
 }
 
-/* Estilos de botones */
+.nav-admin-link,
+.nav-link {
+  color: #333; /* Color de texto más oscuro */
+  text-decoration: none;
+  font-size: 18px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.nav-link:hover,
+.nav-admin-link:hover {
+  background-color: #e2e6ea; /* Color de hover más suave */
+}
+
 .admin-btn {
-  background-color: transparent; /* Sin color de fondo */
-  color: #333; /* Texto oscuro */
+  background: none;
   border: none;
-  border-radius: 20px;
-  padding: 10px 20px;
-  font-size: 1em;
+  color: #333; /* Color de texto más oscuro */
   cursor: pointer;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  font-size: 18px;
   display: flex;
   align-items: center;
-}
-
-.admin-btn i {
-  margin-right: 8px;
+  gap: 5px;
 }
 
 .admin-btn:hover {
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); /* Sombra en hover */
-  transform: translateY(-5px); /* Efecto de levantamiento */
+  background-color: #e2e6ea; /* Color de hover más suave */
 }
 
-/* Menú desplegable */
 .dropdown-menu {
+  display: none; /* No mostrar inicialmente */
   position: absolute;
-  top: 60px;
-  right: 0;
-  background-color: #fff;
-  display: none;
-  flex-direction: column;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1001;
+  top: 100%; /* Mostrar debajo del botón */
+  left: 0;
+  background-color: white; /* Color de fondo del menú desplegable */
+  border-radius: 4px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 5; /* Asegúrate de que esté por encima de otros elementos */
+  width: auto; /* Ancho automático según el contenido */
+  min-width: 200px; /* Ancho mínimo para evitar que sea demasiado pequeño */
   opacity: 0;
-  transform: translateY(-20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: translateY(10px); /* Desplazar hacia abajo al principio */
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .dropdown-menu.show {
-  display: flex;
+  display: block; /* Mostrar cuando esté activo */
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0); /* Regresar a la posición original al mostrar */
 }
 
 .dropdown-item {
-  padding: 10px 15px;
+  padding: 10px 15px; /* Ajusta el padding si es necesario */
+  color: #333; /* Color del texto */
+  white-space: nowrap; /* Evitar el salto de línea */
+  overflow: hidden; /* Ocultar desbordamiento */
+  text-overflow: ellipsis; /* Mostrar puntos suspensivos si el texto es muy largo */
 }
 
-.dropdown-item a {
-  color: #333;
-  text-decoration: none;
-  transition: color 0.3s ease;
+.dropdown-item:hover {
+  background-color: #f0f0f0; /* Color de fondo al pasar el mouse por encima */
 }
 
-.dropdown-item a:hover {
-  color: #555;
+.bi {
+  margin-right: 8px;
 }
 
-/* Alineación de botones */
-.nav-admin-item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .nav-admin-list {
+    flex-direction: column;
+    display: none; /* Ocultar la lista por defecto */
+  }
+
+  .nav-admin-list.active {
+    display: flex; /* Mostrar la lista cuando el menú está abierto */
+  }
+
+  .nav-admin-bar {
+    flex-direction: column;
+  }
 }
