@@ -1,14 +1,90 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import NavAdmin from '../../components/Comunes/NavAdmin';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Pie } from 'react-chartjs-2';
+import { getData, getDataParams } from '../../services/apiServices';
 import "../../css/Pages/AdminDashboard.css";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  const [stats, setStats] = useState({
+    users: { total: 0, active: 0, enabled: 0, disabled: 0 },
+    projects: { total: 0, inProgress: 0, completed: 0, deleted: 0 },
+    publications: { total: 0, published: 0, inReview: 0, deleted: 0 }
+  });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const usersData = await getData('users');
+        const projectsData = await getDataParams('projects', { includeDeleted: true });
+        const publicationsData = await getDataParams('publications', { includeDeleted: true });
+
+        setStats({
+          users: {
+            total: usersData.length,
+            active: usersData.filter(user => user.isActive).length,
+            enabled: usersData.filter(user => !user.isDisabled).length,
+            disabled: usersData.filter(user => user.isDisabled).length
+          },
+          projects: {
+            total: projectsData.total,
+            inProgress: projectsData.projects.filter(project => project.estado === 'En Progreso').length,
+            completed: projectsData.projects.filter(project => project.estado === 'Completado').length,
+            deleted: projectsData.projects.filter(project => project.isDeleted).length
+          },
+          publications: {
+            total: publicationsData.total,
+            published: publicationsData.publications.filter(pub => pub.estado === 'Publicado').length,
+            inReview: publicationsData.publications.filter(pub => pub.estado === 'En Revisión').length,
+            deleted: publicationsData.publications.filter(pub => pub.isDeleted).length
+          }
+        });
+      } catch (error) {
+        console.error("Error fetching stats:", error);
+        // Here you might want to show an error message to the user
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   const handleNavigation = (path) => {
     navigate(path);
   };
+
+  const createChartData = (data, labels, colors) => ({
+    labels: labels,
+    datasets: [
+      {
+        data: data,
+        backgroundColor: colors,
+        borderColor: colors,
+        borderWidth: 1,
+      },
+    ],
+  });
+
+  const userChartData = createChartData(
+    [stats.users.active, stats.users.total - stats.users.active],
+    ['Activos', 'Inactivos'],
+    ['#36A2EB', '#FF6384']
+  );
+
+  const projectChartData = createChartData(
+    [stats.projects.inProgress, stats.projects.completed, stats.projects.deleted],
+    ['En Progreso', 'Completados', 'Eliminados'],
+    ['#FFCE56', '#4BC0C0', '#FF6384']
+  );
+
+  const publicationChartData = createChartData(
+    [stats.publications.published, stats.publications.inReview, stats.publications.deleted],
+    ['Publicados', 'En Revisión', 'Eliminados'],
+    ['#4BC0C0', '#FFCE56', '#FF6384']
+  );
 
   return (
     <div>
@@ -16,9 +92,43 @@ const AdminDashboard = () => {
       <div className="admin-dashboard">
         <h1 className="name">Panel de Administración</h1>
 
+        <div className="stats-container">
+          <div className="stats-card">
+            <h2>Estadísticas de Usuarios</h2>
+            <p>Total: {stats.users.total}</p>
+            <p>Activos: {stats.users.active}</p>
+            <p>Habilitados: {stats.users.enabled}</p>
+            <p>Deshabilitados: {stats.users.disabled}</p>
+            <div className="chart-container">
+              <Pie data={userChartData} />
+            </div>
+          </div>
+
+          <div className="stats-card">
+            <h2>Estadísticas de Proyectos</h2>
+            <p>Total: {stats.projects.total}</p>
+            <p>En Progreso: {stats.projects.inProgress}</p>
+            <p>Completados: {stats.projects.completed}</p>
+            <p>Eliminados: {stats.projects.deleted}</p>
+            <div className="chart-container">
+              <Pie data={projectChartData} />
+            </div>
+          </div>
+
+          <div className="stats-card">
+            <h2>Estadísticas de Publicaciones</h2>
+            <p>Total: {stats.publications.total}</p>
+            <p>Publicadas: {stats.publications.published}</p>
+            <p>En Revisión: {stats.publications.inReview}</p>
+            <p>Eliminadas: {stats.publications.deleted}</p>
+            <div className="chart-container">
+              <Pie data={publicationChartData} />
+            </div>
+          </div>
+        </div>
+
         <div className="dashboard-container">
-          {/* Other dashboard boxes */}
-          
+          {/* Existing dashboard cards */}
           <div className="dashboard-card">
             <h2><i className="bi bi-folder2"></i> Gestión de Proyectos</h2>
             <p>Administrar todos los proyectos en la plataforma.</p>
@@ -96,7 +206,6 @@ const AdminDashboard = () => {
             </button> 
           </div>
 
-          {/* Nueva carta de Configuración de Perfil */}
           <div className="dashboard-card">
             <h2><i className="bi bi-gear"></i> Configuración de Perfil</h2>
             <p>Administrar y actualizar la configuración del perfil.</p>
@@ -107,7 +216,6 @@ const AdminDashboard = () => {
               <i className="bi bi-arrow-right"></i> Ir a Configuración
             </button>
           </div>
-          
         </div>
       </div>
     </div>
