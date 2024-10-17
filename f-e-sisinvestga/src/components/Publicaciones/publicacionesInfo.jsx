@@ -12,14 +12,18 @@ function PublicacionesInfo() {
     const fetchPublications = async () => {
       try {
         const publications = await getData("Publications");
-        setPublicacionesData(publications);
+        // Verificamos que publications sea un array, si no lo es, se asigna un array vacío
+        setPublicacionesData(Array.isArray(publications) ? publications : []);
       } catch (error) {
         console.log("ERROR AL CARGAR PUBLICACIONES", error);
+        setPublicacionesData([]); // En caso de error, se establece un array vacío
       }
     };
 
     fetchPublications();
   }, []);
+
+    
 
   const handleUpdate = (publicacion) => {
     setCurrentPublicacion(publicacion);
