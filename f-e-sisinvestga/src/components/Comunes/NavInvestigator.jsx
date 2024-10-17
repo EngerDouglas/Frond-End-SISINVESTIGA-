@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { selectCurrentRole, logoutUser } from "../../features/auth/authSlice";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../../features/auth/authSlice";
 import AlertComponent from "./AlertComponent";
 import {
   FaUserCircle,
@@ -12,40 +12,35 @@ import {
   FaSignOutAlt,
   FaCog,
   FaBell,
-  FaMoon,
-  FaSun,
   FaTasks,
+  FaArrowLeft,
   FaBars,
+  FaTimes
 } from "react-icons/fa";
-import logo from "../../assets/img/LogoUCSD.jpg"; // Asegúrate de que el logo esté en la ruta correcta
-import "../../css/componentes/GestionInvestigadores/NavInvestigator.css"; // Archivo CSS específico
+import logo from "../../assets/img/LogoUCSD.jpg";
+import "../../css/componentes/GestionInvestigadores/NavInvestigator.css";
 
 const NavInvestigator = () => {
-  const role = useSelector(selectCurrentRole); // Obtener el rol desde Redux
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // Cerrar sesión
   const handleLogout = () => {
     try {
       dispatch(logoutUser()).then(() => {
         navigate("/login");
       });
     } catch (error) {
-      let errorMessage =
-        "Ocurrió un error durante el proceso.";
+      let errorMessage = "Ocurrió un error durante el proceso.";
       let detailedErrors = [];
 
       try {
-        // Intentamos analizar el error recibido del backend
         const parsedError = JSON.parse(error.message);
         errorMessage = parsedError.message;
         detailedErrors = parsedError.errors || [];
       } catch (parseError) {
-        // Si no se pudo analizar, usamos el mensaje de error general
         errorMessage = error.message;
       }
       AlertComponent.error(errorMessage);
@@ -53,117 +48,89 @@ const NavInvestigator = () => {
     }
   };
 
-  // Toggle menú desplegable
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Toggle menú móvil
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  // Alternar modo oscuro/claro
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    document.body.classList.toggle("dark-mode");
+  const goBack = () => {
+    navigate(-1);
   };
 
+  const isHomePage = location.pathname === "/invest";
+
+  const closeMenus = () => {
+    setIsMenuOpen(false);
+    setIsMobileMenuOpen(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', closeMenus);
+    return () => window.removeEventListener('resize', closeMenus);
+  }, []);
+
   return (
-    <nav className="nav-investigator">
+    <nav className={`nav-investigator ${isHomePage ? 'home-page' : ''}`}>
       <div className="nav-investigator-logo">
         <Link to="/invest">
-          <img
-            src={logo}
-            alt="Logo UCSD"
-            className="nav-investigator-logo-img"
-          />
+          <img src={logo} alt="Logo UCSD" className="nav-investigator-logo-img" />
         </Link>
-      </div>
-
-      {/* Menú principal */}
-      <ul className={`nav-investigator-list ${isMobileMenuOpen ? "open" : ""}`}>
-        <li className="nav-investigator-item">
-          <Link to="/invest/proyectos" className="nav-investigator-link">
-            <FaFolder /> Proyectos
-          </Link>
-        </li>
-        <li className="nav-investigator-item">
-          <Link to="/invest/publicaciones" className="nav-investigator-link">
-            <FaFileAlt /> Publicaciones
-          </Link>
-        </li>
-        <li className="nav-investigator-item">
-          <Link to="/invest/informes" className="nav-investigator-link">
-            <FaChartBar /> Informes
-          </Link>
-        </li>
-        <li className="nav-investigator-item">
-          <Link to="/invest/solicitudes" className="nav-investigator-link">
-            <FaTasks /> Solicitudes
-          </Link>
-        </li>
-      </ul>
-
-      {/* Botón para menú móvil */}
-      <FaBars
-        className="nav-investigator-mobile-menu-icon"
-        onClick={toggleMobileMenu}
-      />
-
-      {/* Icono de notificaciones */}
-      <div className="nav-investigator-notifications">
-        <FaBell className="nav-investigator-bell" />
-      </div>
-
-      {/* Toggle modo oscuro */}
-      <div className="nav-investigator-mode-toggle" onClick={toggleDarkMode}>
-        {isDarkMode ? (
-          <FaSun className="mode-icon" />
-        ) : (
-          <FaMoon className="mode-icon" />
+        {!isHomePage && (
+          <span className="nav-investigator-university-name">Universidad Católica de Santo Domingo</span>
         )}
       </div>
 
-      {/* Menú de usuario */}
-      {role === "Investigador" && (
+      <button className="nav-investigator-mobile-toggle" onClick={toggleMobileMenu}>
+        {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
+      </button>
+
+      <div className={`nav-investigator-menu ${isMobileMenuOpen ? 'open' : ''}`}>
+        <Link to="/invest/proyectos" className="nav-investigator-menu-item" onClick={closeMenus}>
+          <FaFolder /> Proyectos
+        </Link>
+        <Link to="/invest/publicaciones" className="nav-investigator-menu-item" onClick={closeMenus}>
+          <FaFileAlt /> Publicaciones
+        </Link>
+        <Link to="/invest/informes" className="nav-investigator-menu-item" onClick={closeMenus}>
+          <FaChartBar /> Informes
+        </Link>
+        <Link to="/invest/solicitudes" className="nav-investigator-menu-item" onClick={closeMenus}>
+          <FaTasks /> Solicitudes
+        </Link>
+      </div>
+
+      <div className={`nav-investigator-actions ${isMobileMenuOpen ? 'open' : ''}`}>
+        <button className="nav-investigator-icon-btn">
+          <FaBell />
+        </button>
+        {!isHomePage && (
+          <button onClick={goBack} className="nav-investigator-back-btn">
+            <FaArrowLeft /> Atrás
+          </button>
+        )}
         <div className="nav-investigator-user-menu">
-          <div className="nav-investigator-user" onClick={toggleMenu}>
-            <FaUserCircle className="nav-investigator-user-icon" />
-            <span className="nav-investigator-user-name">Investigador</span>
-            <FaChevronDown className="nav-investigator-dropdown-icon" />
-          </div>
-          {/* Menú desplegable */}
+          <button onClick={toggleMenu} className="nav-investigator-user-btn">
+            <FaUserCircle /> Investigador <FaChevronDown />
+          </button>
           {isMenuOpen && (
             <ul className="nav-investigator-dropdown">
-              <li className="nav-investigator-dropdown-item">
-                <Link
-                  to="/invest/perfil-investigador"
-                  className="nav-investigator-dropdown-link"
-                >
+              <li>
+                <Link to="/invest/perfil-investigador" className="nav-investigator-dropdown-link" onClick={closeMenus}>
                   <FaCog /> Configurar Perfil
                 </Link>
               </li>
-              <li className="nav-investigator-dropdown-item">
-                <button
-                  onClick={handleLogout}
-                  className="nav-investigator-dropdown-link logout-btn"
-                >
+              <li>
+                <button onClick={handleLogout} className="nav-investigator-dropdown-link">
                   <FaSignOutAlt /> Cerrar Sesión
                 </button>
               </li>
             </ul>
           )}
         </div>
-      )}
-
-      {!role && (
-        <div className="nav-investigator-login">
-          <Link to="/login" className="nav-investigator-link">
-            Iniciar Sesión
-          </Link>
-        </div>
-      )}
+      </div>
     </nav>
   );
 };

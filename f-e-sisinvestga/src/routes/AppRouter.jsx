@@ -24,6 +24,9 @@ import AddProjectView from '../views/Investigadores/AddProjectView';
 import EditProjectView from '../views/Investigadores/EditProjectView';
 import AddPublicationView from '../views/Investigadores/AddPublicationView';
 import EditPublicationView from '../views/Investigadores/EditPublicationView';
+import ForgotPasswordPage from '../views/Seguridad/ForgotPasswordPage';
+import ResetPasswordPage from '../views/Seguridad/ResetPasswordPage';
+import VerifyEmailPage from '../views/Seguridad/VerifyEmailPage';
 
 const AppRouter = () => {
 
@@ -56,6 +59,10 @@ const AppRouter = () => {
       {/* Rutas Publicas */}
       <Route path='/login' element={<LoginPage />} />
       <Route path='/register' element={<RegisterPage />} />
+      <Route path='/verify-email' element={<VerifyEmailPage />} />
+      <Route path='/forgot-password' element={<ForgotPasswordPage />} />
+      <Route path='/reset-password/:token' element={<ResetPasswordPage />} />
+
       {/* Rutas Defecto de la pagina */}
       <Route path='/' element={getHome()} />
       <Route path='proyectos/:id' element={<ProjectDetails />} />
@@ -143,7 +150,7 @@ const AppRouter = () => {
       } />
 
       <Route path='/admin/listarproyectos' element={ 
-        <ProtectedRoute roles={['Administrador', 'Investigador']}>
+        <ProtectedRoute roles={['Administrador']}>
           <ListaProyectos />
         </ProtectedRoute>
       } />

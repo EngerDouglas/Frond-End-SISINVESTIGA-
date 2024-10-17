@@ -1,5 +1,5 @@
-import React from 'react'
-import { FaTimes } from 'react-icons/fa';
+import React from 'react';
+import { FaTimes, FaGraduationCap, FaTasks } from 'react-icons/fa';
 import '../../css/componentes/Publicaciones/AuthorModal.css'
 
 const AuthorModal = ({ autor, onClose }) => {
@@ -10,24 +10,26 @@ const AuthorModal = ({ autor, onClose }) => {
   };
 
   return (
-    <div className="author-modal-overlay" onClick={handleOverlayClick}>
+    <div className="author-modal__overlay" onClick={handleOverlayClick}>
       <div className="author-modal">
-        <button className="author-modal-close" onClick={onClose}>
+        <button className="author-modal__close" onClick={onClose}>
           <FaTimes />
         </button>
-        <div className="author-modal-content">
+        <div className="author-modal__content">
           <img
             src={autor.fotoPerfil || 'https://via.placeholder.com/120'}
             alt={`${autor.nombre} ${autor.apellido}`}
-            className="author-modal-photo"
+            className="author-modal__photo"
           />
-          <h2>
+          <h2 className="author-modal__name">
             {autor.nombre} {autor.apellido}
           </h2>
-          <p>
+          <p className="author-modal__info">
+            <FaGraduationCap className="author-modal__icon" />
             <strong>Especialización:</strong> {autor.especializacion || 'No disponible'}
           </p>
-          <p>
+          <p className="author-modal__info">
+            <FaTasks className="author-modal__icon" />
             <strong>Responsabilidades:</strong> {autor.responsabilidades || 'No disponible'}
           </p>
         </div>
@@ -36,4 +38,4 @@ const AuthorModal = ({ autor, onClose }) => {
   );
 };
 
-export default AuthorModal
+export default AuthorModal;

@@ -7,6 +7,7 @@ function PublicacionesInfo() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPublicacion, setCurrentPublicacion] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchPublications = async () => {
@@ -73,6 +74,8 @@ function PublicacionesInfo() {
     publicacion.titulo.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  if (isLoading) return <div>Cargando publicaciones...</div>;
+
   return (
     <div className="publicaciones-container">
       <h2>Lista de Publicaciones</h2>
@@ -92,16 +95,16 @@ function PublicacionesInfo() {
         <p>No hay publicaciones disponibles.</p>
       ) : (
         filteredPublicaciones.map((publicacion) => (
-          <div key={publicacion.id} className="publicacion-card">
+          <div key={publicacion._id} className="publicacion-card">
             <h3>{publicacion.titulo}</h3>
             <p><strong>Fecha:</strong> {new Date(publicacion.fecha).toLocaleDateString()}</p>
-            <p><strong>Proyecto:</strong> {publicacion.proyecto.join(", ")}</p>
+            <p><strong>Proyecto:</strong> {publicacion.proyecto ? publicacion.proyecto.nombre : 'N/A'}</p>
             <p><strong>Revista:</strong> {publicacion.revista}</p>
             <p><strong>Resumen:</strong> {publicacion.resumen}</p>
             <p><strong>Palabras Clave:</strong> {publicacion.palabrasClave.join(", ")}</p>
             <p><strong>Tipo de Publicación:</strong> {publicacion.tipoPublicacion}</p>
             <p><strong>Anexos:</strong> {publicacion.anexos.map((anexo, index) => (
-              <a key={index} href={`/${anexo}`} download className="anexo-link">{anexo}</a>
+              <a key={index} href={anexo} target="_blank" rel="noopener noreferrer" className="anexo-link">{`Anexo ${index + 1}`}</a>
             ))}</p>
             <p><strong>Idioma:</strong> {publicacion.idioma}</p>
 
@@ -109,7 +112,7 @@ function PublicacionesInfo() {
               <button className="pub-btn-update" onClick={() => handleUpdate(publicacion)}>
                 Actualizar
               </button>
-              <button className="pub-btn-delete" onClick={() => handleDelete(publicacion.id)}>
+              <button className="pub-btn-delete" onClick={() => handleDelete(publicacion._id)}>
                 Eliminar
               </button>
             </div>
@@ -117,7 +120,6 @@ function PublicacionesInfo() {
         ))
       )}
 
-      {/* Modal */}
       {isModalOpen && currentPublicacion && (
         <div className="modal">
           <div className="modal-content">

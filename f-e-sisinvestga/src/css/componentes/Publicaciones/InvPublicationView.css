@@ -1,25 +1,29 @@
 .inv-publication-view {
-  padding-top: 20px; /* Aumenta el espacio superior para evitar superposición */
-  background-color: #f4f6f9;
-  min-height: 100vh;
+  padding: 40px 20px;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 60px);
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
 }
-/* Título principal */
-.inv-publication-view h1 {
-  font-size: 2.5rem;
-  margin-bottom: 30px;
-  color: #333;
-  text-align: center;
-  font-weight: 700;
-  letter-spacing: 1px;
+
+.publication-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
   max-width: 1200px;
+  margin-bottom: 30px;
 }
 
-/* Botón para agregar proyecto */
+.publication-header h1 {
+  font-size: 2.5rem;
+  color: #333;
+  font-weight: 700;
+  margin: 0;
+}
+
 .add-publication-btn {
   background-color: #4caf50;
   color: white;
@@ -27,7 +31,6 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  margin-bottom: 30px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -40,11 +43,6 @@
   transform: translateY(-3px);
 }
 
-.add-publication-btn:focus {
-  outline: none;
-}
-
-/* Lista de proyectos */
 .publications-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -55,10 +53,56 @@
   padding-bottom: 30px;
 }
 
-/* Mensaje si no hay proyectos */
-.publications-list p {
+.no-publications-message {
   text-align: center;
   font-size: 1.2rem;
   color: #666;
   padding: 20px;
+  grid-column: 1 / -1;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.loading-spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #4caf50;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  color: #f44336;
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .publication-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .add-publication-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .publications-list {
+    grid-template-columns: 1fr;
+  }
 }

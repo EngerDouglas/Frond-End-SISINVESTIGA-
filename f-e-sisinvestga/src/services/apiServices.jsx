@@ -6,9 +6,6 @@ const API_URL = 'http://localhost:3005/api';
 // Configuración inicial de Axios
 const api = axios.create({
   baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
 //  ------------------ Accesos al LocalStorage ------------------------ //
@@ -48,6 +45,16 @@ api.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
+  // Esto es para cuando el content type sea formdata o multi no de error
+  if (config.data && config.data instanceof FormData) {
+    // Dejar que Axios establezca el 'Content-Type' automáticamente para FormData
+    delete config.headers['Content-Type'];
+  } else {
+    // Establecer 'Content-Type' como 'application/json' para otras solicitudes
+    config.headers['Content-Type'] = 'application/json';
+  }
+
   return config;
 }, (error) => {
   return Promise.reject(error);
@@ -97,6 +104,39 @@ export const logoutAll = async () => {
   } catch (error) {
     const errorMessage = error.response?.data?.error || error.response?.data || error.message || 'Error desconocido';
     throw new Error(JSON.stringify(errorMessage));
+  }
+};
+
+// Verify Email
+export const verifyEmail = async (token) => {
+  try {
+    const response = await api.post(`/users/verify-email`, { token });
+    return response.data;
+  } catch (error) {
+    const errorMessage = error.response?.data?.error?.message || error.message || 'Error desconocido';
+    throw new Error(errorMessage);
+  }
+};
+
+// Forgot Password
+export const forgotPassword = async (email) => {
+  try {
+    const response = await api.post('/users/forgot-password', { email });
+    return response.data;
+  } catch (error) {
+    const errorMessage = error.response?.data?.error?.message || error.message ;
+    throw new Error(errorMessage);
+  }
+};
+
+// Reset Password
+export const resetPassword = async (token, password) => {
+  try {
+    const response = await api.post(`/users/reset-password/${token}`, { password });
+    return response.data;
+  } catch (error) {
+    const errorMessage = error.response?.data?.error?.message || error.message ;
+    throw new Error(errorMessage);
   }
 };
 

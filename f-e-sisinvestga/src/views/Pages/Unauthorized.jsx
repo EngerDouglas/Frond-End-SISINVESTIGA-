@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectCurrentRole } from '../../features/auth/authSlice';
+import { FaLock, FaArrowLeft } from 'react-icons/fa';
 import logo from '../../assets/img/LogoUCSD.jpg'
 import '../../css/Pages/NotAcces.css';
 
@@ -31,12 +32,18 @@ const Unauthorized = () => {
   };
 
   return (
-    <div className="page-container">
-      <div className="content-wrapper">
-        <img src={logo} alt="Logo" className="logo" />
-        <h1>Acceso No Autorizado</h1>
+    <div className="error-page">
+      <div className="error-content">
+        <Link to="/" className="logo-link">
+          <img src={logo} alt="Logo UCSD" className="logo" />
+        </Link>
+        <div className="error-icon">
+          <FaLock />
+        </div>
+        <h1>403 - Acceso No Autorizado</h1>
         <p>No tienes permisos para acceder a esta página.</p>
-        <Link to={getRedirectLink()} className="nav-link">
+        <Link to={getRedirectLink()} className="not-nav-link">
+          <FaArrowLeft className="icon-left" />
           {getRedirectText()}
         </Link>
       </div>

@@ -2,43 +2,65 @@
   background-color: #fff;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .project-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.project-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
 .project-title {
   font-size: 1.5rem;
   color: #333;
-  margin-bottom: 10px;
+  margin: 0;
   font-weight: 600;
 }
+
+.project-status {
+  font-size: 0.9rem;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.project-status.planeado { background-color: #e3f2fd; color: #1565c0; }
+.project-status.en-proceso { background-color: #fff9c4; color: #fbc02d; }
+.project-status.finalizado { background-color: #e8f5e9; color: #4caf50; }
 
 .project-description {
   color: #666;
   margin-bottom: 15px;
   font-size: 1rem;
+  flex-grow: 1;
 }
 
 .project-info {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  margin-bottom: 15px;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.project-info p {
-  margin: 0;
-  color: #555;
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.project-info strong {
-  color: #333;
+.info-icon {
+  color: #4caf50;
 }
 
 .project-actions {
@@ -72,4 +94,23 @@
 
 .delete-btn:hover {
   background-color: #e53935;
+}
+
+@media (max-width: 480px) {
+  .project-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .project-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .edit-btn,
+  .delete-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }

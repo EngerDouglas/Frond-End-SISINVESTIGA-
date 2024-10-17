@@ -1,76 +1,83 @@
 import React, { useState } from "react";
-import "../../../css/componentes/Seguridad/Register.css";
+import { Link } from "react-router-dom";
+import { FaUser, FaEnvelope, FaLock, FaGraduationCap, FaTasks, FaPlus, FaTrash } from "react-icons/fa";
 import AlertComponent from "../../Comunes/AlertComponent";
+import { postData } from "../../../services/apiServices";
 import ucsdImage from "../../../assets/img/ucsd.webp";
 import logo from "../../../assets/img/LogoUCSD.jpg";
-import { postData } from "../../../services/apiServices";
-import { Link } from "react-router-dom";
+import "../../../css/componentes/Seguridad/Register.css";
 
 export default function Register() {
-  const [nombre, setNombre] = useState("");
-  const [apellido, setApellido] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [especializacion, setEspecializacion] = useState("");
-  const [responsabilidades, setResponsabilidades] = useState("");
+  const [formData, setFormData] = useState({
+    nombre: "",
+    apellido: "",
+    email: "",
+    password: "",
+    especializacion: "",
+    responsabilidad: "",
+  });
   const [responsabilidadesList, setResponsabilidadesList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       await postData("users/register", {
-        nombre: nombre,
-        apellido: apellido,
-        email: email,
-        password: password,
-        especializacion: especializacion,
+        ...formData,
         responsabilidades: responsabilidadesList,
       });
 
-      AlertComponent.success(
-        "El investigador ha sido registrado correctamente."
-      );
-
+      AlertComponent.success("El investigador ha sido registrado correctamente.");
       resetForm();
     } catch (error) {
       let errorMessage = "Ocurrió un error durante el registro.";
       let detailedErrors = [];
 
       try {
-        // Intentamos analizar el error recibido del backend
         const parsedError = JSON.parse(error.message);
         errorMessage = parsedError.message;
         detailedErrors = parsedError.errors || [];
       } catch (parseError) {
-        // Si no se pudo analizar, usamos el mensaje de error general
         errorMessage = error.message;
       }
       AlertComponent.error(errorMessage);
       detailedErrors.forEach((err) => AlertComponent.error(err));
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const resetForm = () => {
-    setNombre("");
-    setApellido("");
-    setEmail("");
-    setPassword("");
-    setEspecializacion("");
-    setResponsabilidades("");
+    setFormData({
+      nombre: "",
+      apellido: "",
+      email: "",
+      password: "",
+      especializacion: "",
+      responsabilidad: "",
+    });
     setResponsabilidadesList([]);
   };
 
   const addResponsabilidad = (e) => {
     e.preventDefault();
-    if (responsabilidades) {
-      setResponsabilidadesList([...responsabilidadesList, responsabilidades]);
-      setResponsabilidades("");
+    if (formData.responsabilidad) {
+      setResponsabilidadesList(prevList => [...prevList, formData.responsabilidad]);
+      setFormData(prevState => ({ ...prevState, responsabilidad: "" }));
     }
   };
 
   const removeResponsabilidad = (index) => {
-    const newList = responsabilidadesList.filter((_, i) => i !== index);
-    setResponsabilidadesList(newList);
+    setResponsabilidadesList(prevList => prevList.filter((_, i) => i !== index));
   };
 
   return (
@@ -80,59 +87,83 @@ export default function Register() {
       </div>
       <div className="register-right">
         <div className="register-container">
-          <Link to="/">
+          <Link to="/" className="logo-link">
             <img src={logo} alt="UCSD Logo" className="register-logo" />
           </Link>
           <h2>Registro de Investigador</h2>
           <form className="register-form" onSubmit={handleSubmit}>
-            <input
-              type="text"
-              placeholder="Nombre"
-              value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
-              required
-            />
-            <input
-              type="text"
-              placeholder="Apellido"
-              value={apellido}
-              onChange={(e) => setApellido(e.target.value)}
-              required
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <input
-              type="password"
-              placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <input
-              type="text"
-              placeholder="Especialización"
-              value={especializacion}
-              onChange={(e) => setEspecializacion(e.target.value)}
-              required
-            />
-            <div className="responsabilidades-container">
+            <div className="input-group">
+              <FaUser className="input-icon" />
               <input
                 type="text"
-                placeholder="Responsabilidad"
-                value={responsabilidades}
-                onChange={(e) => setResponsabilidades(e.target.value)}
+                name="nombre"
+                placeholder="Nombre"
+                value={formData.nombre}
+                onChange={handleChange}
+                required
               />
+            </div>
+            <div className="input-group">
+              <FaUser className="input-icon" />
+              <input
+                type="text"
+                name="apellido"
+                placeholder="Apellido"
+                value={formData.apellido}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="input-group">
+              <FaEnvelope className="input-icon" />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="input-group">
+              <FaLock className="input-icon" />
+              <input
+                type="password"
+                name="password"
+                placeholder="Contraseña"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="input-group">
+              <FaGraduationCap className="input-icon" />
+              <input
+                type="text"
+                name="especializacion"
+                placeholder="Especialización"
+                value={formData.especializacion}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="responsabilidades-container">
+              <div className="input-group">
+                <FaTasks className="input-icon" />
+                <input
+                  type="text"
+                  name="responsabilidad"
+                  placeholder="Responsabilidad"
+                  value={formData.responsabilidad}
+                  onChange={handleChange}
+                />
+              </div>
               <button
                 className="add-btn"
                 onClick={addResponsabilidad}
                 type="button"
               >
-                Agregar
+                <FaPlus />
               </button>
             </div>
             <ul className="responsabilidades-list">
@@ -144,24 +175,23 @@ export default function Register() {
                     type="button"
                     className="remove-btn"
                   >
-                    Eliminar
+                    <FaTrash />
                   </button>
                 </li>
               ))}
             </ul>
-            <button type="submit" className="register-btn">
-              Registrar Investigador
+            <button type="submit" className="register-btn" disabled={isLoading}>
+              {isLoading ? "Registrando..." : "Registrar Investigador"}
             </button>
           </form>
           <div className="signin-option">
             <span>¿Ya tienes cuenta?</span>{" "}
             <Link to="/login" className="signin-link">
-              Sign in
+              Iniciar sesión
             </Link>
           </div>
           <footer className="footer">
-            © 2024 Universidad Católica Santo Domingo - Todos los Derechos
-            Reservados
+            © {new Date().getFullYear()} Universidad Católica Santo Domingo - Todos los Derechos Reservados
           </footer>
         </div>
       </div>

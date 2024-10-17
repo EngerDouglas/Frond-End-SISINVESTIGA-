@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes, FaGraduationCap, FaTasks } from 'react-icons/fa';
 import '../../css/componentes/GestionProyectos/InvestigatorModal.css';
 
 const InvestigatorModal = ({ investigador, onClose }) => {
@@ -10,24 +10,26 @@ const InvestigatorModal = ({ investigador, onClose }) => {
   };
 
   return (
-    <div className="investigator-modal-overlay" onClick={handleOverlayClick}>
+    <div className="investigator-modal__overlay" onClick={handleOverlayClick}>
       <div className="investigator-modal">
-        <button className="investigator-modal-close" onClick={onClose}>
+        <button className="investigator-modal__close" onClick={onClose}>
           <FaTimes />
         </button>
-        <div className="investigator-modal-content">
+        <div className="investigator-modal__content">
           <img
             src={investigador.fotoPerfil || 'https://via.placeholder.com/120'}
             alt={`${investigador.nombre} ${investigador.apellido}`}
-            className="investigator-modal-photo"
+            className="investigator-modal__photo"
           />
-          <h2>
+          <h2 className="investigator-modal__name">
             {investigador.nombre} {investigador.apellido}
           </h2>
-          <p>
+          <p className="investigator-modal__info">
+            <FaGraduationCap className="investigator-modal__icon" />
             <strong>Especialización:</strong> {investigador.especializacion || 'No disponible'}
           </p>
-          <p>
+          <p className="investigator-modal__info">
+            <FaTasks className="investigator-modal__icon" />
             <strong>Responsabilidades:</strong> {investigador.responsabilidades || 'No disponible'}
           </p>
         </div>

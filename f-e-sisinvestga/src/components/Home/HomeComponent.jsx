@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 import Nav from "../Comunes/Nav";
 import { getDataParams } from "../../services/apiServices";
 import Pagination from "../Comunes/Pagination";
+import SearchBar from "../Comunes/SearchBar";
 import "../../css/componentes/Home/Home.css";
 import img1 from "../../img/invest.jpg";
 import img2 from "../../img/invest2.jpg";
 import img3 from "../../img/invest3.jpg";
-import { useDebounce } from "use-debounce";
 import { Carousel } from "react-bootstrap";
+import { FaProjectDiagram, FaBook, FaFilter } from "react-icons/fa";
 
 const HomeComponent = () => {
   const [projects, setProjectData] = useState([]);
@@ -18,7 +19,6 @@ const HomeComponent = () => {
   const [selectedProjectState, setSelectedProjectState] = useState("");
   const [selectedPublicationTipo, setSelectedPublicationTipo] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [debouncedSearchTerm] = useDebounce(searchTerm, 400);
   const [activeTab, setActiveTab] = useState("Proyectos");
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,63 +27,35 @@ const HomeComponent = () => {
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
+      const params = {
+        page: currentPage,
+        limit: 6,
+        ...(activeTab === "Proyectos"
+          ? selectedProjectState && { estado: selectedProjectState }
+          : selectedPublicationTipo && { tipoPublicacion: selectedPublicationTipo }),
+        ...(searchTerm && { [activeTab === "Proyectos" ? "nombre" : "titulo"]: searchTerm }),
+      };
+
+      const endpoint = activeTab === "Proyectos" ? "projects" : "publications";
+      const result = await getDataParams(endpoint, params);
+
       if (activeTab === "Proyectos") {
-        const projectParams = {
-          page: currentPage,
-          limit: 5,
-        };
-        if (selectedProjectState) {
-          projectParams.estado = selectedProjectState;
-        }
-        if (debouncedSearchTerm) {
-          projectParams.nombre = debouncedSearchTerm;
-        }
-        const result = await getDataParams("projects", projectParams);
         setProjectData(result.projects || []);
-        setTotalPages(result.totalPages || 1);
-
-        const uniqueStates = [
-          ...new Set((result.projects || []).map((project) => project.estado)),
-        ];
-        setProjectStates(uniqueStates);
-      } else if (activeTab === "Publicaciones") {
-        const publicationParams = {
-          page: currentPage,
-          limit: 5,
-        };
-        if (selectedPublicationTipo) {
-          publicationParams.tipoPublicacion = selectedPublicationTipo;
-        }
-        if (debouncedSearchTerm) {
-          publicationParams.titulo = debouncedSearchTerm;
-        }
-
-        const result = await getDataParams("publications", publicationParams);
+        setProjectStates([...new Set(result.projects.map(project => project.estado))]);
+      } else {
         setPublicationData(result.publications || []);
-        setTotalPages(result.totalPages || 1);
-
-        const uniqueTypes = [
-          ...new Set(
-            (result.publications || []).map((pub) => pub.tipoPublicacion)
-          ),
-        ];
-        setPublicationTypes(uniqueTypes);
+        setPublicationTypes([...new Set(result.publications.map(pub => pub.tipoPublicacion))]);
       }
+
+      setTotalPages(result.totalPages || 1);
     } catch (error) {
       console.error("Error al traer los datos", error);
-      setProjectData([]);
-      setPublicationData([]);
+      activeTab === "Proyectos" ? setProjectData([]) : setPublicationData([]);
       setTotalPages(1);
     } finally {
       setLoading(false);
     }
-  }, [
-    activeTab,
-    currentPage,
-    debouncedSearchTerm,
-    selectedProjectState,
-    selectedPublicationTipo,
-  ]);
+  }, [activeTab, currentPage, searchTerm, selectedProjectState, selectedPublicationTipo]);
 
   useEffect(() => {
     fetchData();
@@ -102,185 +74,86 @@ const HomeComponent = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
 
+  const renderCards = () => {
+    const items = activeTab === "Proyectos" ? projects : publications;
+    return items.map((item) => (
+      <div key={item._id} className="card">
+        <div className="card-image">
+          <img src={item.imagen || "https://via.placeholder.com/300x200"} alt={item.nombre || item.titulo} />
+        </div>
+        <div className="card-content">
+          <h3>{item.nombre || item.titulo}</h3>
+          <p>{(item.descripcion || item.resumen)?.substring(0, 100)}...</p>
+          <p><strong>{activeTab === "Proyectos" ? "Estado:" : "Tipo:"}</strong> {item.estado || item.tipoPublicacion}</p>
+          <Link to={`/${activeTab.toLowerCase()}/${item._id}`} className="card-button">
+            Ver más
+          </Link>
+        </div>
+      </div>
+    ));
+  };
+
   return (
-    <div>
+    <div className="home-page">
       <Nav />
 
-      <div className="carousel-container">
-        <Carousel className="mb-4">
-          <Carousel.Item interval={3000}>
-            <img className="d-block w-100" src={img1} alt="First slide" />
+      <Carousel className="home-carousel">
+        {[img1, img2, img3].map((img, index) => (
+          <Carousel.Item key={index}>
+            <img className="d-block w-100" src={img} alt={`Slide ${index + 1}`} />
+            <Carousel.Caption>
+              <h3>Investigación e Innovación</h3>
+              <p>Descubre nuestros proyectos y publicaciones más recientes</p>
+            </Carousel.Caption>
           </Carousel.Item>
-          <Carousel.Item interval={3000}>
-            <img className="d-block w-100" src={img2} alt="Second slide" />
-          </Carousel.Item>
-          <Carousel.Item interval={3000}>
-            <img className="d-block w-100" src={img3} alt="Third slide" />
-          </Carousel.Item>
-        </Carousel>
-      </div>
+        ))}
+      </Carousel>
 
       <div className="home-container">
-        <div className="home-search-container">
-          <input
-            type="text"
-            placeholder="Buscar..."
-            className="home-search-bar"
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
-        </div>
+        <SearchBar
+          value={searchTerm}
+          onChange={handleSearchChange}
+          placeholder={`Buscar ${activeTab.toLowerCase()}...`}
+        />
 
         <div className="home-tabs">
           <button
             className={`home-tab ${activeTab === "Proyectos" ? "active" : ""}`}
-            onClick={() => {
-              setActiveTab("Proyectos");
-              setCurrentPage(1);
-            }}
+            onClick={() => { setActiveTab("Proyectos"); setCurrentPage(1); }}
           >
-            Proyectos
+            <FaProjectDiagram /> Proyectos
           </button>
           <button
-            className={`home-tab ${
-              activeTab === "Publicaciones" ? "active" : ""
-            }`}
-            onClick={() => {
-              setActiveTab("Publicaciones");
-              setCurrentPage(1);
-            }}
+            className={`home-tab ${activeTab === "Publicaciones" ? "active" : ""}`}
+            onClick={() => { setActiveTab("Publicaciones"); setCurrentPage(1); }}
           >
-            Publicaciones
+            <FaBook /> Publicaciones
           </button>
         </div>
 
         <div className="filters-container">
-          {activeTab === "Proyectos" && (
-            <div className="filter-group">
-              <label htmlFor="estado">Estado:</label>
-              <select
-                id="estado"
-                value={selectedProjectState}
-                onChange={(e) => {
-                  setSelectedProjectState(e.target.value);
-                  setCurrentPage(1);
-                }}
-              >
-                <option value="">Todos</option>
-                {projectStates.map((estado) => (
-                  <option key={estado} value={estado}>
-                    {estado}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-
-          {activeTab === "Publicaciones" && (
-            <div className="filter-group">
-              <label htmlFor="tipo">Tipo:</label>
-              <select
-                id="tipo"
-                value={selectedPublicationTipo}
-                onChange={(e) => {
-                  setSelectedPublicationTipo(e.target.value);
-                  setCurrentPage(1);
-                }}
-              >
-                <option value="">Todos</option>
-                {publicationTypes.map((tipo) => (
-                  <option key={tipo} value={tipo}>
-                    {tipo}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+          <FaFilter className="filter-icon" />
+          <select
+            value={activeTab === "Proyectos" ? selectedProjectState : selectedPublicationTipo}
+            onChange={(e) => {
+              activeTab === "Proyectos"
+                ? setSelectedProjectState(e.target.value)
+                : setSelectedPublicationTipo(e.target.value);
+              setCurrentPage(1);
+            }}
+          >
+            <option value="">Todos</option>
+            {(activeTab === "Proyectos" ? projectStates : publicationTypes).map((item) => (
+              <option key={item} value={item}>{item}</option>
+            ))}
+          </select>
         </div>
 
-        {activeTab === "Proyectos" && (
-          <div className="projects-section">
-            {loading ? (
-              <p>Cargando proyectos...</p>
-            ) : projects.length > 0 ? (
-              <div className="cards-container">
-                {projects.map((project) => (
-                  <div key={project._id} className="project-card">
-                    <div className="card-image">
-                      <img
-                        src={
-                          project.imagen ||
-                          "https://via.placeholder.com/300x200"
-                        }
-                        alt={project.nombre}
-                      />
-                    </div>
-                    <div className="card-content">
-                      <h3>{project.nombre}</h3>
-                      <p>
-                        {project.descripcion
-                          ? project.descripcion.substring(0, 100) + "..."
-                          : "No hay descripción disponible"}
-                      </p>
-                      <p>
-                        <strong>Estado:</strong> {project.estado}
-                      </p>
-                      <Link
-                        to={`/proyectos/${project._id}`}
-                        className="card-button"
-                      >
-                        Ver más
-                      </Link>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p>No se encontraron Proyectos</p>
-            )}
-          </div>
-        )}
-
-        {activeTab === "Publicaciones" && (
-          <div className="publications-section">
-            {loading ? (
-              <p>Cargando publicaciones...</p>
-            ) : publications.length > 0 ? (
-              <div className="cards-container">
-                {publications.map((publication) => (
-                  <div key={publication._id} className="publication-card">
-                    <div className="card-image">
-                      <img
-                        src={
-                          publication.imagen ||
-                          "https://via.placeholder.com/300x200"
-                        }
-                        alt={publication.titulo}
-                      />
-                    </div>
-                    <div className="card-content">
-                      <h3>{publication.titulo}</h3>
-                      <p>
-                        {publication.resumen
-                          ? publication.resumen.substring(0, 100) + "..."
-                          : "No hay resumen disponible"}
-                      </p>
-                      <p>
-                        <strong>Tipo:</strong> {publication.tipoPublicacion}
-                      </p>
-                      <Link
-                        to={`/publicaciones/${publication._id}`}
-                        className="card-button"
-                      >
-                        Ver más
-                      </Link>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p>No se encontraron Publicaciones</p>
-            )}
+        {loading ? (
+          <div className="loading-spinner"></div>
+        ) : (
+          <div className="cards-container">
+            {renderCards()}
           </div>
         )}
 

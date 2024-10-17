@@ -4,24 +4,30 @@ import DatePicker from "react-datepicker";
 import { getUserData, putData } from "../../services/apiServices";
 import NavInvestigator from "../../components/Comunes/NavInvestigator";
 import AlertComponent from "../../components/Comunes/AlertComponent";
+import { FaArrowLeft, FaArrowRight, FaSave, FaPlus, FaTrash, FaUpload } from "react-icons/fa";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../css/componentes/GestionProyectos/EditProjectView.css";
 
 const EditProjectView = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [currentStep, setCurrentStep] = useState(1);
 
   const [formData, setFormData] = useState({
     nombre: "",
     descripcion: "",
     objetivos: "",
     presupuesto: 0,
-    estado: "Planeado", // Este campo será solo lectura
+    estado: "Planeado",
     fechaInicio: new Date(),
     fechaFin: new Date(),
     hitos: [{ nombre: "", fecha: new Date() }],
     recursos: [""],
+    imagen: ""
   });
+
+  const [previewImage, setPreviewImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -35,38 +41,25 @@ const EditProjectView = () => {
             descripcion: project.descripcion,
             objetivos: project.objetivos,
             presupuesto: project.presupuesto,
-            estado: project.estado, // Estado solo lectura
+            estado: project.estado,
             fechaInicio: new Date(project.cronograma.fechaInicio),
             fechaFin: new Date(project.cronograma.fechaFin),
-            hitos:
-              project.hitos.length > 0
-                ? project.hitos
-                : [{ nombre: "", fecha: new Date() }],
+            hitos: project.hitos.length > 0
+              ? project.hitos.map(h => ({ ...h, fecha: new Date(h.fecha) }))
+              : [{ nombre: "", fecha: new Date() }],
             recursos: project.recursos.length > 0 ? project.recursos : [""],
+            imagen: project.imagen,
           });
+          setPreviewImage(project.imagen);
         }
       } catch (error) {
-        let errorMessage = "Ocurrió un error al cargar los datos del proyecto.";
-        let detailedErrors = [];
-
-        try {
-          // Intentamos analizar el error recibido del backend
-          const parsedError = JSON.parse(error.message);
-          errorMessage = parsedError.message;
-          detailedErrors = parsedError.errors || [];
-        } catch (parseError) {
-          // Si no se pudo analizar, usamos el mensaje de error general
-          errorMessage = error.message;
-        }
-        AlertComponent.error(errorMessage);
-        detailedErrors.forEach((err) => AlertComponent.error(err));
+        handleError(error, "Ocurrió un error al cargar los datos del proyecto.");
       }
     };
 
     fetchProject();
   }, [id]);
 
-  // Manejo de cambios en el formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -75,7 +68,18 @@ const EditProjectView = () => {
     }));
   };
 
-  // Manejo de fechas
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleDateChange = (name, date) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -83,7 +87,6 @@ const EditProjectView = () => {
     }));
   };
 
-  // Agregar nuevo hito
   const addHito = () => {
     setFormData((prevData) => ({
       ...prevData,
@@ -91,171 +94,289 @@ const EditProjectView = () => {
     }));
   };
 
+  const removeHito = (index) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      hitos: prevData.hitos.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleHitoChange = (index, field, value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      hitos: prevData.hitos.map((hito, i) =>
+        i === index ? { ...hito, [field]: value } : hito
+      ),
+    }));
+  };
+
+  const addRecurso = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      recursos: [...prevData.recursos, ""],
+    }));
+  };
+
+  const removeRecurso = (index) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      recursos: prevData.recursos.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleRecursoChange = (index, value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      recursos: prevData.recursos.map((recurso, i) =>
+        i === index ? value : recurso
+      ),
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const updatedProject = new FormData();
+
+    updatedProject.append('nombre', formData.nombre);
+    updatedProject.append('descripcion', formData.descripcion);
+    updatedProject.append('objetivos', formData.objetivos);
+    updatedProject.append('presupuesto', formData.presupuesto);
+    updatedProject.append('estado', formData.estado);
+
+    updatedProject.append('cronograma[fechaInicio]', formData.fechaInicio.toISOString());
+    updatedProject.append('cronograma[fechaFin]', formData.fechaFin.toISOString());
+
+    formData.hitos.forEach((hito, index) => {
+      updatedProject.append(`hitos[${index}][nombre]`, hito.nombre);
+      updatedProject.append(`hitos[${index}][fecha]`, hito.fecha.toISOString());
+    });
+
+    formData.recursos.forEach((recurso, index) => {
+      updatedProject.append(`recursos[${index}]`, recurso);
+    });
+
+    if (selectedFile) {
+      updatedProject.append('imagen', selectedFile);
+    }
+
     try {
-      await putData("projects", id, formData);
+      await putData("projects", id, updatedProject);
       AlertComponent.success("Proyecto actualizado exitosamente.");
       navigate("/invest/proyectos");
     } catch (error) {
-      let errorMessage =
-        "Ocurrió un error al actualizar el Proyecto.";
-      let detailedErrors = [];
-
-      try {
-        // Intentamos analizar el error recibido del backend
-        const parsedError = JSON.parse(error.message);
-        errorMessage = parsedError.message;
-        detailedErrors = parsedError.errors || [];
-      } catch (parseError) {
-        // Si no se pudo analizar, usamos el mensaje de error general
-        errorMessage = error.message;
-      }
-      AlertComponent.error(errorMessage);
-      detailedErrors.forEach((err) => AlertComponent.error(err));
+      handleError(error, "Ocurrió un error al actualizar el Proyecto.");
     }
   };
+
+  const handleError = (error, defaultMessage) => {
+    let errorMessage = defaultMessage;
+    let detailedErrors = [];
+
+    try {
+      const parsedError = JSON.parse(error.message);
+      errorMessage = parsedError.message;
+      detailedErrors = parsedError.errors || [];
+    } catch (parseError) {
+      errorMessage = error.message;
+    }
+    AlertComponent.error(errorMessage);
+    detailedErrors.forEach((err) => AlertComponent.error(err));
+  };
+
+  const nextStep = () => setCurrentStep(currentStep + 1);
+  const prevStep = () => setCurrentStep(currentStep - 1);
 
   return (
     <>
       <NavInvestigator />
       <div className="edit-project-view-container">
-        <div className="container">
-          <h2>Editar Proyecto</h2>
+        <div className="edit-wizard-container">
+          <h2 className="edit-h2">Editar Proyecto</h2>
+          <div className="edit-step-indicator">
+            <div className={`edit-step ${currentStep >= 1 ? 'active' : ''}`}>Información Básica</div>
+            <div className={`edit-step ${currentStep >= 2 ? 'active' : ''}`}>Cronograma</div>
+            <div className={`edit-step ${currentStep >= 3 ? 'active' : ''}`}>Hitos y Recursos</div>
+            <div className={`edit-step ${currentStep >= 4 ? 'active' : ''}`}>Imagen</div>
+          </div>
           <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="nombre">Nombre del Proyecto</label>
-              <input
-                type="text"
-                id="nombre"
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="descripcion">Descripción</label>
-              <textarea
-                id="descripcion"
-                name="descripcion"
-                value={formData.descripcion}
-                onChange={handleChange}
-                required
-              ></textarea>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="objetivos">Objetivos</label>
-              <textarea
-                id="objetivos"
-                name="objetivos"
-                value={formData.objetivos}
-                onChange={handleChange}
-              ></textarea>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="presupuesto">Presupuesto</label>
-              <input
-                type="number"
-                id="presupuesto"
-                name="presupuesto"
-                value={formData.presupuesto}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="estado">Estado del Proyecto</label>
-              <input
-                type="text"
-                id="estado"
-                name="estado"
-                value={formData.estado} // Campo solo lectura
-                readOnly
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Fecha de Inicio</label>
-              <DatePicker
-                selected={formData.fechaInicio}
-                onChange={(date) => handleDateChange("fechaInicio", date)}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Fecha de Fin</label>
-              <DatePicker
-                selected={formData.fechaFin}
-                onChange={(date) => handleDateChange("fechaFin", date)}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Hitos</label>
-              {formData.hitos.map((hito, index) => (
-                <div key={index} className="hito-group">
+            {currentStep === 1 && (
+              <div className="edit-form-step">
+                <div className="edit-form-group">
+                  <label htmlFor="nombre">Nombre del Proyecto</label>
                   <input
                     type="text"
-                    value={hito.nombre}
-                    onChange={(e) =>
-                      setFormData((prevData) => ({
-                        ...prevData,
-                        hitos: prevData.hitos.map((h, i) =>
-                          i === index ? { ...h, nombre: e.target.value } : h
-                        ),
-                      }))
-                    }
+                    id="nombre"
+                    name="nombre"
+                    value={formData.nombre}
+                    onChange={handleChange}
                     required
-                  />
-                  <DatePicker
-                    selected={hito.fecha}
-                    onChange={(date) =>
-                      setFormData((prevData) => ({
-                        ...prevData,
-                        hitos: prevData.hitos.map((h, i) =>
-                          i === index ? { ...h, fecha: date } : h
-                        ),
-                      }))
-                    }
-                    required
+                    className="edit-input"
                   />
                 </div>
-              ))}
-              <button type="button" className="add-hito-btn" onClick={addHito}>
-                Añadir Hito
-              </button>
-            </div>
+                <div className="edit-form-group">
+                  <label htmlFor="descripcion">Descripción</label>
+                  <textarea
+                    id="descripcion"
+                    name="descripcion"
+                    value={formData.descripcion}
+                    onChange={handleChange}
+                    required
+                    className="edit-textarea"
+                  ></textarea>
+                </div>
+                <div className="edit-form-group">
+                  <label htmlFor="objetivos">Objetivos</label>
+                  <textarea
+                    id="objetivos"
+                    name="objetivos"
+                    value={formData.objetivos}
+                    onChange={handleChange}
+                    className="edit-textarea"
+                  ></textarea>
+                </div>
+                <div className="edit-form-group">
+                  <label htmlFor="presupuesto">Presupuesto</label>
+                  <input
+                    type="number"
+                    id="presupuesto"
+                    name="presupuesto"
+                    value={formData.presupuesto}
+                    onChange={handleChange}
+                    required
+                    className="edit-input"
+                  />
+                </div>
+                <div className="edit-form-group">
+                  <label htmlFor="estado">Estado del Proyecto</label>
+                  <input
+                    type="text"
+                    id="estado"
+                    name="estado"
+                    value={formData.estado}
+                    readOnly
+                    className="edit-readonly-input"
+                  />
+                </div>
+              </div>
+            )}
 
-            <div className="form-group">
-              <label>Recursos</label>
-              {formData.recursos.map((recurso, index) => (
-                <input
-                  key={index}
-                  type="text"
-                  value={recurso}
-                  onChange={(e) =>
-                    setFormData((prevData) => ({
-                      ...prevData,
-                      recursos: prevData.recursos.map((r, i) =>
-                        i === index ? e.target.value : r
-                      ),
-                    }))
-                  }
-                  required
-                />
-              ))}
-            </div>
+            {currentStep === 2 && (
+              <div className="edit-form-step">
+                <div className="edit-form-group">
+                  <label>Fecha de Inicio</label>
+                  <DatePicker
+                    selected={formData.fechaInicio}
+                    onChange={(date) => handleDateChange("fechaInicio", date)}
+                    required
+                    className="edit-datepicker"
+                  />
+                </div>
+                <div className="edit-form-group">
+                  <label>Fecha de Fin</label>
+                  <DatePicker
+                    selected={formData.fechaFin}
+                    onChange={(date) => handleDateChange("fechaFin", date)}
+                    required
+                    className="edit-datepicker"
+                  />
+                </div>
+              </div>
+            )}
 
-            <button type="submit" className="save-btn">
-              Guardar
-            </button>
+            {currentStep === 3 && (
+              <div className="edit-form-step">
+                <div className="edit-form-group">
+                  <label>Hitos</label>
+                  {formData.hitos.map((hito, index) => (
+                    <div key={index} className="edit-hito-group">
+                      <input
+                        type="text"
+                        placeholder="Nombre del hito"
+                        value={hito.nombre}
+                        onChange={(e) => handleHitoChange(index, "nombre", e.target.value)}
+                        required
+                        className="edit-input"
+                      />
+                      <DatePicker
+                        selected={hito.fecha}
+                        onChange={(date) => handleHitoChange(index, "fecha", date)}
+                        required
+                        className="edit-datepicker"
+                      />
+                      <button type="button" className="edit-remove-btn" onClick={() => removeHito(index)}>
+                        <FaTrash />
+                      </button>
+                    </div>
+                  ))}
+                  <button type="button" className="edit-add-btn" onClick={addHito}>
+                    <FaPlus /> Añadir Hito
+                  </button>
+                </div>
+                <div className="edit-form-group">
+                  <label>Recursos</label>
+                  {formData.recursos.map((recurso, index) => (
+                    <div key={index} className="edit-recurso-group">
+                      <input
+                        type="text"
+                        placeholder="Recurso"
+                        value={recurso}
+                        onChange={(e) => handleRecursoChange(index, e.target.value)}
+                        required
+                        className="edit-input"
+                      />
+                      <button type="button" className="edit-remove-btn" onClick={() => removeRecurso(index)}>
+                        <FaTrash />
+                      </button>
+                    </div>
+                  ))}
+                  <button type="button" className="edit-add-btn" onClick={addRecurso}>
+                    <FaPlus /> Añadir Recurso
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {currentStep === 4 && (
+              <div className="edit-form-step">
+                <div className="edit-form-group">
+                  <label htmlFor="imagen">Imagen del Proyecto</label>
+                  <input
+                    type="file"
+                    id="imagen"
+                    name="imagen"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="edit-file-input"
+                  />
+                  <label htmlFor="imagen" className="edit-file-label">
+                    <FaUpload /> Cambiar Imagen
+                  </label>
+                  {previewImage && (
+                    <div className="edit-image-preview">
+                      <img src={previewImage} alt="Vista previa" />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            <div className="edit-form-navigation">
+              {currentStep > 1 && (
+                <button type="button" onClick={prevStep} className="edit-nav-btn edit-prev-btn">
+                  <FaArrowLeft /> Anterior
+                </button>
+              )}
+              {currentStep < 4 && (
+                <button type="button" onClick={nextStep} className="edit-nav-btn edit-next-btn">
+                  Siguiente <FaArrowRight />
+                </button>
+              )}
+              {currentStep === 4 && (
+                <button type="submit" className="edit-nav-btn edit-save-btn">
+                  <FaSave /> Guardar Cambios
+                </button>
+              )}
+            </div>
           </form>
         </div>
       </div>
