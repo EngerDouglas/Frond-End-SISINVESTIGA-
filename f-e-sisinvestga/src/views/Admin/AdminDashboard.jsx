@@ -101,7 +101,7 @@ const AdminDashboard = () => {
             <h2><i className="bi bi-gear"></i> Configuración de Perfil</h2>
             <p>Administrar y actualizar la configuración del perfil.</p>
             <button
-              onClick={() => handleNavigation("/admin/configuracion-perfil")}
+              onClick={() => handleNavigation("/admin/confprofile")}
               className="admin-btn-card"
             >
               <i className="bi bi-arrow-right"></i> Ir a Configuración

@@ -27,6 +27,7 @@ import EditPublicationView from '../views/Investigadores/EditPublicationView';
 import ForgotPasswordPage from '../views/Seguridad/ForgotPasswordPage';
 import ResetPasswordPage from '../views/Seguridad/ResetPasswordPage';
 import VerifyEmailPage from '../views/Seguridad/VerifyEmailPage';
+import ConfProfileAdmin from '../views/Admin/ConfigPerfilAdimin';
 
 const AppRouter = () => {
 
@@ -134,6 +135,12 @@ const AppRouter = () => {
       <Route path='/admin' element={ 
         <ProtectedRoute roles={['Administrador']}>
           <AdminDashboard />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/admin/confprofile' element={ 
+        <ProtectedRoute roles={['Administrador']}>
+          <ConfProfileAdmin />
         </ProtectedRoute>
       } />
 
