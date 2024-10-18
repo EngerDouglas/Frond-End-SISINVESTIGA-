@@ -3,28 +3,40 @@ import '../css/componentes/confprofileadmin.css';
 
 const ProfileComponent = () => {
   const [profileData, setProfileData] = useState({
-    firstName: 'Carlos Alberto',
-    lastName: 'Castillo Garcia',
+    id: '66d9a3d28811e44aea8b1dd6',
+    nombre: 'Carlos Alberto',
+    apellido: 'Castillo Garcia',
     email: 'castilloz671@gmail.com',
-    phone: '',
-    bio: '',
-    projectDescription: '',
-    skills: [
-      'Desarrollar Materiales',
-      'Probar Productos',
-      'Crear Formulas.'
-    ],
-    employmentTypes: ['Full-Time', 'Part-Time', 'Freelance', 'Internship'],
-    profilePicture: 'https://firebasestorage.googleapis.com/v0/b/sisinvestiga.appspot.com/o/profile%2F3f0b1e07-8b60-4e07-b670-836f37df7a6e-8.jpeg?alt=media',
-    newsletter: false
+    password: '$2a$08$/Wk5WcH7dMz1csqsej18TO4FJTTYH6BVLMFRVVMq3r67.LcvISeQK',
+    especializacion: 'Ingeniero Quimico',
+    responsabilidades: ['Desarrollar Materiales', 'Probar Productos', 'Crear Formulas'],
+    role: '66d77649d458301a4aba678c',
+    createdAt: '2024-09-05T12:28:02.312+00:00',
+    tokens: [],
+    __v: 98,
+    isDisabled: false,
+    updatedAt: '2024-10-17T13:32:26.792+00:00',
+    fotoPerfil: 'https://firebasestorage.googleapis.com/v0/b/sisinvestiga.appspot.com/o/profile%2F3f0b1e07-8b60-4e07-b670-836f37df7a6e-8.jpeg?alt=media',
+    isVerified: true
   });
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setProfileData((prevData) => ({
       ...prevData,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: value
     }));
+  };
+
+  const handlePictureChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setProfileData({ ...profileData, fotoPerfil: reader.result });
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -35,10 +47,21 @@ const ProfileComponent = () => {
   return (
     <div className="profile-container">
       <h1>Profile Overview</h1>
-      
-      {/* Contenedor de la foto de perfil */}
-      <div className="profile-picture-circle">
-        <img src={profileData.profilePicture} alt="Profile" className="profile-picture" />
+
+      {/* Contenedor de la foto de perfil con el botón */}
+      <div className="profile-picture-container">
+        <div className="profile-picture-circle">
+          <img src={profileData.fotoPerfil} alt="Profile" className="profile-picture" />
+        </div>
+        <label className="change-picture-btn">
+          Change Photo
+          <input
+            type="file"
+            accept=".svg, .png, .jpg, .gif"
+            onChange={handlePictureChange}
+            style={{ display: 'none' }}
+          />
+        </label>
       </div>
 
       <form className="profile-form" onSubmit={handleSubmit}>
@@ -46,8 +69,8 @@ const ProfileComponent = () => {
           type="text"
           placeholder="First Name"
           className="form-input"
-          name="firstName"
-          value={profileData.firstName}
+          name="nombre"
+          value={profileData.nombre}
           onChange={handleChange}
           required
         />
@@ -55,8 +78,8 @@ const ProfileComponent = () => {
           type="text"
           placeholder="Last Name"
           className="form-input"
-          name="lastName"
-          value={profileData.lastName}
+          name="apellido"
+          value={profileData.apellido}
           onChange={handleChange}
           required
         />
@@ -70,91 +93,45 @@ const ProfileComponent = () => {
           required
         />
         <input
-          type="tel"
-          placeholder="Phone Number"
+          type="password"
+          placeholder="Password"
           className="form-input"
-          name="phone"
-          value={profileData.phone}
+          name="password"
+          value={profileData.password}
           onChange={handleChange}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Especialización"
+          className="form-input"
+          name="especializacion"
+          value={profileData.especializacion}
+          onChange={handleChange}
+          required
         />
 
         <textarea
-          placeholder="Short Bio"
+          placeholder="Responsabilidades"
           className="form-textarea"
-          name="bio"
-          value={profileData.bio}
-          onChange={handleChange}
-        ></textarea>
-
-        <textarea
-          placeholder="Project description"
-          className="form-textarea project-description"
-          name="projectDescription"
-          value={profileData.projectDescription}
+          name="responsabilidades"
+          value={profileData.responsabilidades.join(', ')}
           onChange={handleChange}
         ></textarea>
 
         <div className="checkbox-container">
           <input
             type="checkbox"
-            id="newsletter"
-            name="newsletter"
-            checked={profileData.newsletter}
-            onChange={handleChange}
+            id="isVerified"
+            name="isVerified"
+            checked={profileData.isVerified}
+            onChange={(e) => setProfileData({ ...profileData, isVerified: e.target.checked })}
           />
-          <label htmlFor="newsletter">Subscribe to newsletter</label>
-        </div>
-
-        <div className="skills-section">
-          <h3>Skills:</h3>
-          <div className="skills-container">
-            {profileData.skills.map((skill, index) => (
-              <div key={index} className="skill-card">{skill}</div>
-            ))}
-          </div>
-        </div>
-
-        <div className="employment-type-section">
-          <h3>Employment Type:</h3>
-          <div className="employment-types">
-            {profileData.employmentTypes.map((type, index) => (
-              <div key={index} className="employment-card">{type}</div>
-            ))}
-          </div>
-        </div>
-
-        <div className="profile-picture-upload">
-          <label htmlFor="profile-pic">Profile Picture</label>
-          <input
-            type="file"
-            id="profile-pic"
-            accept=".svg, .png, .jpg, .gif"
-            name="profilePicture"
-            onChange={(e) => setProfileData({ ...profileData, profilePicture: e.target.files[0] })}
-          />
-          <p>SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+          <label htmlFor="isVerified">Verified Profile</label>
         </div>
 
         <button type="submit" className="submit-btn">Submit</button>
       </form>
-
-      <div className="profile-statistics">
-        <h2>Profile Statistics</h2>
-        <div className="statistics-container">
-          <div className="stat-item">
-            <p>User Engagement</p>
-            <h3>75%</h3>
-          </div>
-          <div className="stat-item">
-            <p>Total Views (last 7 days)</p>
-            <h3>1.2k</h3>
-          </div>
-          <div className="stat-item">
-            <p>Connections</p>
-            <h3>150</h3>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
