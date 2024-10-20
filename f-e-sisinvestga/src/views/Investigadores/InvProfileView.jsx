@@ -6,7 +6,7 @@ import PasswordChecklist from "react-password-checklist";
 import { getUserData, putSelfData } from "../../services/apiServices";
 import NavInvestigator from "../../components/Comunes/NavInvestigator";
 import AlertComponent from "../../components/Comunes/AlertComponent";
-import { FaUser, FaEnvelope, FaGraduationCap, FaTasks, FaKey, FaSignOutAlt } from "react-icons/fa";
+import { FaUser, FaEnvelope, FaGraduationCap, FaTasks, FaKey, FaSignOutAlt, FaCamera } from "react-icons/fa";
 import "../../css/componentes/GestionInvestigadores/InvProfileView.css";
 
 const InvProfileView = () => {
@@ -25,6 +25,7 @@ const InvProfileView = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [activeTab, setActiveTab] = useState("personal");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -109,133 +110,220 @@ const InvProfileView = () => {
 
   return (
     <>
-      <NavInvestigator />
-      <div className="user-profile-container">
-        <h2 className="profile-title">Perfil de Usuario</h2>
-        <div className="profile-card">
-          <div className="profile-avatar">
-            <img src={user.fotoPerfil || '/default-avatar.png'} alt="Avatar" />
-            <label className="profile-label" htmlFor="profile-photo-upload">
-              Subir nueva foto
-            </label>
-            <input
-              id="profile-photo-upload"
-              type="file"
-              className="profile-input"
-              onChange={handleFileChange}
-              accept="image/*"
-            />
+    <NavInvestigator />
+      <div className="d-flex">
+        <div className="flex-grow-1 bg-light">
+          <div className="container py-4">
+            <div className="card shadow">
+              <div className="card-header bg-primary text-white">
+                <div className="d-flex align-items-center">
+                  <div className="position-relative">
+                    <img
+                      src={user.fotoPerfil || '/default-avatar.png'}
+                      alt="Avatar"
+                      className="rounded-circle profile-avatar"
+                    />
+                    <label htmlFor="profile-photo-upload" className="btn btn-light btn-sm position-absolute bottom-0 end-0 rounded-circle">
+                      <FaCamera />
+                    </label>
+                    <input
+                      id="profile-photo-upload"
+                      type="file"
+                      className="d-none"
+                      onChange={handleFileChange}
+                      accept="image/*"
+                    />
+                  </div>
+                  <div className="ms-3">
+                    <h1 className="h3 mb-0">{`${user.nombre} ${user.apellido}`}</h1>
+                    <p className="mb-0 text-white">{user.especializacion}</p>
+                  </div>
+                </div>
+              </div>
+              <div className="card-body">
+                <ul className="nav nav-tabs mb-4">
+                  <li className="nav-item">
+                    <button
+                      className={`nav-link ${activeTab === 'personal' ? 'active' : ''}`}
+                      onClick={() => setActiveTab('personal')}
+                    >
+                      Información Personal
+                    </button>
+                  </li>
+                  <li className="nav-item">
+                    <button
+                      className={`nav-link ${activeTab === 'security' ? 'active' : ''}`}
+                      onClick={() => setActiveTab('security')}
+                    >
+                      Seguridad
+                    </button>
+                  </li>
+                </ul>
+
+                {activeTab === 'personal' && (
+                  <form onSubmit={handleUpdateUser}>
+                    <div className="row mb-3">
+                      <div className="col-md-6">
+                        <label htmlFor="nombre" className="form-label">Nombre</label>
+                        <div className="input-group">
+                          <span className="input-group-text"><FaUser /></span>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="nombre"
+                            value={user.nombre}
+                            onChange={(e) => setUser({ ...user, nombre: e.target.value })}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <label htmlFor="apellido" className="form-label">Apellido</label>
+                        <div className="input-group">
+                          <span className="input-group-text"><FaUser /></span>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="apellido"
+                            value={user.apellido}
+                            onChange={(e) => setUser({ ...user, apellido: e.target.value })}
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row mb-3">
+                      <div className="col-md-6">
+                        <label htmlFor="email" className="form-label">Email</label>
+                        <div className="input-group">
+                          <span className="input-group-text"><FaEnvelope /></span>
+                          <input
+                            type="email"
+                            className="form-control"
+                            id="email"
+                            value={user.email}
+                            onChange={(e) => setUser({ ...user, email: e.target.value })}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <label htmlFor="especializacion" className="form-label">Especialización</label>
+                        <div className="input-group">
+                          <span className="input-group-text"><FaGraduationCap /></span>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="especializacion"
+                            value={user.especializacion}
+                            onChange={(e) => setUser({ ...user, especializacion: e.target.value })}
+                            required
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="responsabilidades" className="form-label">Responsabilidades</label>
+                      <div className="input-group">
+                        <span className="input-group-text"><FaTasks /></span>
+                        <textarea
+                          className="form-control"
+                          id="responsabilidades"
+                          value={user.responsabilidades.join(", ")}
+                          onChange={(e) => setUser({ ...user, responsabilidades: e.target.value.split(", ") })}
+                          rows="3"
+                          required
+                        ></textarea>
+                      </div>
+                    </div>
+                    <div className="text-end">
+                      <button
+                        type="submit"
+                        className="btn btn-primary"
+                        disabled={isUpdating}
+                      >
+                        {isUpdating ? "Actualizando..." : "Guardar cambios"}
+                      </button>
+                    </div>
+                  </form>
+                )}
+
+                {activeTab === 'security' && (
+                  <form onSubmit={handleUpdateUser}>
+                    <div className="mb-3">
+                      <label htmlFor="currentPassword" className="form-label">Contraseña actual</label>
+                      <div className="input-group">
+                        <span className="input-group-text"><FaKey /></span>
+                        <input
+                          type="password"
+                          className="form-control"
+                          id="currentPassword"
+                          value={currentPassword}
+                          onChange={(e) => setCurrentPassword(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="newPassword" className="form-label">Nueva contraseña</label>
+                      <div className="input-group">
+                        <span className="input-group-text"><FaKey /></span>
+                        <input
+                          type="password"
+                          className="form-control"
+                          id="newPassword"
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="confirmPassword" className="form-label">Confirmar nueva contraseña</label>
+                      <div className="input-group">
+                        <span className="input-group-text"><FaKey /></span>
+                        <input
+                          type="password"
+                          className="form-control"
+                          id="confirmPassword"
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <PasswordChecklist
+                      rules={["minLength", "specialChar", "number", "capital", "match"]}
+                      minLength={8}
+                      value={newPassword}
+                      valueAgain={confirmPassword}
+                      onChange={(isValid) => setIsPasswordValid(isValid)}
+                      messages={{
+                        minLength: "La contraseña tiene al menos 8 caracteres.",
+                        specialChar: "La contraseña tiene caracteres especiales.",
+                        number: "La contraseña tiene un número.",
+                        capital: "La contraseña tiene una letra mayúscula.",
+                        match: "Las contraseñas coinciden.",
+                      }}
+                    />
+                    <div className="d-flex justify-content-between align-items-center">
+                      <button
+                        type="button"
+                        onClick={handleLogoutAllSessions}
+                        className="btn btn-danger"
+                      >
+                        <FaSignOutAlt className="me-2" /> Cerrar sesiones en todos los dispositivos
+                      </button>
+                      <button
+                        type="submit"
+                        className="btn btn-primary"
+                        disabled={isUpdating || (newPassword && !isPasswordValid)}
+                      >
+                        {isUpdating ? "Actualizando..." : "Guardar cambios"}
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
+            </div>
           </div>
-          <form onSubmit={handleUpdateUser} className="profile-form">
-            <div className="form-group">
-              <FaUser className="form-icon" />
-              <input
-                type="text"
-                value={user.nombre}
-                onChange={(e) => setUser({ ...user, nombre: e.target.value })}
-                placeholder="Nombre"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <FaUser className="form-icon" />
-              <input
-                type="text"
-                value={user.apellido}
-                onChange={(e) => setUser({ ...user, apellido: e.target.value })}
-                placeholder="Apellido"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <FaEnvelope className="form-icon" />
-              <input
-                type="email"
-                value={user.email}
-                onChange={(e) => setUser({ ...user, email: e.target.value })}
-                placeholder="Email"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <FaGraduationCap className="form-icon" />
-              <input
-                type="text"
-                value={user.especializacion}
-                onChange={(e) => setUser({ ...user, especializacion: e.target.value })}
-                placeholder="Especialización"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <FaTasks className="form-icon" />
-              <textarea
-                value={user.responsabilidades.join(", ")}
-                onChange={(e) => setUser({ ...user, responsabilidades: e.target.value.split(", ") })}
-                placeholder="Responsabilidades (separadas por coma)"
-                required
-              />
-            </div>
-
-            <h3 className="section-title">Cambiar Contraseña</h3>
-
-            <div className="form-group">
-              <FaKey className="form-icon" />
-              <input
-                type="password"
-                placeholder="Contraseña actual"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
-              />
-            </div>
-
-            <div className="form-group">
-              <FaKey className="form-icon" />
-              <input
-                type="password"
-                placeholder="Nueva contraseña"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-              />
-            </div>
-
-            <div className="form-group">
-              <FaKey className="form-icon" />
-              <input
-                type="password"
-                placeholder="Confirmar nueva contraseña"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-            </div>
-
-            <PasswordChecklist
-              rules={["minLength", "specialChar", "number", "capital", "match"]}
-              minLength={8}
-              value={newPassword}
-              valueAgain={confirmPassword}
-              onChange={(isValid) => setIsPasswordValid(isValid)}
-              messages={{
-                minLength: "La contraseña tiene al menos 8 caracteres.",
-                specialChar: "La contraseña tiene caracteres especiales.",
-                number: "La contraseña tiene un número.",
-                capital: "La contraseña tiene una letra mayúscula.",
-                match: "Las contraseñas coinciden.",
-              }}
-            />
-
-            <button type="submit" className="save-btn" disabled={isUpdating || (newPassword && !isPasswordValid)}>
-              {isUpdating ? "Actualizando..." : "Guardar cambios"}
-            </button>
-          </form>
-
-          <button className="logout-all-btn" onClick={handleLogoutAllSessions}>
-            <FaSignOutAlt /> Cerrar sesiones en todos los dispositivos
-          </button>
         </div>
       </div>
     </>

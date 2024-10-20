@@ -1,6 +1,6 @@
 :root {
-  --primary-color: #006400; /* Dark green for UCSD */
-  --secondary-color: #8cc63f; /* Light green for UCSD */
+  --primary-color: #006400;
+  --secondary-color: #8cc63f;
   --text-color: #333;
   --background-color: #f3f4f6;
   --card-background: #ffffff;
@@ -9,179 +9,59 @@
   --error-color: #d32f2f;
 }
 
-.user-profile-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px;
-  background-color: var(--background-color);
-  min-height: calc(100vh - 60px); /* Adjust based on your navbar height */
+.bg-primary {
+  background-color: var(--primary-color) !important;
 }
 
-.profile-title {
-  font-size: 2.5rem;
-  color: var(--primary-color);
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.profile-card {
-  background-color: var(--card-background);
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.profile-avatar {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.profile-avatar img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid var(--primary-color);
-}
-
-.profile-input {
-  display: none;
-}
-
-.profile-label {
+.btn-primary {
   background-color: var(--primary-color);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: background-color 0.3s ease;
-}
-
-.profile-label:hover {
-  background-color: var(--button-hover);
-}
-
-.profile-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.form-group {
-  position: relative;
-}
-
-.form-icon {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--primary-color);
-}
-
-.profile-form input,
-.profile-form textarea {
-  width: 100%;
-  padding: 12px 12px 12px 40px;
-  font-size: 1rem;
-  border: 1px solid var(--input-border);
-  border-radius: 6px;
-  transition: border-color 0.3s ease;
-}
-
-.profile-form input:focus,
-.profile-form textarea:focus {
-  outline: none;
   border-color: var(--primary-color);
 }
 
-.section-title {
-  color: var(--primary-color);
-  font-size: 1.2rem;
-  margin-top: 20px;
-}
-
-.save-btn,
-.logout-all-btn {
-  background-color: var(--primary-color);
-  color: white;
-  padding: 15px 30px;
-  border: none;
-  border-radius: 6px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.save-btn:hover,
-.logout-all-btn:hover {
+.btn-primary:hover {
   background-color: var(--button-hover);
+  border-color: var(--button-hover);
 }
 
-.save-btn:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+.nav-tabs .nav-link.active {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
 }
 
-.logout-all-btn {
-  background-color: var(--error-color);
-  margin-top: 20px;
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 3px solid var(--card-background);
 }
 
-.logout-all-btn:hover {
-  background-color: #b71c1c;
+.card {
+  border: none;
 }
 
-/* Responsivo */
+.card-header {
+  border-bottom: none;
+}
+
+.input-group-text {
+  background-color: var(--background-color);
+  border-color: var(--input-border);
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(0, 100, 0, 0.25);
+}
+
 @media (max-width: 768px) {
-  .profile-card {
-    padding: 20px;
+  .card-header .d-flex {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
-  .profile-title {
-    font-size: 2rem;
-  }
-
-  .save-btn,
-  .logout-all-btn {
-    width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .user-profile-container {
-    padding: 15px;
-  }
-
-  .profile-title {
-    font-size: 1.8rem;
-  }
-
-  .profile-card {
-    padding: 15px;
-  }
-
-  .profile-form input,
-  .profile-form textarea {
-    font-size: 0.9rem;
-  }
-
-  .save-btn,
-  .logout-all-btn {
-    font-size: 1rem;
-    padding: 12px 20px;
+  .card-header .ms-3 {
+    margin-left: 0 !important;
+    margin-top: 1rem;
   }
 }
