@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from "react";
 import "../../css/componentes/Publicaciones/publicacionesInfo.css";
-import { getData, deleteData,updateData } from "../../services/apiServices"; // Asume que updateData existe
+import { getData, deleteData,updateData,createData } from "../../services/apiServices"; // Asume que updateData existe
 
 function PublicacionesInfo() {
   const [publicacionesData, setPublicacionesData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false); // Modal para crear
   const [currentPublicacion, setCurrentPublicacion] = useState(null);
+  const [newPublicacion, setNewPublicacion] = useState({ // Datos para nueva publicación
+    titulo: "",
+    revista: "",
+    resumen: "",
+    palabrasClave: [],
+    fecha: "",
+    proyecto: "",
+    anexos: [],
+    tipoPublicacion: "",
+    idioma: ""
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -49,7 +61,34 @@ function PublicacionesInfo() {
   };
 
   const handleCreate = () => {
-    console.log("Crear nueva publicación");
+    setIsCreateModalOpen(true); // Abre el modal de creación
+  };
+
+  const handleSaveCreate = async () => {
+    try {
+      const createdPublicacion = await createData("Publications", newPublicacion); // Llama a la API para crear la publicación
+      setPublicacionesData([...publicacionesData, createdPublicacion]); // Añade la nueva publicación al estado
+      setIsCreateModalOpen(false); // Cierra el modal
+      setNewPublicacion({ // Limpia el formulario
+        titulo: "",
+        revista: "",
+        resumen: "",
+        palabrasClave: [],
+        fecha: "",
+        proyecto: "",
+        anexos: [],
+        tipoPublicacion: "",
+        idioma: ""
+      });
+      console.log("Publicación creada con éxito.");
+    } catch (error) {
+      console.error("Error al crear la publicación", error);
+    }
+  };
+
+  const handleChangeCreate = (e) => {
+    const { name, value } = e.target;
+    setNewPublicacion({ ...newPublicacion, [name]: value });
   };
 
   const handleSaveUpdate = async () => {
@@ -147,6 +186,43 @@ function PublicacionesInfo() {
             />
             <button onClick={handleSaveUpdate}>Guardar</button>
             <button onClick={() => setIsModalOpen(false)}>Cancelar</button>
+          </div>
+        </div>
+      )}
+
+      {isCreateModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <h3>Crear Nueva Publicación</h3>
+            <input
+              type="text"
+              name="titulo"
+              value={newPublicacion.titulo}
+              onChange={handleChangeCreate}
+              placeholder="Título"
+            />
+            <input
+              type="text"
+              name="revista"
+              value={newPublicacion.revista}
+              onChange={handleChangeCreate}
+              placeholder="Revista"
+            />
+            <textarea
+              name="resumen"
+              value={newPublicacion.resumen}
+              onChange={handleChangeCreate}
+              placeholder="Resumen"
+            />
+            <input
+              type="text"
+              name="tipoPublicacion"
+              value={newPublicacion.tipoPublicacion}
+              onChange={handleChangeCreate}
+              placeholder="Tipo de Publicación"
+            />
+            <button onClick={handleSaveCreate}>Crear</button>
+            <button onClick={() => setIsCreateModalOpen(false)}>Cancelar</button>
           </div>
         </div>
       )}
