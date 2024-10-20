@@ -142,7 +142,7 @@ const InvReportView = () => {
                   <td>{formatValue(project.cronograma.fechaInicio)}</td>
                   <td>{formatValue(project.cronograma.fechaFin)}</td>
                   <td>
-                    <button onClick={() => fetchProjectEvaluations(project._id)} className="btn btn-primary btn-sm">
+                    <button onClick={() => fetchProjectEvaluations(project._id)} className="btn btn-success btn-sm">
                       Ver Evaluaciones
                     </button>
                   </td>

@@ -115,7 +115,7 @@ const InvProfileView = () => {
         <div className="flex-grow-1 bg-light">
           <div className="container py-4">
             <div className="card shadow">
-              <div className="card-header bg-primary text-white">
+              <div className="card-header p-bg-primary text-white">
                 <div className="d-flex align-items-center">
                   <div className="position-relative">
                     <img
@@ -239,7 +239,7 @@ const InvProfileView = () => {
                     <div className="text-end">
                       <button
                         type="submit"
-                        className="btn btn-primary"
+                        className="btn btn-success"
                         disabled={isUpdating}
                       >
                         {isUpdating ? "Actualizando..." : "Guardar cambios"}
@@ -313,7 +313,7 @@ const InvProfileView = () => {
                       </button>
                       <button
                         type="submit"
-                        className="btn btn-primary"
+                        className="btn btn-success"
                         disabled={isUpdating || (newPassword && !isPasswordValid)}
                       >
                         {isUpdating ? "Actualizando..." : "Guardar cambios"}
