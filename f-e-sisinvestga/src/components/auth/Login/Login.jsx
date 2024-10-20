@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../../features/auth/authSlice";
 import { useNavigate, Link } from "react-router-dom";
 import AlertComponent from "../../Comunes/AlertComponent";
 import { FaEnvelope, FaLock, FaSignInAlt } from "react-icons/fa";
+import ReCAPTCHA from "react-google-recaptcha";
 import logo from "../../../assets/img/LogoUCSD.jpg";
 import backgroundStudy from "../../../assets/img/Study.png";
 import "../../../css/componentes/Seguridad/Login.css";
@@ -11,13 +12,23 @@ import "../../../css/componentes/Seguridad/Login.css";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [recaptchaToken, setRecaptchaToken] = useState(null);
+  const recaptchaRef = useRef();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user, role, error, status } = useSelector((state) => state.auth);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(loginUser({ email, password }));
+    if (!recaptchaToken) {
+      AlertComponent.error("Por favor, complete el reCAPTCHA");
+      return;
+    }
+    dispatch(loginUser({ email, password, recaptchaToken }));
+  };
+
+  const handleRecaptchaChange = (token) => {
+    setRecaptchaToken(token);
   };
 
   const goToForgotPassword = () => {
@@ -27,6 +38,8 @@ const Login = () => {
   useEffect(() => {
     if (error) {
       AlertComponent.error(error);
+      recaptchaRef.current.reset();
+      setRecaptchaToken(null);
     }
   }, [error]);
 
@@ -87,7 +100,18 @@ const Login = () => {
                 className={error && error.includes("password") ? "input-error" : ""}
               />
             </div>
-            <button type="submit" className="submit-btn">
+            <div className="recaptcha-container">
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey={process.env.REACT_APP_RECAPTCHA_SITE_KEY}
+                onChange={handleRecaptchaChange}
+              />
+            </div>
+            <button 
+              type="submit" 
+              className="submit-btn"
+              disabled={!recaptchaToken || status === "loading"}
+            >
               {status === "loading" ? "Iniciando..." : (
                 <>
                   <FaSignInAlt className="btn-icon" />
