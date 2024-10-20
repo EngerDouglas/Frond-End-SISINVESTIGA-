@@ -1,3 +1,22 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+#root, .form-container, .App, html, body {
+  height: 100%;
+}
+
+html {
+  height: 100vh;
+}
+
+#root, .App {
+  margin: 0;
+}
+
 .form-container {
   height: 100%;
   width: 100%;
