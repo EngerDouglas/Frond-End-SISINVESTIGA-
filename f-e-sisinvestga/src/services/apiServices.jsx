@@ -197,6 +197,17 @@ export const getUserData = async (endpoint, params) => {
   }
 };
 
+// GET
+export const getFiles = async (endpoint, config = {}) => {
+  try {
+    const response = await api.get(`/${endpoint}`, config);
+    return response;
+  } catch (error) {
+    const errorMessage = error.response?.data?.error || error.response?.data || error.message || 'Error desconocido';
+    throw new Error(JSON.stringify(errorMessage));
+  }
+};
+
 //  -------------------------------- END ---------------------------- //
 
 // POST
