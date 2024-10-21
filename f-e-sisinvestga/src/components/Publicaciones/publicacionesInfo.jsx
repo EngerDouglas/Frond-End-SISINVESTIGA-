@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../../css/componentes/Publicaciones/publicacionesInfo.css";
-import { getData, deleteData,updateData,createData } from "../../services/apiServices"; // Asume que updateData existe
+import { getData, deleteData, updateData, createData } from "../../services/apiServices"; // Asume que updateData existe
 
 function PublicacionesInfo() {
   const [publicacionesData, setPublicacionesData] = useState([]);
@@ -20,6 +20,8 @@ function PublicacionesInfo() {
     idioma: ""
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [projectSearchTerm, setProjectSearchTerm] = useState("");
+  const [projectResults, setProjectResults] = useState([]);
 
   useEffect(() => {
     const fetchPublications = async () => {
@@ -37,7 +39,16 @@ function PublicacionesInfo() {
     fetchPublications();
   }, []);
 
-    
+  const searchProject = async () => {
+    try {
+      if (projectSearchTerm) {
+        const projects = await getData(`projects/search?query=${projectSearchTerm}`);
+        setProjectResults(Array.isArray(projects) ? projects : []);
+      }
+    } catch (error) {
+      console.log("Error al buscar proyectos", error);
+    }
+  };
 
   const handleUpdate = (publicacion) => {
     setCurrentPublicacion(publicacion);
@@ -86,11 +97,6 @@ function PublicacionesInfo() {
     }
   };
 
-  const handleChangeCreate = (e) => {
-    const { name, value } = e.target;
-    setNewPublicacion({ ...newPublicacion, [name]: value });
-  };
-
   const handleSaveUpdate = async () => {
     try {
       await updateData(`Publications/${currentPublicacion.id}`, currentPublicacion);
@@ -108,6 +114,11 @@ function PublicacionesInfo() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCurrentPublicacion({ ...currentPublicacion, [name]: value });
+  };
+
+  const handleChangeCreate = (e) => {
+    const { name, value } = e.target;
+    setNewPublicacion({ ...newPublicacion, [name]: value });
   };
 
   const filteredPublicaciones = publicacionesData.filter((publicacion) =>
@@ -184,6 +195,27 @@ function PublicacionesInfo() {
               onChange={handleChange}
               placeholder="Resumen"
             />
+            <input
+              type="text"
+              placeholder="Buscar proyecto por nombre..."
+              value={projectSearchTerm}
+              onChange={(e) => setProjectSearchTerm(e.target.value)}
+              onBlur={searchProject}
+            />
+            {projectResults.length > 0 && (
+              <select
+                name="proyecto"
+                value={currentPublicacion.proyecto}
+                onChange={(e) => setCurrentPublicacion({ ...currentPublicacion, proyecto: e.target.value })}
+              >
+                <option value="">Seleccionar Proyecto</option>
+                {projectResults.map((project) => (
+                  <option key={project._id} value={project._id}>
+                    {project.nombre}
+                  </option>
+                ))}
+              </select>
+            )}
             <button onClick={handleSaveUpdate}>Guardar</button>
             <button onClick={() => setIsModalOpen(false)}>Cancelar</button>
           </div>
@@ -221,6 +253,20 @@ function PublicacionesInfo() {
               onChange={handleChangeCreate}
               placeholder="Tipo de Publicación"
             />
+            {projectResults.length > 0 && (
+              <select
+                name="proyecto"
+                value={newPublicacion.proyecto}
+                onChange={(e) => setNewPublicacion({ ...newPublicacion, proyecto: e.target.value })}
+              >
+                <option value="">Seleccionar Proyecto</option>
+                {projectResults.map((project) => (
+                  <option key={project._id} value={project._id}>
+                    {project.nombre}
+                  </option>
+                ))}
+              </select>
+            )}
             <button onClick={handleSaveCreate}>Crear</button>
             <button onClick={() => setIsCreateModalOpen(false)}>Cancelar</button>
           </div>
