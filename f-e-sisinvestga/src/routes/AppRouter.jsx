@@ -8,7 +8,7 @@ import AdminDashboard from '../views/Admin/AdminDashboard';
 import InvestDashboard from '../views/Investigadores/InvestDashboard';
 import InvProjectView from '../views/Investigadores/InvProjectView';
 import InvPublicationView from '../views/Investigadores/InvPublicationView';
-import InvInformeView from '../views/Investigadores/InvInformeView';
+import InvReportView from '../views/Investigadores/InvReportView';
 import InvRequestView from '../views/Investigadores/InvRequestView';
 import InvProfileView from '../views/Investigadores/InvProfileView';
 import Unauthorized from '../views/Pages/Unauthorized';
@@ -28,6 +28,7 @@ import ForgotPasswordPage from '../views/Seguridad/ForgotPasswordPage';
 import ResetPasswordPage from '../views/Seguridad/ResetPasswordPage';
 import VerifyEmailPage from '../views/Seguridad/VerifyEmailPage';
 import ConfProfileAdmin from '../views/Admin/ConfigPerfilAdimin';
+import InvProjectEvaluations from '../views/Investigadores/InvProjectEvaluations';
 
 const AppRouter = () => {
 
@@ -114,7 +115,13 @@ const AppRouter = () => {
 
       <Route path='/invest/informes' element={
         <ProtectedRoute roles={['Investigador']}>
-          <InvInformeView />
+          <InvReportView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/invest/project/:projectId/evaluations' element={
+        <ProtectedRoute roles={['Investigador']}>
+          <InvProjectEvaluations />
         </ProtectedRoute>
       } />
 

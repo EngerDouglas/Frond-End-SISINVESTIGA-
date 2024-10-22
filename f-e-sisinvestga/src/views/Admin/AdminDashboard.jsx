@@ -32,14 +32,14 @@ const AdminDashboard = () => {
           },
           projects: {
             total: projectsData.total,
-            inProgress: projectsData.projects.filter(project => project.estado === 'En Progreso').length,
-            completed: projectsData.projects.filter(project => project.estado === 'Completado').length,
+            inProgress: projectsData.projects.filter(project => project.estado === 'En Proceso').length,
+            completed: projectsData.projects.filter(project => project.estado === 'Finalizado').length,
             deleted: projectsData.projects.filter(project => project.isDeleted).length
           },
           publications: {
             total: publicationsData.total,
             published: publicationsData.publications.filter(pub => pub.estado === 'Publicado').length,
-            inReview: publicationsData.publications.filter(pub => pub.estado === 'En Revisión').length,
+            inReview: publicationsData.publications.filter(pub => pub.estado === 'Revisado').length,
             deleted: publicationsData.publications.filter(pub => pub.isDeleted).length
           }
         });
@@ -76,13 +76,13 @@ const AdminDashboard = () => {
 
   const projectChartData = createChartData(
     [stats.projects.inProgress, stats.projects.completed, stats.projects.deleted],
-    ['En Progreso', 'Completados', 'Eliminados'],
+    ['En Proceso', 'Completados', 'Eliminados'],
     ['#FFCE56', '#4BC0C0', '#FF6384']
   );
 
   const publicationChartData = createChartData(
     [stats.publications.published, stats.publications.inReview, stats.publications.deleted],
-    ['Publicados', 'En Revisión', 'Eliminados'],
+    ['Publicados', 'Revisado', 'Eliminados'],
     ['#4BC0C0', '#FFCE56', '#FF6384']
   );
 
@@ -107,7 +107,7 @@ const AdminDashboard = () => {
           <div className="stats-card">
             <h2>Estadísticas de Proyectos</h2>
             <p>Total: {stats.projects.total}</p>
-            <p>En Progreso: {stats.projects.inProgress}</p>
+            <p>En Proceso: {stats.projects.inProgress}</p>
             <p>Completados: {stats.projects.completed}</p>
             <p>Eliminados: {stats.projects.deleted}</p>
             <div className="chart-container">
@@ -119,7 +119,7 @@ const AdminDashboard = () => {
             <h2>Estadísticas de Publicaciones</h2>
             <p>Total: {stats.publications.total}</p>
             <p>Publicadas: {stats.publications.published}</p>
-            <p>En Revisión: {stats.publications.inReview}</p>
+            <p>Revisado: {stats.publications.inReview}</p>
             <p>Eliminadas: {stats.publications.deleted}</p>
             <div className="chart-container">
               <Pie data={publicationChartData} />
