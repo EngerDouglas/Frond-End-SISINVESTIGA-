@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { format } from "date-fns";
 import { FaUser, FaCalendarAlt, FaBook, FaLanguage, FaTag, FaPaperclip, FaChevronRight, FaChevronDown } from "react-icons/fa";
-import Nav from "../../components/Common/Nav";
+import Nav from "../../../components/Home/Common/Nav";
 import { getDataById } from "../../../services/apiServices";
-import AuthorModal from "../../components/GestionInvestigadores/AuthorModal";
-import "../../css/Home/HomeProjects/PublicationsDetails.css";
+import AuthorModal from "../../../components/Home/AuthorModal";
+import "../../../css/Home/PublicationsDetails.css";
 
 const PublicationDetailViews = () => {
   const { id } = useParams();

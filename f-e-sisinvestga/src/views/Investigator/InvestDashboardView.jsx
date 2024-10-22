@@ -1,6 +1,6 @@
 import React from 'react'
-import NavInvestigator from '../../components/Common/NavInvestigator'
-import DashboardContent from '../../components/GestionInvestigadores/DashboardContent'
+import NavInvestigator from '../../components/Investigator/Common/NavInvestigator';
+import DashboardContent from '../../components/Investigator/DashboardManagement/DashboardContent';
 import ErrorBoundary from '../../components/Common/ErrorBoundary'
 
 const InvestDashboardView = () => {

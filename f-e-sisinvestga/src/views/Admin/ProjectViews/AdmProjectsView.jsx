@@ -1,6 +1,6 @@
 import React from "react";
 import AdmSeeProjects from "../../../components/Admin/ProjectManagement/AdmSeeProjects";
-import Nav from '../../components/Common/NavAdmin'
+import Nav from "../../../components/Admin/Common/NavAdmin";
 
 const AdmProjectsView = () => {
   return (

@@ -1,6 +1,6 @@
 import React from "react";
 import AdmSeePublications from "../../../components/Admin/PublicationManagement/AdmSeePublications";
-import Nav from "../../components/Common/NavAdmin";
+import Nav from "../../../components/Admin/Common/NavAdmin";
 
 const AdmPublicationViews = () => {
     return(

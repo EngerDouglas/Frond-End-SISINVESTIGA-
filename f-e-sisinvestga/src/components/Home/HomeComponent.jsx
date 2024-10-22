@@ -8,6 +8,7 @@ import img1 from "../../img/invest.jpg";
 import img2 from "../../img/invest2.jpg";
 import img3 from "../../img/invest3.jpg";
 import { Carousel } from "react-bootstrap";
+import { getDataParams } from "../../services/apiServices";
 import { FaProjectDiagram, FaBook, FaFilter } from "react-icons/fa";
 
 const HomeComponent = () => {

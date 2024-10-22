@@ -1,11 +1,11 @@
 import React from 'react'
-import AdmSeeInvestigator from '../../../components/GestionInvestigadores/AdmSeeInvestigator'
-import NavAdmin from '../../../components/Common/NavAdmin'
+import AdmSeeInvestigator from '../../../components/Admin/InvestigatorManagement/AdmSeeInvestigator';
+import Nav from "../../../components/Admin/Common/NavAdmin";
 
 const AdmInvestigatorView = () => {
   return (
     <div>
-        <NavAdmin></NavAdmin>
+        <Nav></Nav>
         <AdmSeeInvestigator></AdmSeeInvestigator>
     </div>
   )

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { FaFileCsv, FaFilePdf, FaSpinner } from "react-icons/fa";
-import NavInvestigator from "../../components/Investigator/Common/NavInvestigator";
-import AlertComponent from "../../components/Common/AlertComponent";
+import NavInvestigator from "../Common/NavInvestigator";
+import AlertComponent from "../../Common/AlertComponent";
 import { getUserData, getFiles, getData } from "../../../services/apiServices";
-import Pagination from "../../components/Common/Pagination";
-import SearchBar from "../../components/Common/SearchBar";
-import "../../css/Investigator/InvReportView.css";
+import Pagination from "../../../components/Common/Pagination";
+import SearchBar from "../../../components/Common/SearchBar";
+import "../../../css/Investigator/InvReportView.css";
 
 const InvGetReport = () => {
   const [loading, setLoading] = useState(true);

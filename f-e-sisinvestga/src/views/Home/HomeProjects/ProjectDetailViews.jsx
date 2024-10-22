@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { format } from "date-fns";
 import { FaUser, FaCalendarAlt, FaDollarSign, FaChevronRight, FaChevronDown } from "react-icons/fa";
-import Nav from "../../components/Common/Nav";
+import Nav from "../../../components/Home/Common/Nav";
 import { getDataById } from "../../../services/apiServices";
-import "../../css/Home/HomeProjects/ProjectDetails.css";
-import InvestigatorModal from "../../components/GestionInvestigadores/InvestigatorModal";
+import "../../../css/Home/ProjectDetails.css";
+import InvestigatorModal from "../../../components/Home/InvestigatorModal";
 
 const ProjectDetailViews = () => {
   const { id } = useParams();

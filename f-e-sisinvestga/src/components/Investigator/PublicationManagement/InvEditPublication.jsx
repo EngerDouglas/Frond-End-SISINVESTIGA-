@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
-import { getDataById, getUserData, putData } from "../../services/apiServices";
+import { getDataById, getUserData, putData } from "../../../services/apiServices";
 import NavInvestigator from "../../../components/Investigator/Common/NavInvestigator";
 import AlertComponent from "../../../components/Common/AlertComponent";
 import { FaArrowLeft, FaArrowRight, FaSave, FaUpload, FaTrash } from "react-icons/fa";

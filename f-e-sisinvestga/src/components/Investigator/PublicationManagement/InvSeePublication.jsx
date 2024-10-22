@@ -7,7 +7,7 @@ import Pagination from "../../../components/Common/Pagination";
 import SearchBar from "../../../components/Common/SearchBar";
 import InvPublicationCard from "./InvPublicationCard";
 import { getUserData, deleteData } from "../../../services/apiServices";
-import "../../css/componentes/Publicaciones/InvPublicationView.css";
+import "../../../css/Investigator/InvPublicationView.css";
 
 const InvSeePublication = () => {
   const [publications, setPublications] = useState([]);

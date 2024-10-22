@@ -4,7 +4,7 @@ import { FaPlus, FaFilter, FaSync } from 'react-icons/fa';
 import NavInvestigator from '../Common/NavInvestigator';
 import AlertComponent from '../../Common/AlertComponent';
 import { getUserData, postData } from '../../../services/apiServices';
-import '../../css/Investigator/InvRequestView.css';
+import '../../../css/Investigator/InvRequestView.css';
 
 
 const InvSeeRequest = () => {
