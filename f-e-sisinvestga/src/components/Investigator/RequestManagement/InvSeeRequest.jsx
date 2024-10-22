@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Row, Col, Table, Card, Button, Form, Pagination, Spinner, Alert } from 'react-bootstrap';
 import { FaPlus, FaFilter, FaSync } from 'react-icons/fa';
-import NavInvestigator from '../../components/Common/NavInvestigator';
-import AlertComponent from '../../components/Common/AlertComponent';
+import NavInvestigator from '../Common/NavInvestigator';
+import AlertComponent from '../../Common/AlertComponent';
 import { getUserData, postData } from '../../../services/apiServices';
-import '../../css/componentes/GestionInvestigadores/InvRequestView.css';
+import '../../css/Investigator/InvRequestView.css';
+
 
 const InvSeeRequest = () => {
   const [requests, setRequests] = useState([]);
