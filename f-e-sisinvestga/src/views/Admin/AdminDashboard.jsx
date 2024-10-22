@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import NavAdmin from '../../components/Comunes/NavAdmin';
+import AdminNav from "../../components/Admin/Common/NavAdmin";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import { getData, getDataParams } from '../../services/apiServices';
-import "../../css/Pages/AdminDashboard.css";
+import "../../css/Admin/AdminDashboard.css";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -88,7 +88,7 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <NavAdmin />
+      <AdminNav />
       <div className="admin-dashboard">
         <h1 className="name">Panel de Administración</h1>
 

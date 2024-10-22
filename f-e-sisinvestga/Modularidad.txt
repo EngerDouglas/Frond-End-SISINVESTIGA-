@@ -1,7 +1,7 @@
 src/
 │
 ├── componentes/                 # Componentes divididos por funcionalidades
-│   ├── comunes/                 # Componentes reutilizables
+│   ├── Common/                 # Componentes reutilizables
 │   ├── GestionProyectos/        # Componentes para gestión de proyectos
 │   ├── GestionInvestigadores/   # Componentes para gestión de investigadores
 │   ├── Publicaciones/           # Componentes para gestión de publicaciones
