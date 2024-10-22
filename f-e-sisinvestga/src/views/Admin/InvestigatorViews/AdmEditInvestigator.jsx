@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../../../css/componentes/GestionInvestigadores/AdmInvestigatorView.css';
+import '../../../css/Admin/AdmInvestigatorView.css';
 
 const AdmEditInvestigator = ({ investigador, roles, onSave, onUpdateRole, onCancel }) => {
   const [editedUser, setEditedUser] = useState(() => ({

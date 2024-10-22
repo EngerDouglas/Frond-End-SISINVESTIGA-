@@ -4,7 +4,7 @@ import { format } from "date-fns";
 import { FaUser, FaCalendarAlt, FaDollarSign, FaChevronRight, FaChevronDown } from "react-icons/fa";
 import Nav from "../../components/Common/Nav";
 import { getDataById } from "../../../services/apiServices";
-import "../../css/componentes/GestionProyectos/ProjectDetails.css";
+import "../../css/Home/HomeProjects/ProjectDetails.css";
 import InvestigatorModal from "../../components/GestionInvestigadores/InvestigatorModal";
 
 const ProjectDetailViews = () => {
