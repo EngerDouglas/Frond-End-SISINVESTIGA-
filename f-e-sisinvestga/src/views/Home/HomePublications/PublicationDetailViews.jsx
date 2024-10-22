@@ -5,7 +5,7 @@ import { FaUser, FaCalendarAlt, FaBook, FaLanguage, FaTag, FaPaperclip, FaChevro
 import Nav from "../../components/Common/Nav";
 import { getDataById } from "../../../services/apiServices";
 import AuthorModal from "../../components/GestionInvestigadores/AuthorModal";
-import "../../css/componentes/Publicaciones/PublicationsDetails.css";
+import "../../css/Home/HomeProjects/PublicationsDetails.css";
 
 const PublicationDetailViews = () => {
   const { id } = useParams();
