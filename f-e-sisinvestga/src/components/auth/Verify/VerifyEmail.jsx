@@ -5,7 +5,7 @@ import { FaCheckCircle, FaExclamationTriangle } from 'react-icons/fa';
 import { verifyUserEmail } from '../../../features/auth/authSlice';
 import backgroundImage from '../../../assets/img/ucsd.webp'; 
 import logo from '../../../assets/img/LogoUCSD.jpg';
-import '../../../css/componentes/Seguridad/VerifyEmail.css';
+import '../../../css/auth/VerifyEmail.css';
 
 const VerifyEmail = () => {
   const location = useLocation();

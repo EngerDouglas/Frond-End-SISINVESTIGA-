@@ -2,33 +2,33 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router';
 import Home from '../views/Home/Home';
-import LoginPage from '../views/Seguridad/LoginPage';
-import RegisterPage from '../views/Seguridad/RegisterPage';
+import LoginPage from '../views/auth/LoginPage';
+import RegisterPage from '../views/auth/RegisterPage';
 import AdminDashboard from '../views/Admin/AdminDashboard';
-import InvestDashboard from '../views/Investigadores/InvestDashboard';
-import InvProjectView from '../views/Investigadores/InvProjectView';
-import InvPublicationView from '../views/Investigadores/InvPublicationView';
-import InvReportView from '../views/Investigadores/InvReportView';
-import InvRequestView from '../views/Investigadores/InvRequestView';
-import InvProfileView from '../views/Investigadores/InvProfileView';
+import InvestDashboardView from '../views/Investigator/InvestDashboardView';
+import InvProjectsView from '../views/Investigator/ProjectViews/InvProjectsView';
+import InvPublicationsView from '../views/Investigator/PublicationViews/InvPublicationsView';
+import InvReportView from '../views/Investigator/ReportViews/InvReportView';
+import InvRequestView from '../views/Investigator/RequestViews/InvRequestView';
+import InvProfileView from '../views/Investigator/ProfileView/InvProfileView';
 import Unauthorized from '../views/Pages/Unauthorized';
 import NotFound from '../views/Pages/NotFound';
 import ProtectedRoute from '../Context/ProtectedRoute';
 import { selectSessionLoaded } from '../features/auth/authSlice';
-import ListaProyectos from '../views/Proyectos/ListaProyectos';
-import GestionInvestigadores from '../views/Admin/GestionInvestigadores/GestionInvestigadores'
-import Publicaciones from "../views/publicaciones/publicacionesViews"
-import ProjectDetails from '../views/Proyectos/ProjectDetails';
-import PublicationDetails from '../views/publicaciones/PublicationDetails';
-import AddProjectView from '../views/Investigadores/AddProjectView';
-import EditProjectView from '../views/Investigadores/EditProjectView';
-import AddPublicationView from '../views/Investigadores/AddPublicationView';
-import EditPublicationView from '../views/Investigadores/EditPublicationView';
-import ForgotPasswordPage from '../views/Seguridad/ForgotPasswordPage';
-import ResetPasswordPage from '../views/Seguridad/ResetPasswordPage';
-import VerifyEmailPage from '../views/Seguridad/VerifyEmailPage';
-import ConfProfileAdmin from '../views/Admin/ConfigPerfilAdimin';
-import InvProjectEvaluations from '../views/Investigadores/InvProjectEvaluations';
+import AdmProjectsView from '../views/Admin/ProjectViews/AdmProjectsView';
+import AdmInvestigatorView from '../views/Admin/InvestigatorViews/AdmInvestigatorView'
+import AdmPublicationViews from "../views/Admin/PublicationViews/AdmPublicationViews"
+import ProjectDetailViews from '../views/Home/HomeProjects/ProjectDetailViews';
+import PublicationDetailViews from '../views/Home/HomePublications/PublicationDetailViews';
+import InvProjectAddView from '../views/Investigator/ProjectViews/InvProjectAddView';
+import InvProjectEditView from '../views/Investigator/ProjectViews/InvProjectEditView';
+import InvPublicationAddView from '../views/Investigator/PublicationViews/InvPublicationAddView';
+import InvPublicationsEditView from '../views/Investigator/PublicationViews/InvPublicationsEditView';
+import ForgotPasswordPage from '../views/auth/ForgotPasswordPage';
+import ResetPasswordPage from '../views/auth/ResetPasswordPage';
+import VerifyEmailPage from '../views/auth/VerifyEmailPage';
+import AdmProfileView from '../views/Admin/ProfileView/AdmProfileView';
+import InvEvaluationsView from '../views/Investigator/EvaluationViews/InvEvaluationsView';
 
 const AppRouter = () => {
 
@@ -67,49 +67,49 @@ const AppRouter = () => {
 
       {/* Rutas Defecto de la pagina */}
       <Route path='/' element={getHome()} />
-      <Route path='proyectos/:id' element={<ProjectDetails />} />
-      <Route path='publicaciones/:id' element={<PublicationDetails />} />
+      <Route path='proyectos/:id' element={<ProjectDetailViews />} />
+      <Route path='publicaciones/:id' element={<PublicationDetailViews />} />
       
       {/* Rutas Protegidas para Investigador */}
       <Route path='/invest' element={ 
         <ProtectedRoute roles={['Investigador']}>
-          <InvestDashboard />
+          <InvestDashboardView />
         </ProtectedRoute>
       } />
 
       <Route path='/invest/proyectos' element={
         <ProtectedRoute roles={['Investigador']}>
-          <InvProjectView />
+          <InvProjectsView />
         </ProtectedRoute>
       } />
 
       <Route path='/invest/proyectos/agregar' element={
         <ProtectedRoute roles={['Investigador']}>
-          <AddProjectView />
+          <InvProjectAddView />
         </ProtectedRoute>
       } />
 
       <Route path='/invest/proyectos/editar/:id' element={
         <ProtectedRoute roles={['Investigador']}>
-          <EditProjectView />
+          <InvProjectEditView />
         </ProtectedRoute>
       } />
 
       <Route path='/invest/publicaciones' element={
         <ProtectedRoute roles={['Investigador']}>
-          <InvPublicationView />
+          <InvPublicationsView />
         </ProtectedRoute>
       } />
 
       <Route path='/invest/publicaciones/agregar' element={
         <ProtectedRoute roles={['Investigador']}>
-          <AddPublicationView />
+          <InvPublicationAddView />
         </ProtectedRoute>
       } />
 
       <Route path='/invest/publicaciones/editar/:id' element={
         <ProtectedRoute roles={['Investigador']}>
-          <EditPublicationView />
+          <InvPublicationsEditView />
         </ProtectedRoute>
       } />
 
@@ -121,7 +121,7 @@ const AppRouter = () => {
 
       <Route path='/invest/project/:projectId/evaluations' element={
         <ProtectedRoute roles={['Investigador']}>
-          <InvProjectEvaluations />
+          <InvEvaluationsView />
         </ProtectedRoute>
       } />
 
@@ -147,25 +147,25 @@ const AppRouter = () => {
 
       <Route path='/admin/confprofile' element={ 
         <ProtectedRoute roles={['Administrador']}>
-          <ConfProfileAdmin />
+          <AdmProfileView />
         </ProtectedRoute>
       } />
 
       <Route path='/admin/gestionInvestigadores' element={ 
         <ProtectedRoute roles={['Administrador']}>
-          <GestionInvestigadores />
+          <AdmInvestigatorView />
         </ProtectedRoute>
       } />
 
       <Route path='/admin/publicaciones' element={ 
         <ProtectedRoute roles={['Administrador']}>
-          <Publicaciones />
+          <AdmPublicationViews />
         </ProtectedRoute>
       } />
 
       <Route path='/admin/listarproyectos' element={ 
         <ProtectedRoute roles={['Administrador']}>
-          <ListaProyectos />
+          <AdmProjectsView />
         </ProtectedRoute>
       } />
 

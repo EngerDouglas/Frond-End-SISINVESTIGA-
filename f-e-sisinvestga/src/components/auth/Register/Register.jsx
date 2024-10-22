@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaUser, FaEnvelope, FaLock, FaGraduationCap, FaTasks, FaPlus, FaTrash } from "react-icons/fa";
-import AlertComponent from "../../Comunes/AlertComponent";
+import AlertComponent from "../../Common/AlertComponent";
 import { postData } from "../../../services/apiServices";
 import ucsdImage from "../../../assets/img/ucsd.webp";
 import logo from "../../../assets/img/LogoUCSD.jpg";
-import "../../../css/componentes/Seguridad/Register.css";
+import "../../../css/auth/Register.css";
 
 export default function Register() {
   const [formData, setFormData] = useState({

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import NavAdmin from '../../components/Comunes/NavAdmin';
+import NavAdmin from '../../components/Common/NavAdmin';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import { getData, getDataParams } from '../../services/apiServices';

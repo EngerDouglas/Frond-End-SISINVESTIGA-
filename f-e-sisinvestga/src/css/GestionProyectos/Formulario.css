@@ -1,0 +1,144 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+#root, .form-container, .App, html, body {
+  height: 100%;
+}
+
+html {
+  height: 100vh;
+}
+
+#root, .App {
+  margin: 0;
+}
+
+.form-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: whitesmoke;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+  text-align: center;
+  margin: 0 0 20px 0;
+  color: #333;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form label {
+  margin: 15px 0;
+  font-weight: bold;
+  color: #333;
+}
+
+.form input,
+.form textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-top: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.form input:focus,
+.form textarea:focus {
+  border-color: #28a745;
+  outline: none;
+}
+
+.form textarea {
+  resize: none;
+  height: 100px;
+}
+
+.hito-container,
+.recurso-container {
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.hito-container input,
+.recurso-container input {
+  width: calc(100% - 24px); 
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.submit-btn {
+  background-color: #28a745;
+  margin-top: 20px;
+}
+
+.submit-btn:hover {
+  background-color: #218838;
+}
+
+ul {
+  list-style-type: none; 
+  padding: 0; 
+  margin-top: 5px; 
+}
+
+ul li {
+  padding: 8px;
+  background-color: #e9ecef;
+  margin-top: 5px; 
+  border-radius: 4px; 
+  cursor: pointer; 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+}
+
+ul li:hover {
+  background-color: #d3d3d3; 
+}
+
+ul li button {
+  background-color: #dc3545; 
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+ul li button:hover {
+  background-color: #c82333; 
+}

@@ -5,7 +5,7 @@ import { FaEnvelope, FaPaperPlane } from 'react-icons/fa';
 import { requestPasswordReset, clearPasswordResetStatus } from '../../../features/auth/authSlice';
 import logo from '../../../assets/img/LogoUCSD.jpg';
 import backgroundImage from '../../../assets/img/ucsd.webp';
-import '../../../css/componentes/Seguridad/ForgotPassword.css';
+import '../../../css/auth/ForgotPassword.css';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');

@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../../features/auth/authSlice";
 import { useNavigate, Link } from "react-router-dom";
-import AlertComponent from "../../Comunes/AlertComponent";
+import AlertComponent from "../../Common/AlertComponent";
 import { FaEnvelope, FaLock, FaSignInAlt } from "react-icons/fa";
 import ReCAPTCHA from "react-google-recaptcha";
 import logo from "../../../assets/img/LogoUCSD.jpg";
 import backgroundStudy from "../../../assets/img/Study.png";
-import "../../../css/componentes/Seguridad/Login.css";
+import "../../../css/auth/Login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
