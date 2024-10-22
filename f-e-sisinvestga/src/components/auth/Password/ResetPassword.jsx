@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { FaLock, FaCheck } from 'react-icons/fa';
 import { confirmPasswordReset, clearPasswordResetStatus } from '../../../features/auth/authSlice';
-import AlertComponent from '../../Comunes/AlertComponent';
+import AlertComponent from '../../Common/AlertComponent';
 import logo from '../../../assets/img/LogoUCSD.jpg';
 import backgroundImage from '../../../assets/img/ucsd.webp'; // Asume que tienes una imagen del campus
-import '../../../css/componentes/Seguridad/ResetPassword.css';
+import '../../../css/auth/ResetPassword.css';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');

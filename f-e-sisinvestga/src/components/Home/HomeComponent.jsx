@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-import Nav from "../Comunes/Nav";
+import Nav from "../Common/Nav";
 import { getDataParams } from "../../services/apiServices";
-import Pagination from "../Comunes/Pagination";
-import SearchBar from "../Comunes/SearchBar";
+import Pagination from "../Common/Pagination";
+import SearchBar from "../Common/SearchBar";
 import "../../css/componentes/Home/Home.css";
 import img1 from "../../img/invest.jpg";
 import img2 from "../../img/invest2.jpg";
