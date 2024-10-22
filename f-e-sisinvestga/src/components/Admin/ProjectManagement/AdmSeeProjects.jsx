@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, Button, Col, Row, Modal, Form } from "react-bootstrap";
 import { getData, putData } from "../../../services/apiServices";
-import '../../css/componentes/GestionProyectos/MostrarProyectos.css';
+import '../../../css/Admin/AdmSeeProjects.css';
 
 function AdmSeeProjects() {
   const [proyectosData, setProyectoData] = useState([]);

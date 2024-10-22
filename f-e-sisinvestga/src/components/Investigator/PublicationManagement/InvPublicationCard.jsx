@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaEdit, FaTrash, FaBook, FaFileAlt, FaGlobe } from 'react-icons/fa';
-import '../../css/componentes/Publicaciones/PublicationCard.css';
+import '../../../css/Investigator/PublicationCard.css';
 
 const InvPublicationCard = ({ publication, onEdit, onDelete }) => {
   return (

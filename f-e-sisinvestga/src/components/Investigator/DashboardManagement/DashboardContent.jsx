@@ -10,7 +10,7 @@ import {
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { getUserData } from "../../../services/apiServices";
-import "../../css/componentes/GestionInvestigadores/DashboardContent.css";
+import "../../../css/Investigator/DashboardContent.css";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 

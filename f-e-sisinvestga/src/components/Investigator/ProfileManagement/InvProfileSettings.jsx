@@ -4,10 +4,10 @@ import { useDispatch } from "react-redux";
 import { logoutAllUser } from "../../../features/auth/authSlice";
 import PasswordChecklist from "react-password-checklist";
 import { getUserData, putSelfData } from "../../../services/apiServices";
-import NavInvestigator from "../../components/Common/NavInvestigator";
-import AlertComponent from "../../components/Common/AlertComponent";
+import NavInvestigator from "../../../components/Investigator/Common/NavInvestigator";
+import AlertComponent from "../../../components/Common/AlertComponent";
 import { FaUser, FaEnvelope, FaGraduationCap, FaTasks, FaKey, FaSignOutAlt, FaCamera } from "react-icons/fa";
-import "../../css/componentes/GestionInvestigadores/InvProfileView.css";
+import "../../../css/Investigator/InvProfileView.css";
 
 const InvProfileSettings = () => {
   const [user, setUser] = useState({

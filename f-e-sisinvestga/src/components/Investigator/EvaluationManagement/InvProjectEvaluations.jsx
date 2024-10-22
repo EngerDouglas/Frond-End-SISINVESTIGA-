@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { getData } from '../../../services/apiServices';
-import NavInvestigator from '../../components/Common/NavInvestigator';
-import AlertComponent from '../../components/Common/AlertComponent';
-import '../../css/componentes/GestionProyectos/InvProjectEvaluations.css';
+import NavInvestigator from '../../../components/Investigator/Common/NavInvestigator';
+import AlertComponent from '../../Common/AlertComponent';
+import '../../../css/Investigator/InvProjectEvaluations.css';
 
 const RatingBar = ({ rating }) => {
   const percentage = (rating / 5) * 100;

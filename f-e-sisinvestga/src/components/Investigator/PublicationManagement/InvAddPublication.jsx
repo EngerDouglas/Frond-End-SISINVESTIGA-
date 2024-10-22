@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import { postData, getUserData } from "../../../services/apiServices";
-import NavInvestigator from "../../components/Common/NavInvestigator";
-import AlertComponent from "../../components/Common/AlertComponent";
+import NavInvestigator from "../../../components/Investigator/Common/NavInvestigator";
+import AlertComponent from "../../../components/Common/AlertComponent";
 import { FaArrowLeft, FaArrowRight, FaSave, FaUpload, FaTrash } from "react-icons/fa";
 import "react-datepicker/dist/react-datepicker.css";
-import "../../css/componentes/Publicaciones/AddPublicationView.css";
+import "../../../css/Investigator/AddPublicationView.css";
 
 const InvAddPublication = () => {
   const [currentStep, setCurrentStep] = useState(1);

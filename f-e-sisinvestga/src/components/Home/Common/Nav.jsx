@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectCurrentRole } from "../../../features/auth/authSlice";
+import { selectCurrentRole } from '../../../features/auth/authSlice';
 import logo from "../../../assets/img/LogoWebUCSD.png";
 import { FaBars, FaTimes, FaChevronDown } from 'react-icons/fa';
 import "../../../css/Common/Nav.css";

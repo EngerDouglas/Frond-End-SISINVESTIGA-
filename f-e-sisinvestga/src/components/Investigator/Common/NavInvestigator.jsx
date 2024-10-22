@@ -17,8 +17,8 @@ import {
   FaBars,
   FaTimes
 } from "react-icons/fa";
-import logo from "../../assets/img/LogoUCSD.jpg";
-import "../../css/componentes/GestionInvestigadores/NavInvestigator.css";
+import logo from "../../../assets/img/LogoUCSD.jpg";
+import "../../../css/Investigator/NavInvestigator.css";
 
 const NavInvestigator = () => {
   const dispatch = useDispatch();

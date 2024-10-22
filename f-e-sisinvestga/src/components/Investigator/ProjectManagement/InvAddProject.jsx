@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import { postData } from "../../../services/apiServices";
-import NavInvestigator from "../../components/Common/NavInvestigator";
-import AlertComponent from "../../components/Common/AlertComponent";
+import NavInvestigator from "../../../components/Investigator/Common/NavInvestigator";
+import AlertComponent from "../../../components/Common/AlertComponent";
 import { FaArrowLeft, FaArrowRight, FaSave, FaPlus, FaTrash, FaUpload } from "react-icons/fa";
 import "react-datepicker/dist/react-datepicker.css";
-import "../../css/componentes/GestionProyectos/AddProjectView.css";
+import "../../../css/Investigator/AddProjectView.css";
 
 const InvAddProject = () => {
   const [formData, setFormData] = useState({

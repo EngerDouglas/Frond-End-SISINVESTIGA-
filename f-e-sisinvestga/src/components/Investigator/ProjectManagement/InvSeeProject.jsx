@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router";
-import NavInvestigator from "../../components/Common/NavInvestigator";
+import NavInvestigator from "../../../components/Investigator/Common/NavInvestigator";
+import AlertComponent from "../../../components/Common/AlertComponent";
 import InvProjectCard from "./InvProjectCard";
-import Pagination from "../../components/Common/Pagination";
-import SearchBar from "../../components/Common/SearchBar";
+import Pagination from "../../../components/Common/Pagination";
+import SearchBar from "../../../components/Common/SearchBar";
 import { getUserData, deleteData } from "../../../services/apiServices";
-import AlertComponent from "../../components/Common/AlertComponent";
-import "../../css/componentes/GestionProyectos/InvProjectView.css";
+import "../../../css/Investigator/InvProjectView.css";
 
 const InvSeeProject = () => {
   const [projects, setProjects] = useState([]);

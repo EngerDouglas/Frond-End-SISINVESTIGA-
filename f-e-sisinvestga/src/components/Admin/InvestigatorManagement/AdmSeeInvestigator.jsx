@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { getData, putData } from "../../../services/apiServices";
 import AlertComponent from "../../Common/AlertComponent";
-import Modal from "../../GestionInvestigadores/Modal";
+import Modal from "../../Common/Modal";
 import AdmEditInvestigator from "../../../views/Admin/InvestigatorViews/AdmEditInvestigator";
-import "../../css/componentes/GestionInvestigadores/GestionInvestigadores.css";
-import profilenot from  '../../assets/img/profile.png';
+import "../../../css/Admin/AdmSeeInvestigator.css"
+import profilenot from  '../../../assets/img/profile.png';
 
 export default function AdmSeeInvestigator() {
   const [investigadores, setInvestigadores] = useState([]);

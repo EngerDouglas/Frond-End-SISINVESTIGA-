@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../css/componentes/confprofileadmin.css';
+import '../../../css/Admin/AdmProfileSettings.css';
 
 const AdmProfileSettings = () => {
   const [profileData, setProfileData] = useState({

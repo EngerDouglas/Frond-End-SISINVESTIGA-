@@ -1,6 +1,6 @@
 import React from "react";
 import { FaEdit, FaTrash, FaCalendar, FaMoneyBillWave, FaChartLine } from "react-icons/fa";
-import "../../css/componentes/GestionProyectos/ProjectCard.css";
+import "../../../css/Investigator/ProjectCard.css";
 
 const InvProjectCard = ({ project, onEdit, onDelete }) => {
   return (

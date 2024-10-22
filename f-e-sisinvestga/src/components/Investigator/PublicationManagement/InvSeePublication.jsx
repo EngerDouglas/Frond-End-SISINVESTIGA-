@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router";
-import NavInvestigator from "../../components/Common/NavInvestigator";
-import SearchBar from "../../components/Common/SearchBar";
+import NavInvestigator from "../../../components/Investigator/Common/NavInvestigator";
+import AlertComponent from "../../../components/Common/AlertComponent";
+import Pagination from "../../../components/Common/Pagination";
+import SearchBar from "../../../components/Common/SearchBar";
 import InvPublicationCard from "./InvPublicationCard";
-import Pagination from "../../components/Common/Pagination";
 import { getUserData, deleteData } from "../../../services/apiServices";
-import AlertComponent from "../../components/Common/AlertComponent";
 import "../../css/componentes/Publicaciones/InvPublicationView.css";
 
 const InvSeePublication = () => {

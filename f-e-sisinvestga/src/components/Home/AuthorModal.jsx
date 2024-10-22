@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaTimes, FaGraduationCap, FaTasks } from 'react-icons/fa';
-import '../../css/componentes/Publicaciones/AuthorModal.css'
+import '../../css/Home/AuthorModal.css'
 
 const AuthorModal = ({ autor, onClose }) => {
   const handleOverlayClick = (e) => {

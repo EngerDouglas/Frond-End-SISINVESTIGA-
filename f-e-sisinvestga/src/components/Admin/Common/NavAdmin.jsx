@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCurrentRole, logoutUser } from "../../../features/auth/authSlice";
-import "../../css/componentes/Common/NavAdmin.css";
-import logo from '../../assets/img/LogoWebUCSD.png'; // Update this import statement
+import "../../../css/Admin/NavAdmin.css";
+import logo from '../../../assets/img/LogoWebUCSD.png';
 
 const AdminNav = () => {
   const role = useSelector(selectCurrentRole);

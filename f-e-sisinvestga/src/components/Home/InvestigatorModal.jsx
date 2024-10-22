@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaTimes, FaGraduationCap, FaTasks } from 'react-icons/fa';
-import '../../css/componentes/GestionProyectos/InvestigatorModal.css';
+import '../../css/Investigator/InvestigatorModal.css';
 
 const InvestigatorModal = ({ investigador, onClose }) => {
   const handleOverlayClick = (e) => {
