@@ -366,7 +366,7 @@ const AdmEditPublication = () => {
                 <ul>
                   {publication.anexos.map((anexo, index) => (
                     <li key={index}>
-                      {anexo.nombre} - {anexo.tipo} - <a href={anexo.url} target='_blank'>Ver Archivo</a>
+                      {anexo.nombre} - {anexo.tipo} - <a href={anexo.url} target='_blank' rel="noreferrer">Ver Archivo</a>
                     </li>
                   ))}
                 </ul>
