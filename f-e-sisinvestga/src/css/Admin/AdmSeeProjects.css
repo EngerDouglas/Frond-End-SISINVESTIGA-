@@ -124,6 +124,7 @@ h2 {
 /* Estilos de los formularios */
 .form-group {
   margin-bottom: 20px;
+  margin-left: 30px;
 }
 
 .form-label {
