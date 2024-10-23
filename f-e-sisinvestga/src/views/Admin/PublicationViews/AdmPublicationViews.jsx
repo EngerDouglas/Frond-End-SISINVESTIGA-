@@ -5,8 +5,8 @@ import Nav from "../../../components/Admin/Common/NavAdmin";
 const AdmPublicationViews = () => {
     return(
         <div>
-        <Nav></Nav>
-        <AdmSeePublications></AdmSeePublications>
+            <Nav></Nav>
+            <AdmSeePublications></AdmSeePublications>
         </div>
     )
 

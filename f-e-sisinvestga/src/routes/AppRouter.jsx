@@ -29,6 +29,7 @@ import ResetPasswordPage from '../views/auth/ResetPasswordPage';
 import VerifyEmailPage from '../views/auth/VerifyEmailPage';
 import AdmProfileView from '../views/Admin/ProfileView/AdmProfileView';
 import InvEvaluationsView from '../views/Investigator/EvaluationViews/InvEvaluationsView';
+import AdmEditPubView from '../views/Admin/PublicationViews/AdmEditPubView';
 
 const AppRouter = () => {
 
@@ -37,7 +38,7 @@ const AppRouter = () => {
   const sessionLoaded = useSelector(selectSessionLoaded);
 
   if (!sessionLoaded) {
-    return <p>Cargando sesión...</p>; // Mostrar indicador de carga mientras no se haya cargado la sesión
+    return <p>Cargando sesión...</p>;
   }
 
   const getHome = () => {
@@ -160,6 +161,12 @@ const AppRouter = () => {
       <Route path='/admin/publicaciones' element={ 
         <ProtectedRoute roles={['Administrador']}>
           <AdmPublicationViews />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/admin/publicaciones/editar/:id' element={
+        <ProtectedRoute roles={['Administrador']}>
+          <AdmEditPubView />
         </ProtectedRoute>
       } />
 
