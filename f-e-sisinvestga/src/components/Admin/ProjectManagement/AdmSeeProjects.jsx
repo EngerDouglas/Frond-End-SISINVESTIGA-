@@ -1,25 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Card, Button, Col, Row, Modal, Form } from "react-bootstrap";
-import { getData, putData } from "../../../services/apiServices";
+import { Card, Button, Col, Row, Modal } from "react-bootstrap";
+import { getData } from "../../../services/apiServices";
 import '../../../css/Admin/AdmSeeProjects.css';
 
 function AdmSeeProjects() {
   const [proyectosData, setProyectoData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showModal, setShowModal] = useState(false);
-  const [newProject, setNewProject] = useState({
-    nombre: '',
-    descripcion: '',
-    objetivos: '',
-    presupuesto: '',
-    cronograma: {
-      fechaInicio: '',
-      fechaFin: ''
-    },
-    hitos: [],
-    recursos: [],
-    estado: '',
-  });
+  const [estadoSeleccionado, setEstadoSeleccionado] = useState("Todos");
   const [selectedProyecto, setSelectedProyecto] = useState(null);
 
   useEffect(() => {
@@ -34,18 +21,14 @@ function AdmSeeProjects() {
     fetchProyectos();
   }, []);
 
-  const handleCloseModal = () => setShowModal(false);
-  const handleShowModal = () => setShowModal(true);
+  const estados = ["Todos", "Finalizado", "Planeado", "Eliminado"]; // Define los estados
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewProject({ ...newProject, [name]: value });
-  };
-  
-
-  const filteredProyectos = proyectosData.filter((proyecto) =>
-    proyecto.nombre.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filtra los proyectos por nombre y estado
+  const filteredProyectos = proyectosData.filter((proyecto) => {
+    const matchesSearch = proyecto.nombre.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesEstado = estadoSeleccionado === "Todos" || proyecto.estado === estadoSeleccionado;
+    return matchesSearch && matchesEstado;
+  });
 
   const handleViewDetails = (proyecto) => {
     setSelectedProyecto(proyecto);
@@ -74,20 +57,36 @@ function AdmSeeProjects() {
     printWindow.print();
   };
 
+  const handleRestoreProject = (proyectoId) => {
+    // Implementa la lógica para restaurar el proyecto
+    console.log(`Restaurando proyecto con ID: ${proyectoId}`);
+    // Aquí puedes llamar a una función que haga una solicitud para restaurar el proyecto
+  };
+
   return (
     <div id="mostrarProyectos" className="container mt-5">
       <h2 className="text-center mb-4">Proyectos</h2>
 
-      <div className="mb-4 text-center">
-        <input
-          type="text"
-          placeholder="Buscar proyecto..."
-          className="form-control"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+      <div className="mb-3 text-center">
+        <div className="d-flex justify-content-center ">
+          <input
+            type="text"
+            placeholder="Buscar proyecto..."
+            className="form-control w-100" // Mantener el espacio entre elementos
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <select
+            className="form-control"
+            value={estadoSeleccionado}
+            onChange={(e) => setEstadoSeleccionado(e.target.value)}
+          >
+            {estados.map((estado, index) => (
+              <option key={index} value={estado}>{estado}</option>
+            ))}
+          </select>
+        </div>
       </div>
-
 
       <Row xs={1} md={2} className="g-4">
         {filteredProyectos.map((proyecto, index) => (
@@ -99,17 +98,27 @@ function AdmSeeProjects() {
                   <strong>Objetivos:</strong> {proyecto.objetivos}<br />
                   <strong>Presupuesto:</strong> ${proyecto.presupuesto}<br />
                   <strong>Fecha de Inicio:</strong> {proyecto.cronograma.fechaInicio}<br />
-                  <strong>Fecha Límite:</strong> {proyecto.cronograma.fechaFin}
+                  <strong>Fecha ALímite:</strong> {proyecto.cronograma.fechaFin}
                 </Card.Text>
-                <Button variant="info" className="w-100" onClick={() => handleViewDetails(proyecto)}>
-                  Ver Detalles
-                </Button>
-                <Button variant="danger" className="w-100" onClick={() => handleViewDetails(proyecto)}>
-                  Eliminar
-                </Button>
-                <Button variant="secondary" className="w-100" onClick={() => handleViewDetails(proyecto)}>
-                  Editar
-                </Button>
+            
+                {proyecto.estado === "Eliminado" ? (
+                  <Button variant="success" className="w-100" onClick={() => handleRestoreProject(proyecto.id)}>
+                    Restaurar
+                  </Button>
+                ) : (
+                  <>
+                    <Button variant="info" className="w-100 btn-success" onClick={() => handleViewDetails(proyecto)}>
+                      Ver Detalles
+                    </Button>
+                    <Button variant="danger" className="w-100 btn-success" onClick={() => handleViewDetails(proyecto)}>
+                      Eliminar
+                    </Button>
+                    <Button variant="secondary" className="w-100 btn-success" onClick={() => handleViewDetails(proyecto)}>
+                      Editar
+                    </Button>
+                  </>
+                )}
+            
               </Card.Body>
             </Card>
           </Col>

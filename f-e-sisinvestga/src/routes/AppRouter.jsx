@@ -145,6 +145,7 @@ const AppRouter = () => {
         </ProtectedRoute>
       } />
 
+
       <Route path='/admin/confprofile' element={ 
         <ProtectedRoute roles={['Administrador']}>
           <AdmProfileView />
