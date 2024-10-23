@@ -26,7 +26,6 @@ export default function AdmSeeInvestigator() {
         getData("users"),
         getData("roles"),
       ]);
-      console.log('Roles Data:', rolesData);
       setInvestigadores(usersData);
       setRoles(rolesData);
     } catch (error) {
