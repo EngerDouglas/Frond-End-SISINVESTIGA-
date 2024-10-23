@@ -216,6 +216,17 @@ const AdminDashboard = () => {
               <i className="bi bi-arrow-right"></i> Ir a Configuración
             </button>
           </div>
+
+          <div className="dashboard-card">
+            <h2><i className="bi bi-list-stars"></i> Gestion de Evaluaciones</h2>
+            <p>Administrar y actualizar las evaluaciones de los proyectos.</p>
+            <button
+              onClick={() => handleNavigation("/admin/evaluationprojects")}
+              className="admin-btn-card"
+            >
+              <i className="bi bi-arrow-right"></i> Ir a Evaluaciones
+            </button>
+          </div>
         </div>
       </div>
     </div>
