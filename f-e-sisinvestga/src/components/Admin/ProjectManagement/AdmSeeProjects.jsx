@@ -41,45 +41,6 @@ function AdmSeeProjects() {
     const { name, value } = e.target;
     setNewProject({ ...newProject, [name]: value });
   };
-
-  const handleCreateProject = async () => {
-    // Verificar si el nombre del proyecto ya existe
-    const proyectoExistente = proyectosData.some(
-      (proyecto) => proyecto.nombre.toLowerCase() === newProject.nombre.toLowerCase()
-    );
-  
-    if (proyectoExistente) {
-      alert('Ya existe un proyecto con este nombre.');
-      return; // Detener la creación si el nombre ya existe
-    }
-  
-    try {
-      // Envía los datos del nuevo proyecto al servidor
-      const response = await putData("projects", newProject); 
-      
-      // Agregar el nuevo proyecto a la lista de proyectos
-      setProyectoData((prevProyectos) => [...prevProyectos, response]); 
-    } catch (error) {
-      console.error("Error al crear el proyecto", error);
-    }
-  
-    // Cerrar el modal y reiniciar el estado del nuevo proyecto
-    handleCloseModal();
-    setNewProject({
-      nombre: '',
-      descripcion: '',
-      objetivos: '',
-      presupuesto: 0,
-      cronograma: {
-        fechaInicio: '',
-        fechaFin: ''
-      },
-      investigadores: [],
-      recursos: [],
-      hitos: [],
-      estado: ''
-    });
-  };
   
 
   const filteredProyectos = proyectosData.filter((proyecto) =>
@@ -127,9 +88,6 @@ function AdmSeeProjects() {
         />
       </div>
 
-      <Button variant="success" className="mb-4" onClick={handleShowModal}>
-        Crear Proyecto
-      </Button>
 
       <Row xs={1} md={2} className="g-4">
         {filteredProyectos.map((proyecto, index) => (
@@ -143,91 +101,20 @@ function AdmSeeProjects() {
                   <strong>Fecha de Inicio:</strong> {proyecto.cronograma.fechaInicio}<br />
                   <strong>Fecha Límite:</strong> {proyecto.cronograma.fechaFin}
                 </Card.Text>
-                <Button variant="success" className="w-100" onClick={() => handleViewDetails(proyecto)}>
+                <Button variant="info" className="w-100" onClick={() => handleViewDetails(proyecto)}>
                   Ver Detalles
+                </Button>
+                <Button variant="danger" className="w-100" onClick={() => handleViewDetails(proyecto)}>
+                  Eliminar
+                </Button>
+                <Button variant="secondary" className="w-100" onClick={() => handleViewDetails(proyecto)}>
+                  Editar
                 </Button>
               </Card.Body>
             </Card>
           </Col>
         ))}
       </Row>
-
-      {/* Modal para crear un nuevo proyecto */}
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Crear Nuevo Proyecto</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="formNombre">
-              <Form.Label>Nombre</Form.Label>
-              <Form.Control
-                type="text"
-                name="nombre"
-                value={newProject.nombre}
-                onChange={handleInputChange}
-                placeholder="Ingrese el nombre del proyecto"
-              />
-            </Form.Group>
-            <Form.Group controlId="formDescripcion">
-              <Form.Label>Descripción</Form.Label>
-              <Form.Control
-                type="text"
-                name="descripcion"
-                value={newProject.descripcion}
-                onChange={handleInputChange}
-                placeholder="Ingrese la descripción del proyecto"
-              />
-            </Form.Group>
-            <Form.Group controlId="formObjetivos">
-              <Form.Label>Objetivos</Form.Label>
-              <Form.Control
-                type="text"
-                name="objetivos"
-                value={newProject.objetivos}
-                onChange={handleInputChange}
-                placeholder="Ingrese los objetivos del proyecto"
-              />
-            </Form.Group>
-            <Form.Group controlId="formPresupuesto">
-              <Form.Label>Presupuesto</Form.Label>
-              <Form.Control
-                type="number"
-                name="presupuesto"
-                value={newProject.presupuesto}
-                onChange={handleInputChange}
-                placeholder="Ingrese el presupuesto del proyecto"
-              />
-            </Form.Group>
-            <Form.Group controlId="formFechaInicio">
-              <Form.Label>Fecha de Inicio</Form.Label>
-              <Form.Control
-                type="date"
-                name="fechaInicio"
-                value={newProject.cronograma.fechaInicio}
-                onChange={(e) => setNewProject({ ...newProject, cronograma: { ...newProject.cronograma, fechaInicio: e.target.value } })}
-              />
-            </Form.Group>
-            <Form.Group controlId="formFechaLimite">
-              <Form.Label>Fecha Límite</Form.Label>
-              <Form.Control
-                type="date"
-                name="fechaFin"
-                value={newProject.cronograma.fechaFin}
-                onChange={(e) => setNewProject({ ...newProject, cronograma: { ...newProject.cronograma, fechaFin: e.target.value } })}
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Cancelar
-          </Button>
-          <Button variant="primary" onClick={handleCreateProject}>
-            Crear Proyecto
-          </Button>
-        </Modal.Footer>
-      </Modal>
 
       {/* Modal para ver detalles del proyecto */}
       {selectedProyecto && (
