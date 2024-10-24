@@ -1,21 +1,23 @@
-import React from 'react';
-import '../../css/Common/Modal.css';
+import React from "react";
+import { Modal as BootstrapModal, Button } from "react-bootstrap";
+import "../../css/Common/Modal.css";
 
-const Modal = ({ isOpen, onClose, children }) => {
-    if (!isOpen) return null;
+const Modal = ({ isOpen, onClose, children, title }) => {
+  if (!isOpen) return null;
 
-    return (
-        <div className="modal-overlay">
-            <div className="modal-container">
-                <div className="modal-header">
-                    <span className="modal-close" onClick={onClose}>&times;</span>
-                </div>
-                <div className="modal-body">
-                    {children}
-                </div>
-            </div>
-        </div>
-    );
+  return (
+    <BootstrapModal show={isOpen} onHide={onClose} centered>
+      <BootstrapModal.Header closeButton>
+        <BootstrapModal.Title>{title}</BootstrapModal.Title>
+      </BootstrapModal.Header>
+      <BootstrapModal.Body>{children}</BootstrapModal.Body>
+      <BootstrapModal.Footer>
+        <Button variant="secondary" onClick={onClose}>
+          Cerrar
+        </Button>
+      </BootstrapModal.Footer>
+    </BootstrapModal>
+  );
 };
 
 export default Modal;

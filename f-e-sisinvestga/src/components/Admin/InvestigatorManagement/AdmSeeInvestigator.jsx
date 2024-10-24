@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Container, Row, Col, Table, Form, Button, Card, Spinner, Alert, Badge } from 'react-bootstrap';
+import { FaSearch, FaEdit, FaToggleOn, FaToggleOff } from 'react-icons/fa';
 import { getData, putData } from "../../../services/apiServices";
 import AlertComponent from "../../Common/AlertComponent";
 import Modal from "../../Common/Modal";
@@ -106,90 +108,118 @@ export default function AdmSeeInvestigator() {
     investigador.nombre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) return <div className="loading">Cargando...</div>;
-  if (error) return <div className="error">{error}</div>;
+  if (loading) return (
+    <div className="d-flex justify-content-center align-items-center" style={{height: "100vh"}}>
+      <Spinner animation="border" role="status" variant="primary">
+        <span className="visually-hidden">Cargando...</span>
+      </Spinner>
+    </div>
+  );
+
+  if (error) return <Alert variant="danger">{error}</Alert>;
 
   return (
-    <div className="investigadores-container">
-      <h1 className="titulo">Investigadores</h1>
-      <input
-        type="text"
-        className="form-control invest-search-bar"
-        placeholder="Buscar investigador..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-
-      <div className="table-responsive">
-        <table className="table table-striped table-hover investigadores-table">
-          <thead className="thead-dark">
-            <tr>
-              <th>Foto</th>
-              <th>Nombre</th>
-              <th>Especialización</th>
-              <th>Rol</th>
-              <th>Estado</th>
-              <th>Verificado</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredInvestigadores.map((investigador) => (
-              <tr key={investigador._id}>
-                <td>
-                  <img
-                    src={investigador.fotoPerfil || profilenot}
-                    alt={`Foto de ${investigador.nombre}`}
-                    className="img-thumbnail investigador-foto"
+    <>
+      <Container fluid className="py-4">
+        <Row className="mb-4">
+          <Col>
+            <h1 className="text-primary">Gestión de Investigadores</h1>
+          </Col>
+        </Row>
+        <Card>
+          <Card.Body>
+            <Row className="mb-3">
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label><FaSearch /> Buscar investigador</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Buscar por nombre..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                   />
-                </td>
-                <td>{investigador.nombre} {investigador.apellido}</td>
-                <td>{investigador.especializacion}</td>
-                <td>{investigador.role?.roleName || 'No asignado'}</td>
-                <td>
-                  {investigador.isDisabled ? "Deshabilitado" : "Habilitado"}
-                </td>
-                <td>{investigador.isVerified ? "Sí" : "No"}</td>
-                <td>
-                  <button
-                    className="btn btn-info btn-sm invest-btn-modificar"
-                    onClick={() => handleEdit(investigador)}
-                  >
-                    Modificar
-                  </button>
-                  <button
-                    className={`btn btn-sm ${
-                      investigador.isDisabled
-                        ? "btn-success invest-btn-habilitar"
-                        : "btn-danger invest-btn-deshabilitar"
-                    }`}
-                    onClick={() =>
-                      handleToggleStatus(
-                        investigador._id,
-                        investigador.isDisabled
-                      )
-                    }
-                  >
-                    {investigador.isDisabled ? "Habilitar" : "Deshabilitar"}
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                </Form.Group>
+              </Col>
+            </Row>
+            <Table responsive hover className="align-middle">
+              <thead className="bg-light">
+                <tr>
+                  <th>Foto</th>
+                  <th>Nombre</th>
+                  <th>Especialización</th>
+                  <th>Rol</th>
+                  <th>Estado</th>
+                  <th>Verificado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredInvestigadores.map((investigador) => (
+                  <tr key={investigador._id}>
+                    <td>
+                      <img
+                        src={investigador.fotoPerfil || profilenot}
+                        alt={`Foto de ${investigador.nombre}`}
+                        className="rounded-circle"
+                        width="50"
+                        height="50"
+                      />
+                    </td>
+                    <td>{`${investigador.nombre} ${investigador.apellido}`}</td>
+                    <td>{investigador.especializacion}</td>
+                    <td>{investigador.role?.roleName || 'No asignado'}</td>
+                    <td>
+                      <Badge bg={investigador.isDisabled ? "danger" : "success"}>
+                        {investigador.isDisabled ? "Deshabilitado" : "Habilitado"}
+                      </Badge>
+                    </td>
+                    <td>
+                      <Badge bg={investigador.isVerified ? "info" : "warning"}>
+                        {investigador.isVerified ? "Verificado" : "No verificado"}
+                      </Badge>
+                    </td>
+                    <td>
+                      <Button
+                        variant="outline-primary"
+                        size="sm"
+                        className="me-2"
+                        onClick={() => handleEdit(investigador)}
+                      >
+                        <FaEdit /> Editar
+                      </Button>
+                      <Button
+                        variant={investigador.isDisabled ? "outline-success" : "outline-danger"}
+                        size="sm"
+                        onClick={() => handleToggleStatus(investigador._id, investigador.isDisabled)}
+                      >
+                        {investigador.isDisabled ? <FaToggleOn /> : <FaToggleOff />}
+                        {' '}
+                        {investigador.isDisabled ? "Habilitar" : "Deshabilitar"}
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </Card.Body>
+        </Card>
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        {editingUser && (
-          <AdmEditInvestigator
-            investigador={editingUser}
-            roles={roles}
-            onSave={handleSave}
-            onUpdateRole={handleUpdateRole}
-            onCancel={() => setIsModalOpen(false)}
-          />
-        )}
-      </Modal>
-    </div>
+        <Modal 
+          isOpen={isModalOpen} 
+          onClose={() => setIsModalOpen(false)}
+          title="Editar Investigador"
+        >
+          {editingUser && (
+            <AdmEditInvestigator
+              investigador={editingUser}
+              roles={roles}
+              onSave={handleSave}
+              onUpdateRole={handleUpdateRole}
+              onCancel={() => setIsModalOpen(false)}
+            />
+          )}
+        </Modal>
+      </Container>
+    </>
   );
 }

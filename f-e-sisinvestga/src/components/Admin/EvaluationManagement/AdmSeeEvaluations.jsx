@@ -19,7 +19,7 @@ const AdmSeeEvaluations = () => {
 
   const fetchEvaluations = useCallback(async () => {
     try {
-      setLoading(true); // Mover setLoading aquí para mayor precisión
+      setLoading(true); 
       const response = await getDataParams('evaluations/all', { page: currentPage, limit: 10 });
       setEvaluations(response.evaluations);
       setTotalPages(response.totalPages);
@@ -83,21 +83,32 @@ const AdmSeeEvaluations = () => {
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('¿Está seguro de que desea eliminar esta evaluación?')) {
+    const result = await AlertComponent.warning("¿Está seguro de que desea eliminar esta evaluación?");
+    if (result.isConfirmed) {
       try {
         await deleteData('evaluations', id);
-        AlertComponent.success('Evaluación eliminada con éxito');
+        AlertComponent.success("Evaluación eliminada con éxito");
         fetchEvaluations();
       } catch (error) {
-        AlertComponent.error('Error al eliminar la evaluación');
-        console.error(error);
+        let errorMessage = "Ocurrió un error durante la eliminación del registro.";
+        let detailedErrors = [];
+
+        try {
+          const parsedError = JSON.parse(error.message);
+          errorMessage = parsedError.message;
+          detailedErrors = parsedError.errors || [];
+        } catch (parseError) {
+          errorMessage = error.message;
+        }
+        AlertComponent.error(errorMessage);
+        detailedErrors.forEach((err) => AlertComponent.error(err));
       }
     }
   };
 
   const handleRestore = async (id) => {
     try {
-      await putData(`evaluations/${id}/restore`);
+      await putData(`evaluations/${id}`, 'restore');
       AlertComponent.success('Evaluación restaurada con éxito');
       fetchEvaluations();
     } catch (error) {

@@ -152,6 +152,17 @@ const AdminDashboard = () => {
           </div>
 
           <div className="dashboard-card">
+            <h2><i className="bi bi-person-gear"></i> Gestion de Roles</h2>
+            <p>Administrar y actualizar los Roles del Proyecto.</p>
+            <button
+              onClick={() => handleNavigation("/admin/roles")}
+              className="admin-btn-card"
+            >
+              <i className="bi bi-arrow-right"></i> Ir a Evaluaciones
+            </button>
+          </div>
+
+          <div className="dashboard-card">
             <h2><i className="bi bi-file-earmark-text"></i> Auditoría</h2>
             <p>Revisar el historial de actividades.</p>
             <button

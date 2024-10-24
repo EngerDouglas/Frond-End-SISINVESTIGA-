@@ -138,7 +138,16 @@ const InvGetReport = () => {
                 <tr key={project._id}>
                   <td>{project.nombre}</td>
                   <td>{project.descripcion}</td>
-                  <td>{project.estado}</td>
+                  <td>
+                    <span className={`badge bg-${
+                      project.estado === 'Finalizado' ? 'success' :
+                      project.estado === 'Cancelado' ? 'danger' :
+                      project.estado === 'En Proceso' ? 'warning' : 
+                      project.estado === 'Planeado' ? 'info' : 'secondary'
+                    }`}>
+                      {project.estado}
+                    </span>
+                  </td>
                   <td>{formatValue(project.cronograma.fechaInicio)}</td>
                   <td>{formatValue(project.cronograma.fechaFin)}</td>
                   <td>

@@ -1,48 +1,16 @@
-.investigadores-container {
-  padding: 20px;
+.table th {
+  font-weight: 600;
 }
 
-.titulo {
-  color: #218838;
-  font-size: 2.5em;
-  margin-bottom: 20px;
-  text-align: center;
+.badge {
+  font-size: 0.8rem;
 }
 
-.invest-search-bar {
-  max-width: 300px;
-  margin: 0 auto 20px;
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
 }
 
-.investigadores-table {
-  background-color: #ffffff;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.investigadores-table th {
-  background-color: #218838;
-  color: white;
-}
-
-.investigador-foto {
-  width: 50px;
-  height: 50px;
+.rounded-circle {
   object-fit: cover;
-}
-
-.invest-btn-modificar,
-.invest-btn-habilitar,
-.invest-btn-deshabilitar {
-  margin: 2px;
-}
-
-.loading,
-.error {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 1.2em;
-}
-
-.error {
-  color: #dc3545;
 }

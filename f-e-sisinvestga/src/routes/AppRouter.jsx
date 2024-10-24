@@ -32,6 +32,8 @@ import InvEvaluationsView from '../views/Investigator/EvaluationViews/InvEvaluat
 import AdmEditPubView from '../views/Admin/PublicationViews/AdmEditPubView';
 import AdminReportView from  '../views/Admin/ReportViews/AdminReportView';
 import AdmEvaluationView from '../views/Admin/EvaluationViews/AdmEvaluationView';
+import AdmRequestView from '../views/Admin/RequestViews/AdmRequestView';
+import AdmRoleView from '../views/Admin/RoleViews/AdmRoleView';
 
 const AppRouter = () => {
 
@@ -188,6 +190,18 @@ const AppRouter = () => {
       <Route path='/admin/evaluationprojects' element={
         <ProtectedRoute roles={['Administrador']}>
           <AdmEvaluationView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/admin/solicitudes' element={
+        <ProtectedRoute roles={['Administrador']}>
+          <AdmRequestView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/admin/roles' element={
+        <ProtectedRoute roles={['Administrador']}>
+          <AdmRoleView />
         </ProtectedRoute>
       } />
 
