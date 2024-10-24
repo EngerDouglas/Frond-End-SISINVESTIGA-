@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card, Button, Col, Row, Modal } from "react-bootstrap";
-import { getData, deleteData } from "../../../services/apiServices";
+import { getDataParams, putData, deleteData } from "../../../services/apiServices";
 import AlertComponent from "../../../components/Common/AlertComponent";
 import AlertRestaurar from "../../Admin/Common/AlertRestaurar";
 import '../../../css/Admin/AdmSeeProjects.css';
@@ -9,13 +9,14 @@ import { useNavigate } from "react-router";
 export default function AdmSeeProjects() {
   const [searchTerm, setSearchTerm] = useState("");
   const [estadoSeleccionado, setEstadoSeleccionado] = useState("Todos");
+  const [proyectosData, setProyectoData] = useState([]);
   const [selectedProyecto, setSelectedProyecto] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProyectos = async () => {
       try {
-        const proyectos = await getData("projects");
+        const proyectos = await getDataParams("projects");
         setProyectoData(proyectos.projects || []);
       } catch (error) {
         console.error("Error al obtener los proyectos", error);
@@ -40,15 +41,17 @@ export default function AdmSeeProjects() {
     navigate(`/invest/proyectos/editar/${projectId}`);
   };
 
-  const handleDeleteProject = async (projectId) => {
+  const handleDeleteProject = async (id) => {
     try {
       const result = await AlertComponent.warning(
         "¿Estás seguro que deseas eliminar este proyecto?"
       );
       if (result.isConfirmed) {
-        await deleteData("projects", projectId);
+        await deleteData("projects", id);
         AlertComponent.success("El proyecto ha sido eliminado correctamente.");
-        setProyectoData(proyectosData.filter((project) => project._id !== projectId));
+        setProyectoData(proyectosData.map(project => 
+          project._id === id ? { ...project, isDeleted: true, estado: "Eliminado" } : project
+        ));
       }
     } catch (error) {
       let errorMessage = "Ocurrió un error durante la eliminación del registro.";
@@ -97,11 +100,10 @@ export default function AdmSeeProjects() {
       if (result.isConfirmed) {
         const projectId = proyecto._id.toString();
         // Assuming there's an API endpoint to restore projects
-        await getData(`/restore/${projectId}`);
+        await putData('projects/restore', projectId);
         AlertRestaurar.success("El proyecto ha sido restaurado correctamente.");
-        // Update the project's state to its previous state (you might want to store the previous state when deleting)
         setProyectoData(proyectosData.map(p => 
-          p._id === proyecto._id ? { ...p, estado: "Planeado" } : p
+          p._id === proyecto._id ? { ...p, isDeleted: false, estado: "Planeado" } : p
         ));
       }
     } catch (error) {
@@ -141,7 +143,7 @@ export default function AdmSeeProjects() {
       <Row xs={1} md={2} className="g-4">
         {filteredProyectos.map((proyecto, index) => (
           <Col key={index}>
-            <Card className="project-card shadow-sm border-light">
+            <Card className={`project-card shadow-sm border-light ${proyecto.isDeleted ? 'deleted-project' : ''}`}>
               <Card.Body>
                 <Card.Title className="project-title">{proyecto.nombre}</Card.Title>
                 <Card.Text>
@@ -151,20 +153,19 @@ export default function AdmSeeProjects() {
                   <strong>Fecha Límite:</strong> {proyecto.cronograma.fechaFin}<br />
                   <strong>Estado:</strong> {proyecto.estado}
                 </Card.Text>
-            
-                {proyecto.estado === "Eliminado" ? (
-                  <Button variant="success" className="w-100" onClick={() => handleRestoreProject(proyecto)}>
+                {proyecto.isDeleted ? (
+                  <Button variant="success" className="w-100 btn-sm" onClick={() => handleRestoreProject(proyecto)}>
                     Restaurar
                   </Button>
                 ) : (
                   <>
-                    <Button variant="info" className="w-100 btn-success" onClick={() => handleViewDetails(proyecto)}>
+                    <Button variant="info" className="w-100 mb-2" onClick={() => handleViewDetails(proyecto)}>
                       Ver Detalles
                     </Button>
-                    <Button variant="danger" className="w-100 btn-success" onClick={() => handleDeleteProject(proyecto)}>
+                    <Button variant="danger" className="w-100 mb-2" onClick={() => handleDeleteProject(proyecto._id)}>
                       Eliminar
                     </Button>
-                    <Button variant="secondary" className="w-100 btn-success" onClick={() => handleEditProject(proyecto._id)}>
+                    <Button variant="secondary" className="w-100" onClick={() => handleEditProject(proyecto._id)}>
                       Editar
                     </Button>
                   </>
