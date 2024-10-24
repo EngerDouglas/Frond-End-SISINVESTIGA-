@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Card, Button, Col, Row, Modal } from "react-bootstrap";
-import { getData } from "../../../services/apiServices";
+import { getData, deleteData } from "../../../services/apiServices";
+import AlertComponent from "../../../components/Common/AlertComponent";
+import AlertRestaurar from "../../Admin/Common/AlertRestaurar";
 import '../../../css/Admin/AdmSeeProjects.css';
+import { useNavigate } from "react-router";
 
-function AdmSeeProjects() {
-  const [proyectosData, setProyectoData] = useState([]);
+export default function AdmSeeProjects() {
   const [searchTerm, setSearchTerm] = useState("");
   const [estadoSeleccionado, setEstadoSeleccionado] = useState("Todos");
   const [selectedProyecto, setSelectedProyecto] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProyectos = async () => {
@@ -21,9 +24,8 @@ function AdmSeeProjects() {
     fetchProyectos();
   }, []);
 
-  const estados = ["Todos", "Finalizado", "Planeado", "Eliminado"]; // Define los estados
+  const estados = ["Todos", "Finalizado", "Planeado", "Eliminado"];
 
-  // Filtra los proyectos por nombre y estado
   const filteredProyectos = proyectosData.filter((proyecto) => {
     const matchesSearch = proyecto.nombre.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesEstado = estadoSeleccionado === "Todos" || proyecto.estado === estadoSeleccionado;
@@ -32,6 +34,36 @@ function AdmSeeProjects() {
 
   const handleViewDetails = (proyecto) => {
     setSelectedProyecto(proyecto);
+  };
+
+  const handleEditProject = (projectId) => {
+    navigate(`/invest/proyectos/editar/${projectId}`);
+  };
+
+  const handleDeleteProject = async (projectId) => {
+    try {
+      const result = await AlertComponent.warning(
+        "¿Estás seguro que deseas eliminar este proyecto?"
+      );
+      if (result.isConfirmed) {
+        await deleteData("projects", projectId);
+        AlertComponent.success("El proyecto ha sido eliminado correctamente.");
+        setProyectoData(proyectosData.filter((project) => project._id !== projectId));
+      }
+    } catch (error) {
+      let errorMessage = "Ocurrió un error durante la eliminación del registro.";
+      let detailedErrors = [];
+
+      try {
+        const parsedError = JSON.parse(error.message);
+        errorMessage = parsedError.message;
+        detailedErrors = parsedError.errors || [];
+      } catch (parseError) {
+        errorMessage = error.message;
+      }
+      AlertComponent.error(errorMessage);
+      detailedErrors.forEach((err) => AlertComponent.error(err));
+    }
   };
 
   const handlePrintDetails = () => {
@@ -57,34 +89,52 @@ function AdmSeeProjects() {
     printWindow.print();
   };
 
-  const handleRestoreProject = (proyectoId) => {
-    // Implementa la lógica para restaurar el proyecto
-    console.log(`Restaurando proyecto con ID: ${proyectoId}`);
-    // Aquí puedes llamar a una función que haga una solicitud para restaurar el proyecto
+  const handleRestoreProject = async (proyecto) => {
+    try {
+      const result = await AlertRestaurar.warning(
+        "¿Estás seguro que deseas restaurar este proyecto?"
+      );
+      if (result.isConfirmed) {
+        const projectId = proyecto._id.toString();
+        // Assuming there's an API endpoint to restore projects
+        await getData(`/restore/${projectId}`);
+        AlertRestaurar.success("El proyecto ha sido restaurado correctamente.");
+        // Update the project's state to its previous state (you might want to store the previous state when deleting)
+        setProyectoData(proyectosData.map(p => 
+          p._id === proyecto._id ? { ...p, estado: "Planeado" } : p
+        ));
+      }
+    } catch (error) {
+      AlertRestaurar.error("Ocurrió un error al restaurar el proyecto.");
+    }
   };
 
   return (
     <div id="mostrarProyectos" className="container mt-5">
       <h2 className="text-center mb-4">Proyectos</h2>
 
-      <div className="mb-3 text-center">
-        <div className="d-flex justify-content-center ">
-          <input
-            type="text"
-            placeholder="Buscar proyecto..."
-            className="form-control w-100" // Mantener el espacio entre elementos
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <select
-            className="form-control"
-            value={estadoSeleccionado}
-            onChange={(e) => setEstadoSeleccionado(e.target.value)}
-          >
-            {estados.map((estado, index) => (
-              <option key={index} value={estado}>{estado}</option>
-            ))}
-          </select>
+      <div className="container mt-3">
+        <div className="row justify-content-center">
+          <div className="col-md-10 col-lg-8">
+            <div className="input-group">
+              <input
+                type="text"
+                placeholder="Buscar proyecto..."
+                className="form-control flex-grow-1"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <select
+                className="form-select flex-grow-0 w-auto"
+                value={estadoSeleccionado}
+                onChange={(e) => setEstadoSeleccionado(e.target.value)}
+              >
+                {estados.map((estado, index) => (
+                  <option key={index} value={estado}>{estado}</option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -98,11 +148,12 @@ function AdmSeeProjects() {
                   <strong>Objetivos:</strong> {proyecto.objetivos}<br />
                   <strong>Presupuesto:</strong> ${proyecto.presupuesto}<br />
                   <strong>Fecha de Inicio:</strong> {proyecto.cronograma.fechaInicio}<br />
-                  <strong>Fecha ALímite:</strong> {proyecto.cronograma.fechaFin}
+                  <strong>Fecha Límite:</strong> {proyecto.cronograma.fechaFin}<br />
+                  <strong>Estado:</strong> {proyecto.estado}
                 </Card.Text>
             
                 {proyecto.estado === "Eliminado" ? (
-                  <Button variant="success" className="w-100" onClick={() => handleRestoreProject(proyecto.id)}>
+                  <Button variant="success" className="w-100" onClick={() => handleRestoreProject(proyecto)}>
                     Restaurar
                   </Button>
                 ) : (
@@ -110,22 +161,20 @@ function AdmSeeProjects() {
                     <Button variant="info" className="w-100 btn-success" onClick={() => handleViewDetails(proyecto)}>
                       Ver Detalles
                     </Button>
-                    <Button variant="danger" className="w-100 btn-success" onClick={() => handleViewDetails(proyecto)}>
+                    <Button variant="danger" className="w-100 btn-success" onClick={() => handleDeleteProject(proyecto)}>
                       Eliminar
                     </Button>
-                    <Button variant="secondary" className="w-100 btn-success" onClick={() => handleViewDetails(proyecto)}>
+                    <Button variant="secondary" className="w-100 btn-success" onClick={() => handleEditProject(proyecto._id)}>
                       Editar
                     </Button>
                   </>
                 )}
-            
               </Card.Body>
             </Card>
           </Col>
         ))}
       </Row>
 
-      {/* Modal para ver detalles del proyecto */}
       {selectedProyecto && (
         <Modal show={true} onHide={() => setSelectedProyecto(null)}>
           <Modal.Header closeButton>
@@ -160,5 +209,3 @@ function AdmSeeProjects() {
     </div>
   );
 }
-
-export default AdmSeeProjects;
