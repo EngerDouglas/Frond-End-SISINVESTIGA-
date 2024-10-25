@@ -144,7 +144,7 @@ const AdmSeeAudits = () => {
                   onChange={handleFilterChange}
                 >
                   <option value="">Todos</option>
-                  <option value="GET">GET</option>
+                  <option value="PATCH">PATCH</option>
                   <option value="POST">POST</option>
                   <option value="PUT">PUT</option>
                   <option value="DELETE">DELETE</option>
