@@ -1,0 +1,65 @@
+.stats-card {
+  background-color: #f8f9fa;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stats-card .card-title {
+  color: #006747;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.stats-card .card-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.audit-table {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+}
+
+.audit-table thead {
+  background-color: #006747;
+  color: white;
+}
+
+.audit-table th, .audit-table td {
+  vertical-align: middle;
+  padding: 0.5rem;
+}
+
+.audit-table td:nth-child(4), /* URL column */
+.audit-table td:nth-child(5), /* Activity column */
+.audit-table td:nth-child(7) /* Location column */ {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #006747;
+  border-color: #006747;
+}
+
+.pagination .page-link {
+  color: #006747;
+}
+
+.form-control:focus {
+  border-color: #006747;
+  box-shadow: 0 0 0 0.2rem rgba(0, 103, 71, 0.25);
+}
+
+h1 {
+  color: #006747;
+}

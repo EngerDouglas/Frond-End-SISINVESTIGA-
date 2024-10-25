@@ -34,6 +34,7 @@ import AdminReportView from  '../views/Admin/ReportViews/AdminReportView';
 import AdmEvaluationView from '../views/Admin/EvaluationViews/AdmEvaluationView';
 import AdmRequestView from '../views/Admin/RequestViews/AdmRequestView';
 import AdmRoleView from '../views/Admin/RoleViews/AdmRoleView';
+import AdmAuditViews from '../views/Admin/AuditViews/AdmAuditViews';
 
 const AppRouter = () => {
 
@@ -202,6 +203,12 @@ const AppRouter = () => {
       <Route path='/admin/roles' element={
         <ProtectedRoute roles={['Administrador']}>
           <AdmRoleView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/admin/auditoria' element={
+        <ProtectedRoute roles={['Administrador']}>
+          <AdmAuditViews />
         </ProtectedRoute>
       } />
 
