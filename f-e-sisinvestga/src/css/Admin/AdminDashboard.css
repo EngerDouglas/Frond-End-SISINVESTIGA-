@@ -1,159 +1,95 @@
+/* AdminDashboard.css */
 .admin-dashboard {
-  margin: 0;
-  padding: 20px;
-  background-color: white;
+  background-color: #f8f9fa;
   min-height: 100vh;
-  box-sizing: border-box;
 }
 
-.name {
+.dashboard-title {
   font-family: 'Poppins', sans-serif;
-  font-size: 3.2rem;
-  font-weight: 500;
-  color: #6c757d;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 40px;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), rgba(108, 117, 125, 1));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: #006747;
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
-.stats-container {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 40px;
-  flex-wrap: wrap;
-}
-
-.stats-card {
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  flex: 1;
-  margin: 0 10px 20px;
-  min-width: 250px;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.stats-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-}
-
-.stats-card h2 {
+.section-title {
   font-size: 1.5rem;
-  margin-bottom: 15px;
-  color: #333;
+  color: #006747;
+  margin-bottom: 1rem;
 }
 
-.stats-card p {
-  margin: 5px 0;
-  font-size: 1rem;
-  color: #666;
+.stat-card {
+  transition: transform 0.3s, box-shadow 0.3s;
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .chart-container {
-  height: 200px;
-  margin-top: 20px;
-}
-
-.dashboard-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  height: 250px;
+  position: relative;
 }
 
 .dashboard-card {
   background-color: #fff;
-  border: 1px solid #e1e1e1;
-  border-radius: 8px;
-  padding: 20px;
-  flex: 1 1 200px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transform: translateY(10px);
-  opacity: 0;
+  border: none;
+  border-radius: 10px;
+  padding: 1.5rem;
   transition: transform 0.3s, box-shadow 0.3s;
-  animation: slideIn 0.5s forwards;
-}
-
-@keyframes slideIn {
-  0% {
-    transform: translateY(10px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  margin-bottom: 1.5rem;
+  height: 100%;
 }
 
 .dashboard-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.admin-btn-card {
-  text-decoration: none;
-  background-color: #218838;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 5px;
-  transition: background 0.3s;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.admin-btn-card:hover {
-  background-color: #1c7430;
-}
-
-.dashboard-card h2 {
-  display: flex;
-  align-items: center;
+.dashboard-card .card-title {
   font-size: 1.2rem;
-  margin-bottom: 10px;
+  color: #006747;
+  margin-bottom: 1rem;
 }
 
-.dashboard-card h2 i {
-  margin-right: 8px;
+.dashboard-card .card-text {
+  color: #6c757d;
+  margin-bottom: 1rem;
 }
 
-.admin-btn-card i {
-  margin-right: 5px;
+.nav-tabs .nav-link {
+  color: #006747;
+}
+
+.nav-tabs .nav-link.active {
+  color: #006747;
+  font-weight: 600;
+}
+
+.list-group-item {
+  transition: background-color 0.3s;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.dashboard-card, .stat-card {
+  animation: fadeIn 0.5s ease-out;
 }
 
 @media (max-width: 768px) {
-  .stats-container {
-    flex-direction: column;
-  }
-
-  .stats-card {
-    margin: 0 0 20px;
-  }
-
-  .dashboard-container {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  }
-
-  .admin-btn-card {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .dashboard-container {
-    grid-template-columns: 1fr;
-  }
-
-  .admin-btn-card {
-    padding: 6px 10px;
-    font-size: 0.8rem;
+  .dashboard-title {
+    font-size: 2rem;
   }
 }
