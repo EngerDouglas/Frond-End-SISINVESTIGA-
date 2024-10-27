@@ -125,8 +125,8 @@ const DashboardContent = () => {
       </div>
 
       <div className="card mt-4">
-        <div className="card-header">
-          <ul className="nav nav-tabs card-header-tabs">
+        <div className="summary-card-header">
+          <ul className="nav nav-tabs summary-card-header-tabs">
             <li className="nav-item">
               <button
                 className={`nav-link ${
