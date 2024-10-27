@@ -1,8 +1,11 @@
-import React from 'react'
+import React from 'react';
+import InvAddProject from '../../../components/Investigator/ProjectManagement/InvAddProject'
 
 const InvProjectAddView = () => {
   return (
-    <div>InvProjectAddView</div>
+    <div>
+      <InvAddProject />
+    </div>
   )
 }
 
