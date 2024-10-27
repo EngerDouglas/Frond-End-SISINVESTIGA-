@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Container, Row, Col, Table, Form, Button, Card, Spinner } from 'react-bootstrap';
+import { FaEdit, FaTrash, FaUndo, FaEye } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import { getData, postData, putData, deleteData, getDataParams } from '../../../services/apiServices';
 import AlertComponent from '../../Common/AlertComponent';
 import Pagination from '../../Common/Pagination';
 import '../../../css/Admin/AdmSeeEvaluations.css';
 
 const AdmSeeEvaluations = () => {
+  const navigate = useNavigate();
   const [evaluations, setEvaluations] = useState([]);
   const [projects, setProjects] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -43,11 +47,8 @@ const AdmSeeEvaluations = () => {
 
   useEffect(() => {
     fetchEvaluations();
-  }, [fetchEvaluations]);
-
-  useEffect(() => {
     fetchProjects();
-  }, [fetchProjects]);
+  }, [fetchEvaluations, fetchProjects]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -117,99 +118,123 @@ const AdmSeeEvaluations = () => {
     }
   };
 
-  return (
-    <div className="container mt-4">
-      <h1 className="mb-4">Gestión de Evaluaciones</h1>
-      <form onSubmit={handleSubmit} className="mb-4">
-        <div className="mb-3">
-          <label htmlFor="project" className="form-label">Proyecto</label>
-          <select
-            id="project"
-            name="project"
-            className="form-select"
-            value={formData.project}
-            onChange={handleInputChange}
-            required
-          >
-            <option value="">Seleccione un proyecto</option>
-            {projects.map(project => (
-              <option key={project._id} value={project._id}>{project.nombre}</option>
-            ))}
-          </select>
-        </div>
-        <div className="mb-3">
-          <label htmlFor="puntuacion" className="form-label">Puntuación</label>
-          <input
-            type="number"
-            id="puntuacion"
-            name="puntuacion"
-            className="form-control"
-            value={formData.puntuacion}
-            onChange={handleInputChange}
-            required
-            min="0"
-            max="100"
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="comentarios" className="form-label">Comentarios</label>
-          <textarea
-            id="comentarios"
-            name="comentarios"
-            className="form-control"
-            value={formData.comentarios}
-            onChange={handleInputChange}
-            required
-          ></textarea>
-        </div>
-        <button type="submit" className="btn btn-primary">
-          {editingId ? 'Actualizar Evaluación' : 'Crear Evaluación'}
-        </button>
-      </form>
+  const handleViewDetails = (id) => {
+    navigate(`/admin/evaluationprojects/${id}`);
+  };
 
-      {loading ? (
-        <p>Cargando evaluaciones...</p>
-      ) : (
-        <>
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th>Proyecto</th>
-                <th>Evaluador</th>
-                <th>Puntuación</th>
-                <th>Comentarios</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {evaluations.map(evaluation => (
-                <tr key={evaluation._id} className={evaluation.isDeleted ? 'table-danger' : ''}>
-                  <td>{evaluation.project.nombre}</td>
-                  <td>{`${evaluation.evaluator.nombre} ${evaluation.evaluator.apellido}`}</td>
-                  <td>{evaluation.puntuacion}</td>
-                  <td>{evaluation.comentarios}</td>
-                  <td>
-                    {!evaluation.isDeleted ? (
-                      <>
-                        <button onClick={() => handleEdit(evaluation)} className="btn btn-sm btn-warning me-2">Editar</button>
-                        <button onClick={() => handleDelete(evaluation._id)} className="btn btn-sm btn-danger">Eliminar</button>
-                      </>
-                    ) : (
-                      <button onClick={() => handleRestore(evaluation._id)} className="btn btn-sm btn-success">Restaurar</button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
-        </>
-      )}
-    </div>
+  if (loading) {
+    return (
+      <Container className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+        <Spinner animation="border" role="status" variant="primary">
+          <span className="visually-hidden">Cargando...</span>
+        </Spinner>
+      </Container>
+    );
+  }
+
+  return (
+    <>
+      <Container className="my-4">
+      <h1 className="text-primary mb-4">Gestión de Evaluaciones</h1>
+      <Card className="mb-4">
+        <Card.Body>
+          <Form onSubmit={handleSubmit}>
+            <Row>
+              <Col md={4}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Proyecto</Form.Label>
+                  <Form.Select
+                    name="project"
+                    value={formData.project}
+                    onChange={handleInputChange}
+                    required
+                  >
+                    <option value="">Seleccione un proyecto</option>
+                    {projects.map(project => (
+                      <option key={project._id} value={project._id}>{project.nombre}</option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+              <Col md={4}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Puntuación</Form.Label>
+                  <Form.Control
+                    type="number"
+                    name="puntuacion"
+                    value={formData.puntuacion}
+                    onChange={handleInputChange}
+                    required
+                    min="0"
+                    max="100"
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={4}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Comentarios</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    name="comentarios"
+                    value={formData.comentarios}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            <Button type="submit" variant="primary">
+              {editingId ? 'Actualizar Evaluación' : 'Crear Evaluación'}
+            </Button>
+          </Form>
+        </Card.Body>
+      </Card>
+
+      <Table responsive striped bordered hover>
+        <thead>
+          <tr>
+            <th>Proyecto</th>
+            <th>Evaluador</th>
+            <th>Puntuación</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {evaluations.map(evaluation => (
+            <tr key={evaluation._id} className={evaluation.isDeleted ? 'table-danger' : ''}>
+              <td>{evaluation.project.nombre}</td>
+              <td>{`${evaluation.evaluator.nombre} ${evaluation.evaluator.apellido}`}</td>
+              <td>{evaluation.puntuacion}</td>
+              <td>
+                <Button variant="info" size="sm" className="me-2" onClick={() => handleViewDetails(evaluation.project._id)}>
+                  <FaEye /> Ver
+                </Button>
+                {!evaluation.isDeleted ? (
+                  <>
+                    <Button variant="warning" size="sm" className="me-2" onClick={() => handleEdit(evaluation)}>
+                      <FaEdit /> Editar
+                    </Button>
+                    <Button variant="danger" size="sm" onClick={() => handleDelete(evaluation._id)}>
+                      <FaTrash /> Eliminar
+                    </Button>
+                  </>
+                ) : (
+                  <Button variant="success" size="sm" onClick={() => handleRestore(evaluation._id)}>
+                    <FaUndo /> Restaurar
+                  </Button>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
+      </Container>
+    </>
   );
 };
 

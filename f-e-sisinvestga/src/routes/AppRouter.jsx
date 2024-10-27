@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes } from 'react-router';
+import ProtectedRoute from '../Context/ProtectedRoute';
+import { selectSessionLoaded } from '../features/auth/authSlice';
 import Home from '../views/Home/Home';
 import LoginPage from '../views/auth/LoginPage';
 import RegisterPage from '../views/auth/RegisterPage';
@@ -13,8 +15,6 @@ import InvRequestView from '../views/Investigator/RequestViews/InvRequestView';
 import InvProfileView from '../views/Investigator/ProfileView/InvProfileView';
 import Unauthorized from '../views/Pages/Unauthorized';
 import NotFound from '../views/Pages/NotFound';
-import ProtectedRoute from '../Context/ProtectedRoute';
-import { selectSessionLoaded } from '../features/auth/authSlice';
 import AdmProjectsView from '../views/Admin/ProjectViews/AdmProjectsView';
 import AdmInvestigatorView from '../views/Admin/InvestigatorViews/AdmInvestigatorView'
 import AdmPublicationViews from "../views/Admin/PublicationViews/AdmPublicationViews"
@@ -35,6 +35,8 @@ import AdmEvaluationView from '../views/Admin/EvaluationViews/AdmEvaluationView'
 import AdmRequestView from '../views/Admin/RequestViews/AdmRequestView';
 import AdmRoleView from '../views/Admin/RoleViews/AdmRoleView';
 import AdmAuditViews from '../views/Admin/AuditViews/AdmAuditViews';
+import AdmEvaluationDetailViews from '../views/Admin/EvaluationViews/AdmEvaluationDetailViews';
+import AdmRequestDetailViews from '../views/Admin/RequestViews/AdmRequestDetailViews';
 
 const AppRouter = () => {
 
@@ -76,6 +78,7 @@ const AppRouter = () => {
       <Route path='proyectos/:id' element={<ProjectDetailViews />} />
       <Route path='publicaciones/:id' element={<PublicationDetailViews />} />
       
+      #region Ruta de los Investigadores
       {/* Rutas Protegidas para Investigador */}
       <Route path='/invest' element={ 
         <ProtectedRoute roles={['Investigador']}>
@@ -142,15 +145,15 @@ const AppRouter = () => {
           <InvProfileView />
         </ProtectedRoute>
       } />
+      #endregion
 
-
+      #region Ruta de los Administradores
       {/* Rutas Protegidas para Administrador */}
       <Route path='/admin' element={ 
         <ProtectedRoute roles={['Administrador']}>
           <AdminDashboard />
         </ProtectedRoute>
       } />
-
 
       <Route path='/admin/confprofile' element={ 
         <ProtectedRoute roles={['Administrador']}>
@@ -194,9 +197,21 @@ const AppRouter = () => {
         </ProtectedRoute>
       } />
 
+      <Route path='/admin/evaluationprojects/:projectId' element={
+        <ProtectedRoute roles={['Administrador']}>
+          <AdmEvaluationDetailViews />
+        </ProtectedRoute>
+      } />
+
       <Route path='/admin/solicitudes' element={
         <ProtectedRoute roles={['Administrador']}>
           <AdmRequestView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/admin/solicitudes/:id' element={
+        <ProtectedRoute roles={['Administrador']}>
+          <AdmRequestDetailViews />
         </ProtectedRoute>
       } />
 
@@ -211,6 +226,7 @@ const AppRouter = () => {
           <AdmAuditViews />
         </ProtectedRoute>
       } />
+      #endregion
 
       {/* Rutas Protegidas no Autorizado */}
       <Route path='/unauthorized' element={<Unauthorized />} />
