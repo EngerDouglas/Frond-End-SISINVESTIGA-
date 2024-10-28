@@ -3,6 +3,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../../features/auth/authSlice";
 import AlertComponent from "../../Common/AlertComponent";
+import { useNotifications } from "../../../Context/NotificationsProvider";
+import { postData, putData, deleteData } from "../../../services/apiServices";
 import {
   FaUserCircle,
   FaChevronDown,
@@ -15,7 +17,9 @@ import {
   FaTasks,
   FaArrowLeft,
   FaBars,
-  FaTimes
+  FaTimes,
+  FaTrash,
+  FaCheck
 } from "react-icons/fa";
 import logo from "../../../assets/img/LogoUCSD.jpg";
 import "../../../css/Investigator/NavInvestigator.css";
@@ -26,6 +30,8 @@ const NavInvestigator = () => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const { notifications, unreadCount, fetchNotifications, removeNotification } = useNotifications();
 
   const handleLogout = () => {
     try {
@@ -56,6 +62,10 @@ const NavInvestigator = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  const toggleNotifications = () => {
+    setIsNotificationsOpen(!isNotificationsOpen);
+  };
+
   const goBack = () => {
     navigate(-1);
   };
@@ -65,12 +75,40 @@ const NavInvestigator = () => {
   const closeMenus = () => {
     setIsMenuOpen(false);
     setIsMobileMenuOpen(false);
+    setIsNotificationsOpen(false);
   };
 
   useEffect(() => {
     window.addEventListener('resize', closeMenus);
     return () => window.removeEventListener('resize', closeMenus);
   }, []);
+
+  const handleMarkAllAsRead = async () => {
+    try {
+      await postData('notifications/readall');
+      fetchNotifications();
+    } catch (error) {
+      console.error('Error marking all notifications as read:', error);
+    }
+  };
+
+  const handleMarkAsRead = async (id) => {
+    try {
+      await putData(`notifications/${id}`, 'read');
+      fetchNotifications();
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
+    }
+  };
+
+  const handleDeleteNotification = async (id) => {
+    try {
+      await deleteData('notifications', id);
+      removeNotification(id);
+    } catch (error) {
+      console.error('Error deleting notification:', error);
+    }
+  };
 
   return (
     <nav className={`nav-investigator ${isHomePage ? 'home-page' : ''}`}>
@@ -103,9 +141,42 @@ const NavInvestigator = () => {
       </div>
 
       <div className={`nav-investigator-actions ${isMobileMenuOpen ? 'open' : ''}`}>
-        <button className="nav-investigator-icon-btn">
-          <FaBell />
-        </button>
+        <div className="nav-investigator-notifications">
+          <button className="nav-investigator-icon-btn" onClick={toggleNotifications}>
+            <FaBell />
+            {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
+          </button>
+          {isNotificationsOpen && (
+            <div className="notifications-dropdown">
+              <div className="notifications-header">
+                <h3>Notificaciones</h3>
+                <button onClick={handleMarkAllAsRead} className="mark-all-read">Marcar todo como leído</button>
+              </div>
+              <div className="notifications-list">
+                {notifications.length === 0 ? (
+                  <p className="no-notifications">No hay notificaciones</p>
+                ) : (
+                  notifications.map((notification) => (
+                    <div key={notification._id} className={`notification-item ${notification.isRead ? 'read' : 'unread'}`}>
+                      <p className="notification-message">{notification.message}</p>
+                      <div className="notification-actions">
+                        {!notification.isRead && (
+                          <button onClick={() => handleMarkAsRead(notification._id)} className="mark-read">
+                            <FaCheck />
+                          </button>
+                        )}
+                        <button onClick={() => handleDeleteNotification(notification._id)} className="delete-notification">
+                          <FaTrash />
+                        
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          )}
+        </div>
         {!isHomePage && (
           <button onClick={goBack} className="nav-investigator-back-btn">
             <FaArrowLeft /> Atrás
