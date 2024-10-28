@@ -42,10 +42,12 @@ import {
   faFileAlt,
   faJournalWhills,
   faFileContract,
+  faTasks,
   faBell,
   faChartBar,
   faCog,
   faListOl,
+  faDesktop,
 } from "@fortawesome/free-solid-svg-icons";
 
 // Agregar íconos a la biblioteca
@@ -63,9 +65,11 @@ library.add(
   faJournalWhills,
   faFileContract,
   faBell,
+  faTasks,
   faChartBar,
   faCog,
-  faListOl
+  faListOl,
+  faDesktop
 );
 
 ChartJS.register(
@@ -91,6 +95,7 @@ const AdminDashboard = () => {
       rejected: 0,
       inProcess: 0,
     },
+    activeSessions: 0,
   });
   const [recentEvaluations, setRecentEvaluations] = useState([]);
   const [recentRequests, setRecentRequests] = useState([]);
@@ -130,6 +135,9 @@ const AdminDashboard = () => {
       const enabledUsers = usersData.filter((user) => !user.isDisabled).length;
       const disabledUsers = usersData.filter((user) => user.isDisabled).length;
 
+      // Active sessions
+      const activeSessions = usersData.reduce((total, user) => total + (user.sessions ? user.sessions.length : 0), 0);
+      
       // Estadísticas de evaluaciones
       const totalEvaluations = evaluationsData.evaluations.length;
       const totalScore = evaluationsData.evaluations.reduce(
@@ -206,6 +214,7 @@ const AdminDashboard = () => {
           rejected: rejectedRequests,
           inProcess: inProcessRequests,
         },
+        activeSessions: activeSessions,
       });
 
       setPendingEvaluationProjects(pendingProjects.slice(0, 5)); // Mostrar los primeros 5
@@ -345,6 +354,12 @@ const AdminDashboard = () => {
                     icon={faBook}
                     value={stats.publications.total}
                     color="#4BC0C0"
+                  />
+                  <StatCard
+                    title="Sesiones Activas"
+                    icon={faDesktop}
+                    value={stats.activeSessions}
+                    color="#8A2BE2"
                   />
                 </Col>
                 <Col md={4} lg={3}>
@@ -685,7 +700,7 @@ const AdminDashboard = () => {
             <Card className="dashboard-card">
               <Card.Body>
                 <Card.Title>
-                  <FontAwesomeIcon icon={faBell} className="me-2" /> Solicitudes
+                  <FontAwesomeIcon icon={faTasks} className="me-2" /> Solicitudes
                 </Card.Title>
                 <Card.Text>
                   Solicitud para agregar investigadores a proyectos.
@@ -695,7 +710,7 @@ const AdminDashboard = () => {
                   onClick={() => handleNavigation("/admin/solicitudes")}
                   className="w-100"
                 >
-                  <FontAwesomeIcon icon={faBell} className="me-2" /> Ir a
+                  <FontAwesomeIcon icon={faTasks} className="me-2" /> Ir a
                   Solicitudes
                 </Button>
               </Card.Body>
@@ -760,6 +775,26 @@ const AdminDashboard = () => {
                 >
                   <FontAwesomeIcon icon={faListOl} className="me-2" /> Ir a
                   Evaluaciones
+                </Button>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={4} lg={3}>
+            <Card className="dashboard-card">
+              <Card.Body>
+                <Card.Title>
+                  <FontAwesomeIcon icon={faBell} className="me-2" /> Centro de Notificaciones
+                </Card.Title>
+                <Card.Text>
+                  Administrar y actualizar las notificaciones del Sistema.
+                </Card.Text>
+                <Button
+                  variant="primary"
+                  onClick={() => handleNavigation("/admin/notificaciones")}
+                  className="w-100"
+                >
+                  <FontAwesomeIcon icon={faBell} className="me-2" /> Ir a
+                  Notificaciones
                 </Button>
               </Card.Body>
             </Card>

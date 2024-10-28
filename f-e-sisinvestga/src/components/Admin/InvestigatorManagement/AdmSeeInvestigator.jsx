@@ -147,6 +147,7 @@ export default function AdmSeeInvestigator() {
                   <th>Foto</th>
                   <th>Nombre</th>
                   <th>Especialización</th>
+                  <th>Correo Eletrónico</th>
                   <th>Rol</th>
                   <th>Estado</th>
                   <th>Verificado</th>
@@ -167,6 +168,7 @@ export default function AdmSeeInvestigator() {
                     </td>
                     <td>{`${investigador.nombre} ${investigador.apellido}`}</td>
                     <td>{investigador.especializacion}</td>
+                    <td>{investigador.email}</td>
                     <td>{investigador.role?.roleName || 'No asignado'}</td>
                     <td>
                       <Badge bg={investigador.isDisabled ? "danger" : "success"}>

@@ -267,7 +267,9 @@ const InvAddPublication = () => {
                   />
                 </div>
                 <div className="add-form-group">
-                  <label htmlFor="anexos">Anexos</label>
+                  <label htmlFor="anexos" className="add-file-label">
+                    <FaUpload /> Subir Anexos
+                  </label>
                   <input
                     type="file"
                     id="anexos"

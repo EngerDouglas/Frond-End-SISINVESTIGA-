@@ -37,6 +37,7 @@ import AdmRoleView from '../views/Admin/RoleViews/AdmRoleView';
 import AdmAuditViews from '../views/Admin/AuditViews/AdmAuditViews';
 import AdmEvaluationDetailViews from '../views/Admin/EvaluationViews/AdmEvaluationDetailViews';
 import AdmRequestDetailViews from '../views/Admin/RequestViews/AdmRequestDetailViews';
+import AdmNotificationViews from '../views/Admin/NotificationViews/AdmNotificationViews';
 
 const AppRouter = () => {
 
@@ -226,6 +227,13 @@ const AppRouter = () => {
           <AdmAuditViews />
         </ProtectedRoute>
       } />
+
+      <Route path='/admin/notificaciones' element={
+        <ProtectedRoute roles={['Administrador']}>
+          <AdmNotificationViews />
+        </ProtectedRoute>
+      } />
+
       #endregion
 
       {/* Rutas Protegidas no Autorizado */}

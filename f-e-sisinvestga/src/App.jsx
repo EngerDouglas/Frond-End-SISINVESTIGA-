@@ -3,6 +3,7 @@ import AppRouter from "./routes/AppRouter";
 import { Provider, useDispatch } from "react-redux";
 import store from "./store";
 import { loadSession } from "./features/auth/authSlice"; // Importar la acción de carga de sesión
+import { NotificationsProvider } from './Context/NotificationsProvider';
 
 function App() {
   const dispatch = useDispatch();
@@ -17,7 +18,9 @@ function App() {
 
 const AppWrapper = () => (
   <Provider store={store}>
-    <App />
+    <NotificationsProvider>
+      <App />
+    </NotificationsProvider>
   </Provider>
 );
 

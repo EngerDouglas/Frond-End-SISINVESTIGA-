@@ -1,121 +1,180 @@
-.nav-admin-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: #f8f9fa; /* Color de fondo más claro */
-  color: #333; /* Color de texto más oscuro */
-  transition: all 0.3s ease;
-  position: relative;
-  z-index: 10; /* Asegúrate de que esté por encima de otros elementos */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
 }
 
-.nav-admin-bar.active {
-  opacity: 1;
-  transform: translateY(0);
+.navbar.navbar-admin {
+  background-color: #006747 !important;
+  padding: 0.5rem 1rem;
 }
 
-.logo-admin {
-  font-size: 24px;
-  font-weight: bold;
+.navbar-brand {
+  padding: 0;
 }
 
 .nav-logo {
-  width: auto; /* Auto width to maintain aspect ratio */
-  height: 40px; /* Set a fixed height */
-  max-width: 100%; /* Ensure it doesn't overflow its container */
+  height: 40px;
+  width: auto;
 }
 
-.nav-admin-list {
-  list-style: none;
+.navbar-admin .navbar-nav .nav-link {
+  color: #ffffff !important;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  background-color: #004d35;
+}
+
+.navbar-nav .nav-link svg {
+  font-size: 1.2rem;
+}
+
+.navbar-toggler {
+  border-color: #ffffff;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(255, 255, 255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+@media (max-width: 991.98px) {
+  .navbar-nav {
+    padding-top: 0.5rem;
+  }
+
+  .nav-link {
+    padding: 0.5rem 1rem;
+  }
+}
+
+.btn-link {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.btn-link:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+@media (min-width: 992px) {
+  .navbar-expand-lg .navbar-nav .nav-link {
+    padding-right: 0.75rem;
+    padding-left: 0.75rem;
+  }
+}
+
+/* Tooltip styles */
+.tooltip {
+  font-family: 'Poppins', sans-serif;
+}
+
+.tooltip .tooltip-inner {
+  background-color: #004d35;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  border-radius: 4px;
+}
+
+.tooltip .arrow::before {
+  border-bottom-color: #004d35;
+}
+
+/* Notifications styles */
+.notifications-dropdown {
+  width: 350px;
+  max-width: 90vw;
+  padding: 0;
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.notifications-dropdown .dropdown-header {
+  background-color: #006747;
+  color: #ffffff;
+  font-weight: bold;
+  padding: 0.75rem 1rem;
+}
+
+.notifications-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.notification-item {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-item.unread {
+  background-color: #e9ecef;
+}
+
+.notification-item:hover {
+  background-color: #f8f9fa;
+}
+
+.notification-header {
   display: flex;
-  gap: 15px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
 }
 
-.nav-admin-item {
+.notification-type {
+  font-weight: bold;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.delete-notification {
+  color: #dc3545;
+  padding: 0;
+  font-size: 0.8rem;
+}
+
+.delete-notification:hover {
+  color: #bd2130;
+}
+
+.notification-content {
+  word-wrap: break-word;
+  margin-bottom: 0.5rem;
+}
+
+.notification-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.notification-footer {
+  display: flex;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  background-color: #f8f9fa;
+}
+
+.badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.4rem;
+}
+
+#dropdown-notifications {
   position: relative;
 }
 
-.nav-admin-link,
-.nav-link {
-  color: #333; /* Color de texto más oscuro */
-  text-decoration: none;
-  font-size: 18px;
-  padding: 8px 12px;
-  border-radius: 4px;
-  transition: background-color 0.3s;
-}
-
-.nav-link:hover,
-.nav-admin-link:hover {
-  background-color: #e2e6ea; /* Color de hover más suave */
-}
-
-.admin-btn {
-  background: none;
-  border: none;
-  color: #333; /* Color de texto más oscuro */
-  cursor: pointer;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.admin-btn:hover {
-  background-color: #e2e6ea; /* Color de hover más suave */
-}
-
-.dropdown-menu {
-  display: none; /* No mostrar inicialmente */
-  position: absolute;
-  top: 100%; /* Mostrar debajo del botón */
-  left: 0;
-  background-color: white; /* Color de fondo del menú desplegable */
-  border-radius: 4px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 5; /* Asegúrate de que esté por encima de otros elementos */
-  width: auto; /* Ancho automático según el contenido */
-  min-width: 200px; /* Ancho mínimo para evitar que sea demasiado pequeño */
-  opacity: 0;
-  transform: translateY(10px); /* Desplazar hacia abajo al principio */
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.dropdown-menu.show {
-  display: block; /* Mostrar cuando esté activo */
-  opacity: 1;
-  transform: translateY(0); /* Regresar a la posición original al mostrar */
-}
-
-.dropdown-item {
-  padding: 10px 15px; /* Ajusta el padding si es necesario */
-  color: #333; /* Color del texto */
-  white-space: nowrap; /* Evitar el salto de línea */
-  overflow: hidden; /* Ocultar desbordamiento */
-  text-overflow: ellipsis; /* Mostrar puntos suspensivos si el texto es muy largo */
-}
-
-.dropdown-item:hover {
-  background-color: #f0f0f0; /* Color de fondo al pasar el mouse por encima */
-}
-
-.bi {
-  margin-right: 8px;
-}
-
-/* Estilos responsivos */
-@media (max-width: 768px) {
-  .nav-admin-list {
-    flex-direction: column;
-    display: none; /* Ocultar la lista por defecto */
-  }
-
-  .nav-admin-list.active {
-    display: flex; /* Mostrar la lista cuando el menú está abierto */
-  }
-
-  .nav-admin-bar {
-    flex-direction: column;
-  }
+#dropdown-notifications::after {
+  display: none;
 }
