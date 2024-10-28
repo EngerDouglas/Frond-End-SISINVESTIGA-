@@ -190,41 +190,37 @@ const DashboardContent = () => {
               <p className="card-text">Últimas 5 publicaciones registradas</p>
               {publications.length > 0 ? (
                 <div className="table-responsive">
-                  <table className="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>Título</th>
-                        <th>Revista</th>
-                        <th>Estado</th>
-                        <th>Proyecto Asociado</th>
+                <table className="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Título</th>
+                      <th>Revista</th>
+                      <th>Estado</th>
+                      <th>Proyecto Asociado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {publications.slice(0, 5).map((publication, index) => (
+                      <tr key={index}>
+                        <td>{publication.titulo}</td>
+                        <td>{publication.revista}</td>
+                        <td>
+                          <span
+                            className={`badge bg-${
+                              publication.estado === "Publicado" ? "success" : "warning"
+                            }`}
+                          >
+                            {publication.estado}
+                          </span>
+                        </td>
+                        <td>
+                          {publication.proyecto ? publication.proyecto.nombre : "N/A"}
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {publications.slice(0, 5).map((publication, index) => (
-                        <tr key={index}>
-                          <td>{publication.titulo}</td>
-                          <td>{publication.revista}</td>
-                          <td>
-                            <span
-                              className={`badge bg-${
-                                publication.estado === "Publicado"
-                                  ? "success"
-                                  : "warning"
-                              }`}
-                            >
-                              {publication.estado}
-                            </span>
-                          </td>
-                          <td>
-                            {publication.proyecto
-                              ? publication.proyecto.nombre
-                              : "N/A"}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
               ) : (
                 <p className="text-center">No hay publicaciones recientes</p>
               )}
@@ -236,41 +232,39 @@ const DashboardContent = () => {
               <p className="card-text">Últimas 5 solicitudes registradas</p>
               {requests.length > 0 ? (
                 <div className="table-responsive">
-                  <table className="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>Fecha</th>
-                        <th>Tipo de Solicitud</th>
-                        <th>Estado</th>
-                        <th>Proyecto</th>
+                <table className="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Tipo de Solicitud</th>
+                      <th>Estado</th>
+                      <th>Proyecto</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {requests.slice(0, 5).map((request) => (
+                      <tr key={request._id}>
+                        <td>
+                          {new Date(request.createdAt).toLocaleDateString()}
+                        </td>
+                        <td>{request.tipoSolicitud}</td>
+                        <td>
+                          <span
+                            className={`badge bg-${
+                              request.estado === "Pendiente" ? "warning" : "info"
+                            }`}
+                          >
+                            {request.estado}
+                          </span>
+                        </td>
+                        <td>
+                          {request.proyecto ? request.proyecto.nombre : "N/A"}
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {requests.slice(0, 5).map((request) => (
-                        <tr key={request._id}>
-                          <td>
-                            {new Date(request.createdAt).toLocaleDateString()}
-                          </td>
-                          <td>{request.tipoSolicitud}</td>
-                          <td>
-                            <span
-                              className={`badge bg-${
-                                request.estado === "Pendiente"
-                                  ? "warning"
-                                  : "info"
-                              }`}
-                            >
-                              {request.estado}
-                            </span>
-                          </td>
-                          <td>
-                            {request.proyecto ? request.proyecto.nombre : "N/A"}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
               ) : (
                 <p className="text-center">No hay solicitudes recientes</p>
               )}

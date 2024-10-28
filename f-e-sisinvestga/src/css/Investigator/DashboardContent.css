@@ -173,6 +173,36 @@
   margin-bottom: 1rem;
 }
 
+/* Add these new styles */
+.table td {
+  position: relative;
+}
+
+.table .badge {
+  position: static;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+/* Ensure the badge doesn't break the table layout */
+.table td > * {
+  vertical-align: middle;
+}
+
+/* Adjust padding for cells with badges */
+.table td:has(.badge) {
+  padding-right: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .table .badge {
+    display: block;
+    margin-bottom: 5px;
+  }
+}
+
 @media (max-width: 768px) {
   .dashboard-header {
     flex-direction: column;
