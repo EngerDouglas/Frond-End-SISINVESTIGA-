@@ -19,7 +19,8 @@ import {
   FaBars,
   FaTimes,
   FaTrash,
-  FaCheck
+  FaCheck,
+  FaExternalLinkAlt
 } from "react-icons/fa";
 import logo from "../../../assets/img/LogoUCSD.jpg";
 import "../../../css/Investigator/NavInvestigator.css";
@@ -173,6 +174,11 @@ const NavInvestigator = () => {
                     </div>
                   ))
                 )}
+              </div>
+              <div className="notifications-footer">
+                <Link to="/invest/notificaciones" className="view-all-notifications" onClick={closeMenus}>
+                  <FaExternalLinkAlt /> Ver todas las notificaciones
+                </Link>
               </div>
             </div>
           )}

@@ -252,6 +252,33 @@
   padding: 20px;
 }
 
+.notifications-footer {
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  text-align: center;
+}
+
+.view-all-notifications {
+  display: block;
+  width: 100%;
+  padding: 8px 0;
+  background-color: #006400;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  transition: background-color 0.3s;
+}
+
+.view-all-notifications:hover {
+  background-color: #005000;
+  color: white;
+}
+
+.view-all-notifications svg {
+  margin-right: 5px;
+}
+
 @media (max-width: 768px) {
   .nav-investigator {
     flex-wrap: wrap;

@@ -6,9 +6,9 @@ import AlertComponent from '../../Common/AlertComponent';
 import { getUserData, postData } from '../../../services/apiServices';
 import '../../../css/Investigator/InvRequestView.css';
 
-
 const InvSeeRequest = () => {
   const [requests, setRequests] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(1);
@@ -41,9 +41,21 @@ const InvSeeRequest = () => {
     setLoading(false);
   }, [page, filters.estado, filters.tipoSolicitud]);
 
+  const fetchProjects = useCallback(async () => {
+    try {
+      const response = await getUserData('projects');
+      console.log('Respuesta de proyectos:', response);
+      setProjects(response.data || []);
+    } catch (err) {
+      console.error('Error al obtener proyectos:', err);
+      AlertComponent.error('Error al cargar los proyectos');
+    }
+  }, []);
+
   useEffect(() => {
     fetchRequests();
-  }, [fetchRequests]);
+    fetchProjects();
+  }, [fetchRequests, fetchProjects]);
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -142,12 +154,23 @@ const InvSeeRequest = () => {
                   <Form.Group className="mb-3">
                     <Form.Label>Proyecto</Form.Label>
                     <Form.Control
-                      type="text"
+                      as="select"
                       name="proyecto"
                       value={newRequest.proyecto}
                       onChange={handleNewRequestChange}
                       required
-                    />
+                    >
+                      <option value="">Seleccione un proyecto</option>
+                      {Array.isArray(projects) && projects.length > 0 ? (
+                        projects.map((project) => (
+                          <option key={project._id} value={project._id}>
+                            {project.nombre}
+                          </option>
+                        ))
+                      ) : (
+                        <option value="">No hay proyectos disponibles</option>
+                      )}
+                    </Form.Control>
                   </Form.Group>
                 )}
                 <Button type="submit" variant="primary">Enviar Solicitud</Button>

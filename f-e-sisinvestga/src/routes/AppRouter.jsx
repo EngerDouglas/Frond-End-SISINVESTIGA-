@@ -38,6 +38,7 @@ import AdmAuditViews from '../views/Admin/AuditViews/AdmAuditViews';
 import AdmEvaluationDetailViews from '../views/Admin/EvaluationViews/AdmEvaluationDetailViews';
 import AdmRequestDetailViews from '../views/Admin/RequestViews/AdmRequestDetailViews';
 import AdmNotificationViews from '../views/Admin/NotificationViews/AdmNotificationViews';
+import InvNotificationsViews from '../views/Investigator/InvNotificationsViews';
 
 const AppRouter = () => {
 
@@ -138,6 +139,12 @@ const AppRouter = () => {
       <Route path='/invest/solicitudes' element={
         <ProtectedRoute roles={['Investigador']}>
           <InvRequestView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/invest/notificaciones' element={
+        <ProtectedRoute roles={['Investigador']}>
+          <InvNotificationsViews />
         </ProtectedRoute>
       } />
 

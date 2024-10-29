@@ -22,7 +22,8 @@ import {
   FaArrowLeft,
   FaBars,
   FaCheck,
-  FaTrash
+  FaTrash,
+  FaExternalLinkAlt
 } from 'react-icons/fa';
 import { Tooltip, OverlayTrigger, Dropdown, Button } from 'react-bootstrap';
 
@@ -179,6 +180,9 @@ const AdminNav = () => {
                     <Button variant="outline-primary" size="sm" onClick={handleMarkAllAsRead}>
                       Marcar todas como leídas
                     </Button>
+                    <Link to="/admin/notificaciones" className="btn btn-primary btn-sm">
+                      <FaExternalLinkAlt className="me-1" /> Ver todas
+                    </Link>
                   </div>
                 </Dropdown.Menu>
               </Dropdown>
