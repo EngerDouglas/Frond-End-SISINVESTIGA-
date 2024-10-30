@@ -21,8 +21,10 @@ import AdmPublicationViews from "../views/Admin/PublicationViews/AdmPublicationV
 import ProjectDetailViews from '../views/Home/HomeProjects/ProjectDetailViews';
 import PublicationDetailViews from '../views/Home/HomePublications/PublicationDetailViews';
 import InvProjectAddView from '../views/Investigator/ProjectViews/InvProjectAddView';
+import InvProjectDetailView from '../views/Investigator/ProjectViews/InvProjectDetailView';
 import InvProjectEditView from '../views/Investigator/ProjectViews/InvProjectEditView';
 import InvPublicationAddView from '../views/Investigator/PublicationViews/InvPublicationAddView';
+import InvPublicationDetailsView from '../views/Investigator/PublicationViews/InvPublicationDetailsView';
 import InvPublicationsEditView from '../views/Investigator/PublicationViews/InvPublicationsEditView';
 import ForgotPasswordPage from '../views/auth/ForgotPasswordPage';
 import ResetPasswordPage from '../views/auth/ResetPasswordPage';
@@ -94,6 +96,12 @@ const AppRouter = () => {
         </ProtectedRoute>
       } />
 
+      <Route path='/invest/detalles/proyecto/:id' element={
+        <ProtectedRoute roles={['Investigador']}>
+          <InvProjectDetailView />
+        </ProtectedRoute>
+      } />
+
       <Route path='/invest/proyectos/agregar' element={
         <ProtectedRoute roles={['Investigador']}>
           <InvProjectAddView />
@@ -109,6 +117,12 @@ const AppRouter = () => {
       <Route path='/invest/publicaciones' element={
         <ProtectedRoute roles={['Investigador']}>
           <InvPublicationsView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/invest/detalles/publicacion/:id' element={
+        <ProtectedRoute roles={['Investigador']}>
+          <InvPublicationDetailsView />
         </ProtectedRoute>
       } />
 

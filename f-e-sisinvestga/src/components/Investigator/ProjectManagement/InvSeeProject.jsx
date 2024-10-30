@@ -5,9 +5,9 @@ import NavInvestigator from "../../../components/Investigator/Common/NavInvestig
 import AlertComponent from "../../../components/Common/AlertComponent";
 import InvProjectCard from "./InvProjectCard";
 import Pagination from "../../../components/Common/Pagination";
-import SearchBar from "../../../components/Common/SearchBar";
+import InvSearchBar from "../Common/InvSearchBar";
 import { getUserData, deleteData } from "../../../services/apiServices";
-import "../../../css/Investigator/InvProjectView.css";
+import "../../../css/Investigator/InvestigatorProjects.css";
 
 const InvSeeProject = () => {
   const [projects, setProjects] = useState([]);
@@ -45,6 +45,10 @@ const InvSeeProject = () => {
 
   const handleEditProject = (projectId) => {
     navigate(`/invest/proyectos/editar/${projectId}`);
+  };
+
+  const handleViewDetails = (id) => {
+    navigate(`/invest/detalles/proyecto/${id}`);
   };
 
   const handleDeleteProject = async (projectId) => {
@@ -94,43 +98,62 @@ const InvSeeProject = () => {
   return (
     <>
       <NavInvestigator />
-      <div className="inv-project-view">
-        <div className="project-header">
-          <h1>Mis Proyectos</h1>
-          <button className="add-project-btn" onClick={handleAddProject}>
-            <FaPlus /> Agregar Proyecto
-          </button>
+      <div className="investigator-projects">
+        <div className="investigator-projects__header">
+          <h1 className="investigator-projects__title">Mis Proyectos</h1>
+          <div className="investigator-projects__toolbar">
+            <InvSearchBar
+              value={searchTerm}
+              onChange={handleSearch}
+              placeholder="Buscar proyectos..."
+            />
+            <button className="investigator-projects__add-btn" onClick={handleAddProject}>
+              <FaPlus className="investigator-projects__add-icon" />
+              <span>Agregar Proyecto</span>
+            </button>
+          </div>
         </div>
 
-        <SearchBar
-          value={searchTerm}
-          onChange={handleSearch}
-          placeholder="Buscar proyectos..."
-        />
+        {loading ? (
+          <div className="investigator-projects__loading">
+            <div className="loading-spinner"></div>
+          </div>
+        ) : error ? (
+          <div className="investigator-projects__error">{error}</div>
+        ) : (
+          <>
+            <div className="investigator-projects__grid">
+              {projects.length > 0 ? (
+                projects.map((project) => (
+                  <InvProjectCard
+                    key={project._id}
+                    project={project}
+                    onEdit={handleEditProject}
+                    onDelete={handleDeleteProject}
+                    onViewDetails={handleViewDetails}
+                  />
+                ))
+              ) : (
+                <div className="investigator-projects__empty">
+                  No tienes proyectos aún. ¡Agrega uno nuevo!
+                </div>
+              )}
+            </div>
 
-        <div className="projects-list">
-          {projects.length > 0 ? (
-            projects.map((project) => (
-              <InvProjectCard
-                key={project._id}
-                project={project}
-                onEdit={handleEditProject}
-                onDelete={handleDeleteProject}
-              />
-            ))
-          ) : (
-            <p className="no-projects-message">No tienes proyectos aún. ¡Agrega uno nuevo!</p>
-          )}
-        </div>
-
-        <Pagination
-          currentPage={page}
-          totalPages={totalPages}
-          onNext={() => setPage(page + 1)}
-          onPrev={() => setPage(page - 1)}
-          disabledPrev={page === 1}
-          disabledNext={page === totalPages}
-        />
+            {projects.length > 0 && (
+              <div className="investigator-projects__pagination">
+                <Pagination
+                  currentPage={page}
+                  totalPages={totalPages}
+                  onNext={() => setPage(page + 1)}
+                  onPrev={() => setPage(page - 1)}
+                  disabledPrev={page === 1}
+                  disabledNext={page === totalPages}
+                />
+              </div>
+            )}
+          </>
+        )}
       </div>
     </>
   );

@@ -4,10 +4,10 @@ import { useNavigate } from "react-router";
 import NavInvestigator from "../../../components/Investigator/Common/NavInvestigator";
 import AlertComponent from "../../../components/Common/AlertComponent";
 import Pagination from "../../../components/Common/Pagination";
-import SearchBar from "../../../components/Common/SearchBar";
+import InvSearchBar from "../../../components/Investigator/Common/InvSearchBar";
 import InvPublicationCard from "./InvPublicationCard";
 import { getUserData, deleteData } from "../../../services/apiServices";
-import "../../../css/Investigator/InvPublicationView.css";
+import "../../../css/Investigator/InvestigatorPublications.css";
 
 const InvSeePublication = () => {
   const [publications, setPublications] = useState([]);
@@ -46,6 +46,10 @@ const InvSeePublication = () => {
 
   const handleEditPublication = (publicationId) => {
     navigate(`/invest/publicaciones/editar/${publicationId}`);
+  };
+
+  const handleViewDetails = (id) => {
+    navigate(`/invest/detalles/publicacion/${id}`);
   };
 
   const handleDeletePublication = async (publicationId) => {
@@ -95,21 +99,26 @@ const InvSeePublication = () => {
   return (
     <>
       <NavInvestigator />
-      <div className="inv-publication-view">
-        <div className="publication-header">
-          <h1>Mis Publicaciones</h1>
-          <button className="add-publication-btn" onClick={handleAddPublication}>
-            <FaPlus /> Agregar Publicación
-          </button>
+      <div className="investigator-publications">
+        <div className="investigator-publications__header">
+          <h1 className="investigator-publications__title">Mis Publicaciones</h1>
+          <div className="investigator-publications__toolbar">
+            <InvSearchBar
+              value={searchTerm}
+              onChange={handleSearch}
+              placeholder="Buscar publicaciones..."
+            />
+            <button 
+              className="investigator-publications__add-btn" 
+              onClick={handleAddPublication}
+            >
+              <FaPlus className="investigator-publications__add-icon" />
+              <span>Agregar Publicación</span>
+            </button>
+          </div>
         </div>
 
-        <SearchBar
-          value={searchTerm}
-          onChange={handleSearch}
-          placeholder="Buscar publicaciones..."
-        />
-
-        <div className="publications-list">
+        <div className="investigator-publications__grid">
           {publications.length > 0 ? (
             publications.map((publication) => (
               <InvPublicationCard
@@ -117,21 +126,28 @@ const InvSeePublication = () => {
                 publication={publication}
                 onEdit={handleEditPublication}
                 onDelete={handleDeletePublication}
+                onViewDetails={handleViewDetails}
               />
             ))
           ) : (
-            <p className="no-publications-message">No tienes publicaciones aún. ¡Agrega una nueva!</p>
+            <p className="investigator-publications__empty">
+              No tienes publicaciones aún. ¡Agrega una nueva!
+            </p>
           )}
         </div>
 
-        <Pagination
-          currentPage={page}
-          totalPages={totalPages}
-          onNext={() => setPage((prevPage) => Math.min(prevPage + 1, totalPages))}
-          onPrev={() => setPage((prevPage) => Math.max(prevPage - 1, 1))}
-          disabledPrev={page === 1}
-          disabledNext={page === totalPages}
-        />
+        {publications.length > 0 && (
+          <div className="investigator-publications__pagination">
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              onNext={() => setPage((prevPage) => Math.min(prevPage + 1, totalPages))}
+              onPrev={() => setPage((prevPage) => Math.max(prevPage - 1, 1))}
+              disabledPrev={page === 1}
+              disabledNext={page === totalPages}
+            />
+          </div>
+        )}
       </div>
     </>
   );
