@@ -43,6 +43,16 @@ const InvProjectDetails = () => {
     );
   }
 
+  const getStatusClass = (status) => {
+    const statusMap = {
+      'Planeado': 'planeado',
+      'En Proceso': 'en-proceso',
+      'Finalizado': 'finalizado',
+      'Cancelado': 'cancelado'
+    };
+    return statusMap[status] || 'default';
+  };
+
   if (error) {
     return <div className="project-details__error">{error}</div>;
   }
@@ -58,7 +68,7 @@ const InvProjectDetails = () => {
           <header className="project-details__header">
             <div className="project-details__header-content">
               <h1 className="project-details__title">{project.nombre}</h1>
-              <span className={`project-details__status project-details__status--${project.estado.toLowerCase()}`}>
+              <span className={`project-details__status project-details__status--${getStatusClass(project.estado)}`}>
               {project.estado}
               </span>
             </div>
