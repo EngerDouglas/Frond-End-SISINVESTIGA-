@@ -1,31 +1,31 @@
 import React, { useState, useCallback } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { selectCurrentRole, logoutUser } from "../../../features/auth/authSlice";
+import {
+  selectCurrentRole,
+  logoutUser,
+} from "../../../features/auth/authSlice";
 import { postData, putData, deleteData } from "../../../services/apiServices";
 import { useNotifications } from "../../../Context/NotificationsProvider";
 import "../../../css/Admin/NavAdmin.css";
-import logo from '../../../assets/img/LogoWebUCSD.png';
-import { 
-  FaHome, 
-  FaFolder, 
-  FaUsers, 
-  FaUserCog, 
-  FaFileAlt, 
-  FaBook, 
+import logo from "../../../assets/img/LogoWebUCSD.png";
+import {
+  FaHome,
+  FaFolder,
+  FaUsers,
+  FaUserCog,
+  FaFileAlt,
+  FaBook,
   FaTasks,
-  FaBell, 
-  FaChartBar, 
+  FaChartBar,
   FaCog,
   FaClipboardList,
   FaSignOutAlt,
   FaArrowLeft,
-  FaBars,
-  FaCheck,
-  FaTrash,
-  FaExternalLinkAlt
-} from 'react-icons/fa';
-import { Tooltip, OverlayTrigger, Dropdown, Button } from 'react-bootstrap';
+  FaBars
+} from "react-icons/fa";
+import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import NotificationsDropdown from "./NotificationsDropdown";
 
 const AdminNav = () => {
   const role = useSelector(selectCurrentRole);
@@ -34,7 +34,8 @@ const AdminNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { notifications, unreadCount, fetchNotifications, removeNotification } = useNotifications();
+  const { notifications, unreadCount, fetchNotifications, removeNotification } =
+    useNotifications();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -52,13 +53,21 @@ const AdminNav = () => {
     navigate(-1);
   };
 
-  const handleMarkAsRead = async (id, e) => {
-    e.stopPropagation();
+  const handleMarkAsRead = async (id) => {
     try {
-      await putData(`notifications/${id}`, 'read');
+      await putData(`notifications/${id}`, "read");
       await fetchNotifications();
     } catch (error) {
       console.error("Error marking notification as read:", error);
+    }
+  };
+
+  const handleUnMarkAsRead = async (id) => {
+    try {
+      await putData(`notifications/${id}`, "unread");
+      await fetchNotifications();
+    } catch (error) {
+      console.error("Error marking notification as not read:", error);
     }
   };
 
@@ -71,32 +80,66 @@ const AdminNav = () => {
     }
   };
 
-  const handleDeleteNotification = useCallback(async (id, e) => {
-    e.stopPropagation();
+  const handleUnMarkAllAsRead = async () => {
     try {
-      await deleteData('notifications', id);
-      removeNotification(id);
+      await postData("notifications/unreadall");
+      await fetchNotifications();
     } catch (error) {
-      console.error("Error deleting notification:", error);
+      console.error("Error marking all notifications as not read:", error);
     }
-  }, [removeNotification]);
+  };
+
+  const handleDeleteNotification = useCallback(
+    async (id) => {
+      try {
+        await deleteData("notifications", id);
+        removeNotification(id);
+      } catch (error) {
+        console.error("Error deleting notification:", error);
+      }
+    },
+    [removeNotification]
+  );
 
   const menuItems = [
     { path: "/admin", icon: <FaHome />, text: "Panel de Administración" },
-    { path: "/admin/listarproyectos", icon: <FaFolder />, text: "Gestión de Proyectos" },
-    { path: "/admin/gestionInvestigadores", icon: <FaUsers />, text: "Gestión de Investigadores" },
+    {
+      path: "/admin/listarproyectos",
+      icon: <FaFolder />,
+      text: "Gestión de Proyectos",
+    },
+    {
+      path: "/admin/gestionInvestigadores",
+      icon: <FaUsers />,
+      text: "Gestión de Investigadores",
+    },
     { path: "/admin/roles", icon: <FaUserCog />, text: "Gestión de Roles" },
     { path: "/admin/auditoria", icon: <FaFileAlt />, text: "Auditoría" },
-    { path: "/admin/gestion-logs", icon: <FaClipboardList />, text: "Gestión de Logs" },
+    {
+      path: "/admin/gestion-logs",
+      icon: <FaClipboardList />,
+      text: "Gestión de Logs",
+    },
     { path: "/admin/publicaciones", icon: <FaBook />, text: "Publicaciones" },
     { path: "/admin/solicitudes", icon: <FaTasks />, text: "Solicitudes" },
     { path: "/admin/informes", icon: <FaChartBar />, text: "Informes" },
-    { path: "/admin/confprofile", icon: <FaCog />, text: "Configuración de Perfil" },
-    { path: "/admin/evaluationprojects", icon: <FaClipboardList />, text: "Gestión de Evaluaciones" },
+    {
+      path: "/admin/confprofile",
+      icon: <FaCog />,
+      text: "Configuración de Perfil",
+    },
+    {
+      path: "/admin/evaluationprojects",
+      icon: <FaClipboardList />,
+      text: "Gestión de Evaluaciones",
+    },
   ];
 
   const renderTooltip = (props, text) => (
-    <Tooltip id={`tooltip-${text.replace(/\s+/g, '-').toLowerCase()}`} {...props}>
+    <Tooltip
+      id={`tooltip-${text.replace(/\s+/g, "-").toLowerCase()}`}
+      {...props}
+    >
       {text}
     </Tooltip>
   );
@@ -107,85 +150,54 @@ const AdminNav = () => {
         <Link to="/admin" className="navbar-brand">
           <img src={logo} alt="UCSD Logo" className="nav-logo" />
         </Link>
-        <button className="navbar-toggler" type="button" onClick={toggleMenu} aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button
+          className="navbar-toggler"
+          type="button"
+          onClick={toggleMenu}
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <FaBars />
         </button>
-        <div className={`collapse navbar-collapse ${isMenuOpen ? 'show' : ''}`} id="navbarNav">
+        <div
+          className={`collapse navbar-collapse ${isMenuOpen ? "show" : ""}`}
+          id="navbarNav"
+        >
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            {role === "Administrador" && menuItems.map((item, index) => (
-              <li className="nav-item" key={index}>
-                <OverlayTrigger
-                  placement="bottom"
-                  delay={{ show: 250, hide: 400 }}
-                  overlay={(props) => renderTooltip(props, item.text)}
-                >
-                  <Link 
-                    to={item.path} 
-                    className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
-                    onClick={() => setIsMenuOpen(false)}
+            {role === "Administrador" &&
+              menuItems.map((item, index) => (
+                <li className="nav-item" key={index}>
+                  <OverlayTrigger
+                    placement="bottom"
+                    delay={{ show: 250, hide: 400 }}
+                    overlay={(props) => renderTooltip(props, item.text)}
                   >
-                    {item.icon}
-                    <span className="d-lg-none ms-2">{item.text}</span>
-                  </Link>
-                </OverlayTrigger>
-              </li>
-            ))}
+                    <Link
+                      to={item.path}
+                      className={`nav-link ${
+                        location.pathname === item.path ? "active" : ""
+                      }`}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.icon}
+                      <span className="d-lg-none ms-2">{item.text}</span>
+                    </Link>
+                  </OverlayTrigger>
+                </li>
+              ))}
           </ul>
           <ul className="navbar-nav">
-            <li className="nav-item">
-              <Dropdown>
-                <Dropdown.Toggle as="a" className="nav-link" id="dropdown-notifications">
-                  <FaBell />
-                  {unreadCount > 0 && <span className="badge bg-danger">{unreadCount}</span>}
-                </Dropdown.Toggle>
-                <Dropdown.Menu align="end" className="notifications-dropdown">
-                  <Dropdown.Header>Notificaciones</Dropdown.Header>
-                  <div className="notifications-scroll">
-                    {notifications.length === 0 ? (
-                      <Dropdown.Item>No hay notificaciones</Dropdown.Item>
-                    ) : (
-                      notifications.map((notification) => (
-                        <div key={notification._id} className={`notification-item ${notification.isRead ? 'read' : 'unread'}`}>
-                          <div className="notification-header">
-                            <span className="notification-type">{notification.type}</span>
-                            <Button 
-                              variant="link"
-                              size="sm"
-                              className="delete-notification"
-                              onClick={(e) => handleDeleteNotification(notification._id, e)}
-                            >
-                              <FaTrash />
-                            </Button>
-                          </div>
-                          <div className="notification-content">
-                            {notification.message}
-                          </div>
-                          {!notification.isRead && (
-                            <div className="notification-actions">
-                              <Button 
-                                variant="outline-success" 
-                                size="sm" 
-                                onClick={(e) => handleMarkAsRead(notification._id, e)}
-                              >
-                                <FaCheck /> Marcar como leída
-                              </Button>
-                            </div>
-                          )}
-                        </div>
-                      ))
-                    )}
-                  </div>
-                  <Dropdown.Divider />
-                  <div className="notification-footer">
-                    <Button variant="outline-primary" size="sm" onClick={handleMarkAllAsRead}>
-                      Marcar todas como leídas
-                    </Button>
-                    <Link to="/admin/notificaciones" className="btn btn-primary btn-sm">
-                      <FaExternalLinkAlt className="me-1" /> Ver todas
-                    </Link>
-                  </div>
-                </Dropdown.Menu>
-              </Dropdown>
+            <li className="nav-item">             
+            <NotificationsDropdown
+                notifications={notifications}
+                unreadCount={unreadCount}
+                onMarkAsRead={handleMarkAsRead}
+                onMarkAsUnread={handleUnMarkAsRead}
+                onMarkAllAsRead={handleMarkAllAsRead}
+                onMarkAllAsUnread={handleUnMarkAllAsRead}
+                onDelete={handleDeleteNotification}
+              />
             </li>
             <li className="nav-item">
               <OverlayTrigger
@@ -193,7 +205,10 @@ const AdminNav = () => {
                 delay={{ show: 250, hide: 400 }}
                 overlay={(props) => renderTooltip(props, "Cerrar Sesión")}
               >
-                <button onClick={handleLogout} className="nav-link btn btn-link">
+                <button
+                  onClick={handleLogout}
+                  className="nav-link btn btn-link"
+                >
                   <FaSignOutAlt />
                   <span className="d-lg-none ms-2">Cerrar Sesión</span>
                 </button>

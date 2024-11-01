@@ -61,7 +61,7 @@
   border: none;
   cursor: pointer;
   font-size: 1.2rem;
-  color: #333;
+  color: #006400;
   position: relative;
 }
 
@@ -141,121 +141,8 @@
   display: none;
 }
 
-/* New styles for notifications */
 .nav-investigator-notifications {
   position: relative;
-}
-
-.notification-badge {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  background-color: #dc3545;
-  color: white;
-  border-radius: 50%;
-  padding: 2px 6px;
-  font-size: 0.7rem;
-}
-
-.notifications-dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background-color: white;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  max-height: 400px;
-  overflow-y: auto;
-  z-index: 1000;
-}
-
-.notifications-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-}
-
-.notifications-header h3 {
-  margin: 0;
-  font-size: 1rem;
-  color: #006400;
-}
-
-.mark-all-read {
-  background: none;
-  border: none;
-  color: #006400;
-  cursor: pointer;
-  font-size: 0.8rem;
-}
-
-.notifications-list {
-  padding: 10px;
-}
-
-.notification-item {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.notification-item:last-child {
-  border-bottom: none;
-}
-
-.notification-message {
-  margin: 0;
-  font-size: 0.9rem;
-  line-height: 1.4;
-  word-wrap: break-word;
-  flex: 1;
-  padding-right: 10px;
-}
-
-.notification-actions {
-  display: flex;
-  flex-direction: column;
-}
-
-.mark-read,
-.delete-notification {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 5px;
-  font-size: 0.8rem;
-  color: #006400;
-}
-
-.mark-read:hover,
-.delete-notification:hover {
-  color: #005000;
-}
-
-.unread {
-  background-color: #f8f9fa;
-}
-
-.read {
-  opacity: 0.7;
-}
-
-.no-notifications {
-  text-align: center;
-  color: #6c757d;
-  padding: 20px;
-}
-
-.notifications-footer {
-  padding: 10px;
-  border-top: 1px solid #ddd;
-  text-align: center;
 }
 
 .view-all-notifications {
@@ -279,6 +166,7 @@
   margin-right: 5px;
 }
 
+
 @media (max-width: 768px) {
   .nav-investigator {
     flex-wrap: wrap;
@@ -291,6 +179,10 @@
 
   .nav-investigator-university-name {
     font-size: 0.9rem;
+  }
+
+  .nav-investigator-notifications {
+    width: 100%;
   }
 
   .nav-investigator-mobile-toggle {
