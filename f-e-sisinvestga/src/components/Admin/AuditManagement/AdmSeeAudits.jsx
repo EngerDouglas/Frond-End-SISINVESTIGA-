@@ -180,6 +180,7 @@ const AdmSeeAudits = () => {
           <thead>
             <tr>
               <th>Usuario</th>
+              <th>Email</th>
               <th>Rol</th>
               <th>Método</th>
               <th>URL</th>
@@ -195,6 +196,9 @@ const AdmSeeAudits = () => {
               <tr key={log._id}>
                 <td>
                   {log.user ? `${log.user.nombre} ${log.user.apellido}` : 'Usuario Desconocido'}
+                </td>
+                <td>
+                  {log.user ? `${log.user.email}` : 'N/A'}
                 </td>
                 <td>
                   {log.user && log.user.role ? log.user.role.roleName : 'N/A'}
