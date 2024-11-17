@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap';
+import { Container, Card, Alert, Spinner, Button } from 'react-bootstrap';
 import { FaEdit, FaUndo, FaSave } from 'react-icons/fa';
-import { getData, getDataById, putData } from '../../../services/apiServices';
+import { getDataById, getData, putData } from '../../../services/apiServices';
 import AlertComponent from '../../../components/Common/AlertComponent';
+import AdmPublicationForm from './AdmPublicationForm';
+import AdmPubAuthorsForm from './AdmPubAuthorsForm';
+import AdmPubAnexosForm from './AdmPubAnexosForm';
 import '../../../css/Admin/AdmEditPublication.css';
 
 const AdmEditPublication = () => {
@@ -17,12 +20,18 @@ const AdmEditPublication = () => {
   const [error, setError] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
 
+  // Estados adicionales para los anexos
+  const [existingAnexos, setExistingAnexos] = useState([]);
+  const [newAnexos, setNewAnexos] = useState([]);
+  const [anexosToDelete, setAnexosToDelete] = useState([]);
+
   useEffect(() => {
     const fetchPublication = async () => {
       try {
         const data = await getDataById('publications/getpublication', id);
         setPublication(data);
         setEditedPublication(JSON.parse(JSON.stringify(data)));
+        setExistingAnexos(data.anexos || []);
         setError(null);
       } catch (error) {
         console.error("Error al obtener la publicación", error);
@@ -43,11 +52,7 @@ const AdmEditPublication = () => {
         const usuariosData = await getData('users');
         setUsuarios(usuariosData);
         const proyectosData = await getData('projects');
-        if (proyectosData.projects) {
-          setProyectos(proyectosData.projects);
-        } else {
-          setProyectos(proyectosData); 
-        }
+        setProyectos(proyectosData.projects || proyectosData);
       } catch (error) {
         console.error("Error al cargar usuarios o proyectos", error);
       }
@@ -63,6 +68,9 @@ const AdmEditPublication = () => {
   const handleCancel = () => {
     setIsEditing(false);
     setEditedPublication(JSON.parse(JSON.stringify(publication)));
+    setExistingAnexos(publication.anexos || []);
+    setNewAnexos([]);
+    setAnexosToDelete([]);
     setError(null);
   };
 
@@ -73,22 +81,44 @@ const AdmEditPublication = () => {
 
   const handleSave = async () => {
     try {
-      // Preparar los datos a enviar
-      const updatedPublication = {
-        ...editedPublication,
-        proyecto: editedPublication.proyecto._id,
-        autores: editedPublication.autores.map((autor) => autor._id),
-      };
+      const formData = new FormData();
+  
+      // Agregar campos básicos
+      formData.append('titulo', editedPublication.titulo);
+      formData.append('tipoPublicacion', editedPublication.tipoPublicacion);
+      formData.append('fecha', editedPublication.fecha);
+      formData.append('estado', editedPublication.estado);
+      formData.append('resumen', editedPublication.resumen);
+      formData.append('idioma', editedPublication.idioma);
+  
+      // Agregar proyecto
+      formData.append('proyecto', editedPublication.proyecto._id);
+  
+      // Agregar autores
+      const autoresIds = editedPublication.autores.map((autor) => autor._id);
+      formData.append('autores', JSON.stringify(autoresIds));
+  
+      // Agregar palabras clave
+      formData.append('palabrasClave', JSON.stringify(editedPublication.palabrasClave));
 
-      const result = await putData('publications/admin', id, updatedPublication);
+      // Agregar nuevos anexos
+      newAnexos.forEach((anexo) => {
+        formData.append('anexos', anexo);
+      });
+
+      // Enviar los anexos existentes (los que no se eliminaron)
+      formData.append('existingAnexos', JSON.stringify(existingAnexos));
+    
+      // Enviar la solicitud de actualización
+      const result = await putData(`publications/admin`, id, formData);
       setPublication(result.publication);
       setEditedPublication(result.publication);
       setIsEditing(false);
       setError(null);
-      AlertComponent.success("Publicación actualizada con éxito");
+      AlertComponent.success('Publicación actualizada con éxito');
     } catch (error) {
-      console.error("Error al actualizar la publicación", error);
-      let errorMessage = "Error al actualizar la publicación";
+      console.error('Error al actualizar la publicación', error);
+      let errorMessage = 'Error al actualizar la publicación';
       if (error.response && error.response.data && error.response.data.message) {
         errorMessage = error.response.data.message;
       }
@@ -99,7 +129,7 @@ const AdmEditPublication = () => {
 
   const handleRestore = async () => {
     try {
-      await putData('publications/restore', id);
+      await putData('publications/restore', id, {});
       AlertComponent.success("Publicación restaurada con éxito");
       navigate('/admin/publicaciones');
     } catch (error) {
@@ -109,7 +139,11 @@ const AdmEditPublication = () => {
   };
 
   if (loading) {
-    return <div className="text-center mt-5"><div className="spinner-border" role="status"></div></div>;
+    return (
+      <div className="text-center mt-5">
+        <Spinner animation="border" role="status" />
+      </div>
+    );
   }
 
   return (
@@ -120,268 +154,30 @@ const AdmEditPublication = () => {
             {isEditing ? 'Editar Publicación' : 'Detalles de la Publicación'}
           </Card.Title>
           {error && <Alert variant="danger">{error}</Alert>}
-          <Form>
-            <Row>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Título</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="titulo"
-                    value={isEditing ? editedPublication.titulo : publication.titulo}
-                    onChange={handleInputChange}
-                    readOnly={!isEditing}
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Tipo de Publicación</Form.Label>
-                  <Form.Control
-                    as="select"
-                    name="tipoPublicacion"
-                    value={isEditing ? editedPublication.tipoPublicacion : publication.tipoPublicacion}
-                    onChange={handleInputChange}
-                    disabled={!isEditing}
-                  >
-                    <option value="Articulo">Artículo</option>
-                    <option value="Informe">Informe</option>
-                    <option value="Tesis">Tesis</option>
-                    <option value="Presentacion">Presentación</option>
-                    <option value="Otro">Otro</option>
-                  </Form.Control>
-                </Form.Group>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Fecha</Form.Label>
-                  <Form.Control
-                    type="date"
-                    name="fecha"
-                    value={isEditing ? editedPublication.fecha.split('T')[0] : publication.fecha.split('T')[0]}
-                    onChange={handleInputChange}
-                    readOnly={!isEditing}
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Estado</Form.Label>
-                  <Form.Control
-                    as="select"
-                    name="estado"
-                    value={isEditing ? editedPublication.estado : publication.estado}
-                    onChange={handleInputChange}
-                    disabled={!isEditing}
-                  >
-                    <option value="Borrador">Borrador</option>
-                    <option value="Revisado">Revisado</option>
-                    <option value="Publicado">Publicado</option>
-                  </Form.Control>
-                </Form.Group>
-              </Col>
-            </Row>
-            <Form.Group className="mb-3">
-              <Form.Label>Resumen</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                name="resumen"
-                value={isEditing ? editedPublication.resumen : publication.resumen}
-                onChange={handleInputChange}
-                readOnly={!isEditing}
-              />
-            </Form.Group>
 
-            {/* Palabras Clave */}
-            <Form.Group className="mb-3">
-              <Form.Label>Palabras Clave</Form.Label>
-              <Form.Control
-                type="text"
-                name="palabrasClave"
-                value={
-                  isEditing
-                    ? editedPublication.palabrasClave.join(', ')
-                    : publication.palabrasClave.join(', ')
-                }
-                onChange={(e) => {
-                  const value = e.target.value.split(',').map((word) => word.trim());
-                  setEditedPublication((prev) => ({ ...prev, palabrasClave: value }));
-                }}
-                readOnly={!isEditing}
-              />
-            </Form.Group>
+          <AdmPublicationForm
+            publication={isEditing ? editedPublication : publication}
+            isEditing={isEditing}
+            handleInputChange={handleInputChange}
+            proyectos={proyectos}
+          />
 
-            {/* Autores */}
-            <Form.Group className="mb-3">
-              <Form.Label>Autores</Form.Label>
-              {isEditing ? (
-                <>
-                  {editedPublication.autores.map((autor, index) => (
-                    <div key={index} className="mb-2">
-                      <Form.Control
-                        as="select"
-                        value={autor._id}
-                        onChange={(e) => {
-                          const usuarioSeleccionado = usuarios.find((u) => u._id === e.target.value);
-                          const nuevosAutores = [...editedPublication.autores];
-                          nuevosAutores[index] = usuarioSeleccionado;
-                          setEditedPublication((prev) => ({ ...prev, autores: nuevosAutores }));
-                        }}
-                      >
-                        {usuarios.map((usuario) => (
-                          <option key={usuario._id} value={usuario._id}>
-                            {usuario.nombre} {usuario.apellido}
-                          </option>
-                        ))}
-                      </Form.Control>
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        onClick={() => {
-                          const nuevosAutores = editedPublication.autores.filter((_, i) => i !== index);
-                          setEditedPublication((prev) => ({ ...prev, autores: nuevosAutores }));
-                        }}
-                        className="mt-1"
-                      >
-                        Eliminar
-                      </Button>
-                    </div>
-                  ))}
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => {
-                      const nuevosAutores = [...editedPublication.autores, usuarios[0]];
-                      setEditedPublication((prev) => ({ ...prev, autores: nuevosAutores }));
-                    }}
-                  >
-                    Agregar Autor
-                  </Button>
-                </>
-              ) : (
-                <Form.Control
-                  type="text"
-                  value={publication.autores.map((autor) => `${autor.nombre} ${autor.apellido}`).join(', ')}
-                  readOnly
-                />
-              )}
-            </Form.Group>
+          <AdmPubAuthorsForm
+            autores={isEditing ? editedPublication.autores : publication.autores}
+            isEditing={isEditing}
+            usuarios={usuarios}
+            setEditedPublication={setEditedPublication}
+          />
 
-            {/* Proyecto en caso de querer modificar el proyecto eliminar readonly*/}
-            <Form.Group className="mb-3">
-              <Form.Label>Proyecto</Form.Label>
-              {isEditing ? (
-                <Form.Control
-                  as="select"
-                  name="proyecto"
-                  value={editedPublication.proyecto._id}
-                  onChange={(e) => {
-                    const proyectoSeleccionado = proyectos.find((p) => p._id === e.target.value);
-                    setEditedPublication((prev) => ({ ...prev, proyecto: proyectoSeleccionado }));
-                  }}
-                  readOnly
-                >
-                  {Array.isArray(proyectos) && proyectos.map((proyecto) => (
-                    <option key={proyecto._id} value={proyecto._id}>
-                      {proyecto.nombre}
-                    </option>
-                  ))}
-                </Form.Control>
-              ) : (
-                <Form.Control
-                  type="text"
-                  value={publication.proyecto ? publication.proyecto.nombre : 'No asignado'}
-                  readOnly
-                />
-              )}
-            </Form.Group>
+          <AdmPubAnexosForm
+            existingAnexos={existingAnexos}
+            newAnexos={newAnexos}
+            setNewAnexos={setNewAnexos}
+            anexosToDelete={anexosToDelete}
+            setAnexosToDelete={setAnexosToDelete}
+            isEditing={isEditing}
+          />
 
-            {/* Anexos */}
-            <Form.Group className="mb-3">
-              <Form.Label>Anexos</Form.Label>
-              {isEditing ? (
-                <>
-                  {editedPublication.anexos.map((anexo, index) => (
-                    <div key={index} className="mb-2">
-                      <Form.Control
-                        type="text"
-                        placeholder="Nombre del anexo"
-                        value={anexo.nombre}
-                        onChange={(e) => {
-                          const newAnexos = [...editedPublication.anexos];
-                          newAnexos[index].nombre = e.target.value;
-                          setEditedPublication((prev) => ({ ...prev, anexos: newAnexos }));
-                        }}
-                        className="mb-1"
-                      />
-                      <Form.Control
-                        type="text"
-                        placeholder="URL del anexo"
-                        value={anexo.url}
-                        onChange={(e) => {
-                          const newAnexos = [...editedPublication.anexos];
-                          newAnexos[index].url = e.target.value;
-                          setEditedPublication((prev) => ({ ...prev, anexos: newAnexos }));
-                        }}
-                        className="mb-1"
-                      />
-                      <Form.Control
-                        type="text"
-                        placeholder="Tipo del anexo"
-                        value={anexo.tipo}
-                        onChange={(e) => {
-                          const newAnexos = [...editedPublication.anexos];
-                          newAnexos[index].tipo = e.target.value;
-                          setEditedPublication((prev) => ({ ...prev, anexos: newAnexos }));
-                        }}
-                      />
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        onClick={() => {
-                          const newAnexos = editedPublication.anexos.filter((_, i) => i !== index);
-                          setEditedPublication((prev) => ({ ...prev, anexos: newAnexos }));
-                        }}
-                        className="mt-1"
-                      >
-                        Eliminar
-                      </Button>
-                    </div>
-                  ))}
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => {
-                      const newAnexos = [...editedPublication.anexos, { nombre: '', url: '', tipo: '' }];
-                      setEditedPublication((prev) => ({ ...prev, anexos: newAnexos }));
-                    }}
-                  >
-                    Agregar Anexo
-                  </Button>
-                </>
-              ) : (
-                <ul>
-                  {publication.anexos.map((anexo, index) => (
-                    <li key={index}>
-                      {anexo.nombre} - {anexo.tipo} - <a href={anexo.url} target='_blank' rel="noreferrer">Ver Archivo</a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Estado de Eliminación</Form.Label>
-              <Form.Control
-                type="text"
-                value={publication.isDeleted ? 'Eliminado' : 'Activo'}
-                readOnly
-              />
-            </Form.Group>
-          </Form>
           <div className="d-flex justify-content-end mt-4">
             {!isEditing && (
               <>
@@ -410,6 +206,6 @@ const AdmEditPublication = () => {
       </Card>
     </Container>
   );
-}
+};
 
-export default AdmEditPublication
+export default AdmEditPublication;

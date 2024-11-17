@@ -4,6 +4,7 @@ import { FaSearch, FaEdit, FaToggleOn, FaToggleOff } from 'react-icons/fa';
 import { getData, putData } from "../../../services/apiServices";
 import AlertComponent from "../../Common/AlertComponent";
 import Modal from "../../Common/Modal";
+import AdmPagination from '../Common/AdmPagination';
 import AdmEditInvestigator from "../../../views/Admin/InvestigatorViews/AdmEditInvestigator";
 import "../../../css/Admin/AdmSeeInvestigator.css"
 import profilenot from  '../../../assets/img/profile.png';
@@ -16,6 +17,8 @@ export default function AdmSeeInvestigator() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   useEffect(() => {
     fetchData();
@@ -105,8 +108,27 @@ export default function AdmSeeInvestigator() {
   };
 
   const filteredInvestigadores = investigadores.filter((investigador) =>
-    investigador.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    investigador.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    investigador.apellido.toLowerCase().includes(searchTerm.toLowerCase()),
   );
+
+  // Cálculos para la paginación
+  const totalPages = Math.ceil(filteredInvestigadores.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentInvestigadores = filteredInvestigadores.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Reiniciar currentPage si excede totalPages
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(1);
+    }
+  }, [currentPage, totalPages]);
+
+  // Reiniciar currentPage cuando cambia el término de búsqueda
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
 
   if (loading) return (
     <div className="d-flex justify-content-center align-items-center" style={{height: "100vh"}}>
@@ -123,7 +145,7 @@ export default function AdmSeeInvestigator() {
       <Container fluid className="py-4">
         <Row className="mb-4">
           <Col>
-            <h1 className="text-primary">Gestión de Investigadores</h1>
+            <h1 className="text-black">Gestión de Investigadores</h1>
           </Col>
         </Row>
         <Card>
@@ -155,7 +177,7 @@ export default function AdmSeeInvestigator() {
                 </tr>
               </thead>
               <tbody>
-                {filteredInvestigadores.map((investigador) => (
+                {currentInvestigadores.map((investigador) => (
                   <tr key={investigador._id}>
                     <td>
                       <img
@@ -203,6 +225,14 @@ export default function AdmSeeInvestigator() {
                 ))}
               </tbody>
             </Table>
+            {/* Componente de Paginación */}
+            {totalPages > 1 && (
+              <AdmPagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={(page) => setCurrentPage(page)}
+              />
+            )}
           </Card.Body>
         </Card>
 

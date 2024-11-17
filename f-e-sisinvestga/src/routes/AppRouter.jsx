@@ -16,6 +16,7 @@ import InvProfileView from '../views/Investigator/ProfileView/InvProfileView';
 import Unauthorized from '../views/Pages/Unauthorized';
 import NotFound from '../views/Pages/NotFound';
 import AdmProjectsView from '../views/Admin/ProjectViews/AdmProjectsView';
+import AdmEditProjectView from '../views/Admin/ProjectViews/AdmEditProjectView';
 import AdmInvestigatorView from '../views/Admin/InvestigatorViews/AdmInvestigatorView'
 import AdmPublicationViews from "../views/Admin/PublicationViews/AdmPublicationViews"
 import ProjectDetailViews from '../views/Home/HomeProjects/ProjectDetailViews';
@@ -204,6 +205,12 @@ const AppRouter = () => {
       <Route path='/admin/listarproyectos' element={ 
         <ProtectedRoute roles={['Administrador']}>
           <AdmProjectsView />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/adm/proyectos/editar/:id' element={ 
+        <ProtectedRoute roles={['Administrador']}>
+          <AdmEditProjectView />
         </ProtectedRoute>
       } />
 

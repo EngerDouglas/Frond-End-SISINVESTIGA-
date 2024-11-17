@@ -5,17 +5,22 @@ import {
   Col,
   Form,
   Table,
-  Pagination,
   Card,
+  Button,
+  Badge,
+  Spinner,
 } from "react-bootstrap";
 import { getDataParams } from "../../../services/apiServices";
 import AlertComponent from "../../Common/AlertComponent";
 import "../../../css/Admin/AdmSeeAudits.css";
+import AdmPagination from '../Common/AdmPagination';
+import { FaSearch, FaSync } from 'react-icons/fa';
 
 const AdmSeeAudits = () => {
   const [auditLogs, setAuditLogs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     user: "",
     activity: "",
@@ -31,9 +36,16 @@ const AdmSeeAudits = () => {
   });
 
   const fetchAuditLogs = useCallback(async () => {
+    setLoading(true);
     try {
-      const response = await getDataParams('audits', {
+      const formattedFilters = {
         ...filters,
+        startDate: filters.startDate ? new Date(filters.startDate).toISOString() : '',
+        endDate: filters.endDate ? new Date(filters.endDate).toISOString() : '',
+      };
+
+      const response = await getDataParams('audits', {
+        ...formattedFilters,
         page: currentPage,
         limit: 10,
       });
@@ -43,6 +55,8 @@ const AdmSeeAudits = () => {
     } catch (error) {
       AlertComponent.error('Error al cargar los registros de auditoría');
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   }, [currentPage, filters]);
 
@@ -51,7 +65,7 @@ const AdmSeeAudits = () => {
   }, [fetchAuditLogs]);
 
   const updateStats = (data) => {
-    const uniqueUsers = new Set(data.logs.map((log) => log.user)).size;
+    const uniqueUsers = new Set(data.logs.map((log) => log.user?._id)).size;
     const activityCount = data.logs.reduce((acc, log) => {
       acc[log.activity] = (acc[log.activity] || 0) + 1;
       return acc;
@@ -76,158 +90,204 @@ const AdmSeeAudits = () => {
     setCurrentPage(pageNumber);
   };
 
+  const resetFilters = () => {
+    setFilters({
+      user: "",
+      activity: "",
+      method: "",
+      startDate: "",
+      endDate: "",
+    });
+    setCurrentPage(1);
+  };
+
+  const getMethodBadgeVariant = (method) => {
+    switch (method) {
+      // case 'GET': return 'success';
+      case 'POST': return 'primary';
+      case 'PUT': return 'warning';
+      case 'PATCH': return 'info';
+      case 'DELETE': return 'danger';
+      default: return 'secondary';
+    }
+  };
+
   return (
-    <>
-      <Container className="mt-4">
-        <h1 className="text-center mb-4">Registros de Auditoría</h1>
+    <Container fluid className="audit-container">
+      <h1 className="text-center mb-4">Registros de Auditoría</h1>
 
-        <Row className="mb-4">
-          <Col md={4}>
-            <Card className="stats-card">
-              <Card.Body>
-                <Card.Title>Total de Registros</Card.Title>
-                <Card.Text>{stats.totalLogs}</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={4}>
-            <Card className="stats-card">
-              <Card.Body>
-                <Card.Title>Usuarios Únicos</Card.Title>
-                <Card.Text>{stats.uniqueUsers}</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={4}>
-            <Card className="stats-card">
-              <Card.Body>
-                <Card.Title>Actividad Más Común</Card.Title>
-                <Card.Text>{stats.mostCommonActivity}</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+      <Row className="mb-4">
+        <Col md={4}>
+          <Card className="stats-card">
+            <Card.Body>
+              <Card.Title>Total de Registros</Card.Title>
+              <Card.Text>{stats.totalLogs}</Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={4}>
+          <Card className="stats-card">
+            <Card.Body>
+              <Card.Title>Usuarios Únicos</Card.Title>
+              <Card.Text>{stats.uniqueUsers}</Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={4}>
+          <Card className="stats-card">
+            <Card.Body>
+              <Card.Title>Actividad Más Común</Card.Title>
+              <Card.Text>{stats.mostCommonActivity}</Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
 
-        <Form className="mb-4">
-          <Row>
-            <Col md={3}>
-              <Form.Group>
-                <Form.Label>Usuario</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="user"
-                  value={filters.user}
-                  onChange={handleFilterChange}
-                  placeholder="Filtrar por usuario"
-                />
-              </Form.Group>
-            </Col>
-            <Col md={3}>
-              <Form.Group>
-                <Form.Label>Actividad</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="activity"
-                  value={filters.activity}
-                  onChange={handleFilterChange}
-                  placeholder="Filtrar por actividad"
-                />
-              </Form.Group>
-            </Col>
-            <Col md={2}>
-              <Form.Group>
-                <Form.Label>Método</Form.Label>
-                <Form.Control
-                  as="select"
-                  name="method"
-                  value={filters.method}
-                  onChange={handleFilterChange}
-                >
-                  <option value="">Todos</option>
-                  <option value="PATCH">PATCH</option>
-                  <option value="POST">POST</option>
-                  <option value="PUT">PUT</option>
-                  <option value="DELETE">DELETE</option>
-                </Form.Control>
-              </Form.Group>
-            </Col>
-            <Col md={2}>
-              <Form.Group>
-                <Form.Label>Fecha Inicio</Form.Label>
-                <Form.Control
-                  type="date"
-                  name="startDate"
-                  value={filters.startDate}
-                  onChange={handleFilterChange}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={2}>
-              <Form.Group>
-                <Form.Label>Fecha Fin</Form.Label>
-                <Form.Control
-                  type="date"
-                  name="endDate"
-                  value={filters.endDate}
-                  onChange={handleFilterChange}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-        </Form>
+      <Card className="mb-4">
+        <Card.Body>
+          <Form>
+            <Row>
+              <Col md={3}>
+                <Form.Group>
+                  <Form.Label>Usuario</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="user"
+                    value={filters.user}
+                    onChange={handleFilterChange}
+                    placeholder="Filtrar por usuario"
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={3}>
+                <Form.Group>
+                  <Form.Label>Actividad</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="activity"
+                    value={filters.activity}
+                    onChange={handleFilterChange}
+                    placeholder="Filtrar por actividad"
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={2}>
+                <Form.Group>
+                  <Form.Label>Método</Form.Label>
+                  <Form.Control
+                    as="select"
+                    name="method"
+                    value={filters.method}
+                    onChange={handleFilterChange}
+                  >
+                    <option value="">Todos</option>
+                    {/* <option value="GET">GET</option> */}
+                    <option value="PATCH">PATCH</option>
+                    <option value="POST">POST</option>
+                    <option value="PUT">PUT</option>
+                    <option value="DELETE">DELETE</option>
+                  </Form.Control>
+                </Form.Group>
+              </Col>
+              <Col md={2}>
+                <Form.Group>
+                  <Form.Label>Fecha Inicio</Form.Label>
+                  <Form.Control
+                    type="date"
+                    name="startDate"
+                    value={filters.startDate}
+                    onChange={handleFilterChange}
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={2}>
+                <Form.Group>
+                  <Form.Label>Fecha Fin</Form.Label>
+                  <Form.Control
+                    type="date"
+                    name="endDate"
+                    value={filters.endDate}
+                    onChange={handleFilterChange}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row className="mt-3">
+              <Col>
+                <Button variant="primary" onClick={fetchAuditLogs}>
+                  <FaSearch className="me-2" />
+                  Buscar
+                </Button>
+                <Button variant="secondary" onClick={resetFilters} className="ms-2">
+                  <FaSync className="me-2" />
+                  Reiniciar Filtros
+                </Button>
+              </Col>
+            </Row>
+          </Form>
+        </Card.Body>
+      </Card>
 
-        <Table striped bordered hover responsive className="audit-table">
-          <thead>
-            <tr>
-              <th>Usuario</th>
-              <th>Email</th>
-              <th>Rol</th>
-              <th>Método</th>
-              <th>URL</th>
-              <th>Actividad</th>
-              <th>IP</th>
-              <th>Ubicación</th>
-              <th>Dispositivo</th>
-              <th>Fecha y Hora</th>
-            </tr>
-          </thead>
-          <tbody>
-            {auditLogs.map((log) => (
-              <tr key={log._id}>
-                <td>
-                  {log.user ? `${log.user.nombre} ${log.user.apellido}` : 'Usuario Desconocido'}
-                </td>
-                <td>
-                  {log.user ? `${log.user.email}` : 'N/A'}
-                </td>
-                <td>
-                  {log.user && log.user.role ? log.user.role.roleName : 'N/A'}
-                </td>
-                <td>{log.method}</td>
-                <td>{log.url}</td>
-                <td>{log.activity}</td>
-                <td>{log.ipAddress}</td>
-                <td>{log.location}</td>
-                <td>{log.device}</td>
-                <td>{new Date(log.timestamp).toLocaleString()}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-
-        <Pagination className="justify-content-center">
-          {[...Array(totalPages).keys()].map((number) => (
-            <Pagination.Item
-              key={number + 1}
-              active={number + 1 === currentPage}
-              onClick={() => handlePageChange(number + 1)}
-            >
-              {number + 1}
-            </Pagination.Item>
-          ))}
-        </Pagination>
-      </Container>
-    </>
+      {loading ? (
+        <div className="text-center">
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Cargando...</span>
+          </Spinner>
+        </div>
+      ) : (
+        <>
+          <div className="table-responsive">
+            <Table striped bordered hover className="audit-table">
+              <thead>
+                <tr>
+                  <th>Usuario</th>
+                  <th>Email</th>
+                  <th>Rol</th>
+                  <th>Método</th>
+                  <th>URL</th>
+                  <th>Actividad</th>
+                  <th>IP</th>
+                  <th>Ubicación</th>
+                  <th>Dispositivo</th>
+                  <th>Fecha y Hora</th>
+                </tr>
+              </thead>
+              <tbody>
+                {auditLogs.map((log) => (
+                  <tr key={log._id}>
+                    <td>
+                      {log.user ? `${log.user.nombre} ${log.user.apellido}` : 'Usuario Desconocido'}
+                    </td>
+                    <td>
+                      {log.user ? `${log.user.email}` : 'N/A'}
+                    </td>
+                    <td>
+                      {log.user && log.user.role ? log.user.role.roleName : 'N/A'}
+                    </td>
+                    <td>
+                      <Badge bg={getMethodBadgeVariant(log.method)}>{log.method}</Badge>
+                    </td>
+                    <td className="text-truncate" style={{maxWidth: '200px'}}>{log.url}</td>
+                    <td>{log.activity}</td>
+                    <td>{log.ipAddress}</td>
+                    <td>{log.location}</td>
+                    <td>{log.device}</td>
+                    <td>{new Date(log.timestamp).toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+          {totalPages > 1 && (
+            <AdmPagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
+        </>
+      )}
+    </Container>
   );
 };
 

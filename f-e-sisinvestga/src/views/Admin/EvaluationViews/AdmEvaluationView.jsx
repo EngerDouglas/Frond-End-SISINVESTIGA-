@@ -1,12 +1,12 @@
 import React from 'react';
 import AdminNav from '../../../components/Admin/Common/NavAdmin';
-import AdmSeeEvaluations from '../../../components/Admin/EvaluationManagement/AdmSeeEvaluations';
+import AdmEvaluationManag from '../../../components/Admin/EvaluationManagement/AdmEvaluationManag';
 
 const AdmEvaluationView = () => {
   return (
     <div>
       <AdminNav />
-      <AdmSeeEvaluations />
+      <AdmEvaluationManag />
     </div>
   )
 }

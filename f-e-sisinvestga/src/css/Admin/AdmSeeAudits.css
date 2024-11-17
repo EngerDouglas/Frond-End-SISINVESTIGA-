@@ -1,3 +1,7 @@
+.audit-container {
+  padding: 20px;
+}
+
 .stats-card {
   background-color: #f8f9fa;
   border: none;
@@ -23,7 +27,6 @@
 }
 
 .audit-table {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   font-size: 0.9rem;
 }
 
@@ -37,15 +40,6 @@
   padding: 0.5rem;
 }
 
-.audit-table td:nth-child(4), /* URL column */
-.audit-table td:nth-child(5), /* Activity column */
-.audit-table td:nth-child(7) /* Location column */ {
-  max-width: 150px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .pagination .page-item.active .page-link {
   background-color: #006747;
   border-color: #006747;
@@ -53,11 +47,6 @@
 
 .pagination .page-link {
   color: #006747;
-}
-
-.form-control:focus {
-  border-color: #006747;
-  box-shadow: 0 0 0 0.2rem rgba(0, 103, 71, 0.25);
 }
 
 h1 {
