@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Container, Row, Col, Table, Card, Button, Form, Pagination, Spinner, Alert, Modal } from 'react-bootstrap';
+import { Container, Row, Col, Table, Card, Button, Form, Spinner, Alert, Modal } from 'react-bootstrap';
 import { FaFilter, FaSync, FaEdit, FaTrash, FaUndo } from 'react-icons/fa';
 import AlertComponent from '../../Common/AlertComponent';
 import { getDataParams, putData, deleteData } from '../../../services/apiServices';
 import '../../../css/Admin/AdmSeeRequest.css';
+import AdmPagination from '../Common/AdmPagination';
 
 const AdmSeeRequest = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [filters, setFilters] = useState({ estado: '', tipoSolicitud: '' });
   const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -20,8 +21,8 @@ const AdmSeeRequest = () => {
     setLoading(true);
     try {
       const response = await getDataParams('requests', { 
-        page, 
-        limit: 10, 
+        page: currentPage, 
+        limit: 6,  
         estado: filters.estado, 
         tipoSolicitud: filters.tipoSolicitud 
       });
@@ -33,20 +34,20 @@ const AdmSeeRequest = () => {
       AlertComponent.error('Error al cargar las solicitudes');
     }
     setLoading(false);
-  }, [page, filters.estado, filters.tipoSolicitud]);
+  }, [currentPage, filters.estado, filters.tipoSolicitud]);
 
   useEffect(() => {
     fetchRequests();
   }, [fetchRequests]);
 
   const handlePageChange = (newPage) => {
-    setPage(newPage);
+    setCurrentPage(newPage);
   };
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setFilters(prev => ({ ...prev, [name]: value }));
-    setPage(1);
+    setCurrentPage(1);
   };
 
   const handleUpdateClick = (request) => {
@@ -105,18 +106,6 @@ const AdmSeeRequest = () => {
     }
   };
 
-  const renderPagination = () => {
-    let items = [];
-    for (let number = 1; number <= totalPages; number++) {
-      items.push(
-        <Pagination.Item key={number} active={number === page} onClick={() => handlePageChange(number)}>
-          {number}
-        </Pagination.Item>,
-      );
-    }
-    return <Pagination>{items}</Pagination>;
-  };
-
   return (
     <>
       <Container fluid className="mt-4">
@@ -165,7 +154,7 @@ const AdmSeeRequest = () => {
                 </Form.Group>
               </Col>
               <Col md={4} className="d-flex align-items-end">
-                <Button variant="secondary" onClick={fetchRequests}>
+                <Button variant="outline-secondary" onClick={fetchRequests}>
                   <FaSync /> Actualizar
                 </Button>
               </Col>
@@ -214,15 +203,15 @@ const AdmSeeRequest = () => {
                       <td>{request.proyecto ? request.proyecto.nombre : 'N/A'}</td>
                       <td>{`${request.solicitante.nombre} ${request.solicitante.apellido}`}</td>
                       <td>
-                        <Button variant="primary" size="sm" onClick={() => handleUpdateClick(request)} className="me-2">
+                        <Button variant="outline-primary" size="sm" onClick={() => handleUpdateClick(request)} className="me-2">
                           <FaEdit /> Actualizar
                         </Button>
                         {request.isDeleted ? (
-                          <Button variant="warning" size="sm" onClick={() => handleRestore(request._id)}>
+                          <Button variant="outline-warning" size="sm" onClick={() => handleRestore(request._id)}>
                             <FaUndo /> Restaurar
                           </Button>
                         ) : (
-                          <Button variant="danger" size="sm" onClick={() => handleDelete(request._id)}>
+                          <Button variant="outline-danger" size="sm" onClick={() => handleDelete(request._id)}>
                             <FaTrash /> Eliminar
                           </Button>
                         )}
@@ -234,7 +223,11 @@ const AdmSeeRequest = () => {
             )}
 
             <div className="d-flex justify-content-center mt-4">
-              {renderPagination()}
+              <AdmPagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
             </div>
           </Card.Body>
         </Card>
@@ -273,10 +266,10 @@ const AdmSeeRequest = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowUpdateModal(false)}>
+          <Button variant="outline-secondary" onClick={() => setShowUpdateModal(false)}>
             Cancelar
           </Button>
-          <Button variant="primary" onClick={handleUpdateSubmit}>
+          <Button variant="outline-primary" onClick={handleUpdateSubmit}>
             Guardar Cambios
           </Button>
         </Modal.Footer>

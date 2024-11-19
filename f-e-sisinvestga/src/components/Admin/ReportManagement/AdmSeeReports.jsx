@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { FaFileCsv, FaFilePdf, FaSpinner, FaChartBar, FaProjectDiagram, FaStar } from "react-icons/fa";
 import AlertComponent from "../../Common/AlertComponent";
 import { getDataParams, getFiles } from "../../../services/apiServices";
-import Pagination from "../../Common/Pagination";
+import AdmPagination from '../Common/AdmPagination';
 import SearchBar from "../../Common/SearchBar";
 import '../../../css/Admin/AdmReportView.css';
 
@@ -11,7 +11,7 @@ const AdmSeeReports = () => {
   const [projectsData, setProjectsData] = useState([]);
   const [evaluationsData, setEvaluationsData] = useState([]);
   const [activeTab, setActiveTab] = useState("projects");
-  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -19,13 +19,13 @@ const AdmSeeReports = () => {
     setLoading(true);
     try {
       if (activeTab === "projects") {
-        const data = await getDataParams("projects", { page, limit: 10, search: searchTerm });
+        const data = await getDataParams("projects", { currentPage, limit: 10, search: searchTerm });
         if (data) {
           setProjectsData(data.projects); // Ajusta según la estructura real
           setTotalPages(data.totalPages);
         }
       } else {
-        const data = await getDataParams("evaluations/all", { page, limit: 10, search: searchTerm });
+        const data = await getDataParams("evaluations/all", { currentPage, limit: 10, search: searchTerm });
         if (data) {
           setEvaluationsData(data.evaluations);
           setTotalPages(data.totalPages);
@@ -37,7 +37,7 @@ const AdmSeeReports = () => {
     } finally {
       setLoading(false);
     }
-  }, [activeTab, page, searchTerm]);
+  }, [activeTab, currentPage, searchTerm]);
 
   useEffect(() => {
     fetchData();
@@ -85,7 +85,11 @@ const AdmSeeReports = () => {
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
-    setPage(1);
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
   };
 
   const formatValue = (value) => {
@@ -186,7 +190,7 @@ const AdmSeeReports = () => {
           <li className="nav-item">
             <button
               className={`nav-link ${activeTab === "projects" ? "active" : ""}`}
-              onClick={() => {setActiveTab("projects"); setPage(1); setSearchTerm("");}}
+              onClick={() => {setActiveTab("projects"); setCurrentPage(1); setSearchTerm("");}}
             >
               <FaProjectDiagram className="me-2" />
               Proyectos
@@ -195,7 +199,7 @@ const AdmSeeReports = () => {
           <li className="nav-item">
             <button
               className={`nav-link ${activeTab === "evaluations" ? "active" : ""}`}
-              onClick={() => {setActiveTab("evaluations"); setPage(1); setSearchTerm("");}}
+              onClick={() => {setActiveTab("evaluations"); setCurrentPage(1); setSearchTerm("");}}
             >
               <FaStar className="me-2" />
               Evaluaciones
@@ -244,13 +248,10 @@ const AdmSeeReports = () => {
           )}
         </div>
 
-        <Pagination
-          currentPage={page}
+        <AdmPagination
+          currentPage={currentPage}
           totalPages={totalPages}
-          onNext={() => setPage(page + 1)}
-          onPrev={() => setPage(page - 1)}
-          disabledPrev={page === 1}
-          disabledNext={page === totalPages}
+          onPageChange={handlePageChange}
         />
       </div>
     </>

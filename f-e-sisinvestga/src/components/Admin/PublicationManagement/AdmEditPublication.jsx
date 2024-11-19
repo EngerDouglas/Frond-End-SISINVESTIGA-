@@ -82,40 +82,29 @@ const AdmEditPublication = () => {
   const handleSave = async () => {
     try {
       const formData = new FormData();
-  
-      // Agregar campos básicos
-      formData.append('titulo', editedPublication.titulo);
-      formData.append('tipoPublicacion', editedPublication.tipoPublicacion);
-      formData.append('fecha', editedPublication.fecha);
-      formData.append('estado', editedPublication.estado);
-      formData.append('resumen', editedPublication.resumen);
-      formData.append('idioma', editedPublication.idioma);
-  
-      // Agregar proyecto
+      ['titulo', 'tipoPublicacion', 'fecha', 'estado', 'resumen', 'idioma'].forEach(field => {
+        formData.append(field, editedPublication[field]);
+      });
+
       formData.append('proyecto', editedPublication.proyecto._id);
   
-      // Agregar autores
-      const autoresIds = editedPublication.autores.map((autor) => autor._id);
-      formData.append('autores', JSON.stringify(autoresIds));
+      formData.append('autores', JSON.stringify(editedPublication.autores.map(autor => autor._id)));
   
-      // Agregar palabras clave
       formData.append('palabrasClave', JSON.stringify(editedPublication.palabrasClave));
-
-      // Agregar nuevos anexos
+  
       newAnexos.forEach((anexo) => {
         formData.append('anexos', anexo);
       });
-
-      // Enviar los anexos existentes (los que no se eliminaron)
+  
       formData.append('existingAnexos', JSON.stringify(existingAnexos));
-    
-      // Enviar la solicitud de actualización
-      const result = await putData(`publications/admin`, id, formData);
+  
+      const result = await putData('publications/admin', id, formData);
       setPublication(result.publication);
       setEditedPublication(result.publication);
       setIsEditing(false);
       setError(null);
       AlertComponent.success('Publicación actualizada con éxito');
+      navigate("/admin/publicaciones");
     } catch (error) {
       console.error('Error al actualizar la publicación', error);
       let errorMessage = 'Error al actualizar la publicación';
