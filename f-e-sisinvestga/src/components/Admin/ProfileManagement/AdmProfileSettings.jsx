@@ -42,7 +42,7 @@ const AdmProfileSettings = () => {
         setUser({
           ...data,
           responsabilidades: data.responsabilidades || [],
-          lastLogin: new Date(data.lastLogin).toLocaleString(),
+          lastLogin: data.lastLogin ? new Date(data.lastLogin).toLocaleString() : 'Nunca',
           accountCreated: new Date(data.createdAt).toLocaleString(),
         });
       } catch (error) {

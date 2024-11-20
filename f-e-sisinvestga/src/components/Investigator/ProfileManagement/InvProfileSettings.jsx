@@ -6,7 +6,7 @@ import PasswordChecklist from "react-password-checklist";
 import { getUserData, putSelfData } from "../../../services/apiServices";
 import NavInvestigator from "../../../components/Investigator/Common/NavInvestigator";
 import AlertComponent from "../../../components/Common/AlertComponent";
-import { FaUser, FaEnvelope, FaGraduationCap, FaTasks, FaKey, FaSignOutAlt, FaCamera } from "react-icons/fa";
+import { FaUser, FaEnvelope, FaGraduationCap, FaTasks, FaKey, FaSignOutAlt, FaCamera, FaCalendarAlt, FaClock } from "react-icons/fa";
 import "../../../css/Investigator/InvProfileView.css";
 
 const InvProfileSettings = () => {
@@ -17,6 +17,8 @@ const InvProfileSettings = () => {
     especializacion: "",
     responsabilidades: [],
     fotoPerfil: "",
+    createdAt: "",
+    lastLogin: "",
   });
   const dispatch = useDispatch();
   const [currentPassword, setCurrentPassword] = useState("");
@@ -32,7 +34,12 @@ const InvProfileSettings = () => {
     const fetchUserData = async () => {
       try {
         const data = await getUserData("users");
-        setUser({ ...data, responsabilidades: data.responsabilidades || [] });
+        setUser({
+          ...data,
+          responsabilidades: data.responsabilidades || [],
+          lastLogin: data.lastLogin ? new Date(data.lastLogin).toLocaleString() : 'N/A',
+          accountCreated: new Date(data.createdAt).toLocaleString(),
+        });
       } catch (error) {
         AlertComponent.error("Error al cargar el perfil del usuario");
       }
@@ -110,7 +117,7 @@ const InvProfileSettings = () => {
 
   return (
     <>
-    <NavInvestigator />
+      <NavInvestigator />
       <div className="d-flex">
         <div className="flex-grow-1 bg-light">
           <div className="container py-4">
@@ -141,6 +148,30 @@ const InvProfileSettings = () => {
                 </div>
               </div>
               <div className="card-body">
+                <div className="row mb-4">
+                  <div className="col-md-6">
+                    <div className="account-info-card">
+                      <div className="account-info-icon">
+                        <FaCalendarAlt />
+                      </div>
+                      <div className="account-info-content">
+                        <h6>Cuenta creada el</h6>
+                        <p>{user.accountCreated}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    <div className="account-info-card">
+                      <div className="account-info-icon">
+                        <FaClock />
+                      </div>
+                      <div className="account-info-content">
+                        <h6>Última actividad</h6>
+                        <p>{user.lastLogin}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <ul className="nav nav-tabs mb-4">
                   <li className="nav-item">
                     <button
