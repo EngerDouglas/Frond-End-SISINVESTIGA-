@@ -21,7 +21,7 @@ const AdmSeeReports = () => {
       if (activeTab === "projects") {
         const data = await getDataParams("projects", { currentPage, limit: 10, search: searchTerm });
         if (data) {
-          setProjectsData(data.projects); // Ajusta según la estructura real
+          setProjectsData(data.projects);
           setTotalPages(data.totalPages);
         }
       } else {

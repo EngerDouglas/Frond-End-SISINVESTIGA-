@@ -115,11 +115,6 @@ const AdminNav = () => {
     },
     { path: "/admin/roles", icon: <FaUserCog />, text: "Gestión de Roles" },
     { path: "/admin/auditoria", icon: <FaFileAlt />, text: "Auditoría" },
-    {
-      path: "/admin/gestion-logs",
-      icon: <FaClipboardList />,
-      text: "Gestión de Logs",
-    },
     { path: "/admin/publicaciones", icon: <FaBook />, text: "Publicaciones" },
     { path: "/admin/solicitudes", icon: <FaTasks />, text: "Solicitudes" },
     { path: "/admin/informes", icon: <FaChartBar />, text: "Informes" },

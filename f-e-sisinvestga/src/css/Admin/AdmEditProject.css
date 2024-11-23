@@ -72,6 +72,12 @@
   width: 100%;
 }
 
+.adm-edit-profile {
+  width: 40px;
+  height: 40px; 
+  object-fit: cover;
+}
+
 @media (max-width: 768px) {
   .adm-edit-project .container {
     padding: 0 15px;

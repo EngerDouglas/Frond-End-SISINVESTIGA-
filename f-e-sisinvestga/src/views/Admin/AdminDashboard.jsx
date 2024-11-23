@@ -5,7 +5,7 @@ import { getData, getDataParams } from "../../services/apiServices";
 import "../../css/Admin/AdminDashboard.css";
 import { Container,Row, Col, Tab, Tabs, Spinner } from "react-bootstrap";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faUsers, faUserCheck, faUserTimes, faProjectDiagram, faBook, faStar, faFolder, faUserTie, faUserCog, faFileAlt, faJournalWhills, faFileContract, faTasks, faBell, faChartBar, faCog, faListOl, faDesktop } from "@fortawesome/free-solid-svg-icons";
+import { faUsers, faUserCheck, faUserTimes, faProjectDiagram, faBook, faStar, faFolder, faUserTie, faUserCog, faFileAlt, faFileContract, faTasks, faBell, faChartBar, faCog, faListOl, faDesktop } from "@fortawesome/free-solid-svg-icons";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Tooltip as BSTooltip } from "react-bootstrap";
 import AdmChartCard from '../../components/Admin/DashboardManagement/AdmChartCard';
@@ -19,7 +19,7 @@ import AdmStatCard from '../../components/Admin/DashboardManagement/AdmStatCard'
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 // Agregamos íconos a la biblioteca
-library.add( faUsers, faUserCheck, faUserTimes, faProjectDiagram, faBook, faStar, faFolder, faUserTie, faUserCog, faFileAlt, faJournalWhills, faFileContract, faBell, faTasks, faChartBar, faCog, faListOl, faDesktop );
+library.add( faUsers, faUserCheck, faUserTimes, faProjectDiagram, faBook, faStar, faFolder, faUserTie, faUserCog, faFileAlt, faFileContract, faBell, faTasks, faChartBar, faCog, faListOl, faDesktop );
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -258,13 +258,6 @@ const AdminDashboard = () => {
       icon: faFileAlt,
       buttonText: "Ir a Auditoría",
       path: "/admin/auditoria",
-    },
-    {
-      title: "Gestión de Logs",
-      description: "Revisar y gestionar logs del sistema.",
-      icon: faJournalWhills,
-      buttonText: "Ir a Logs",
-      path: "/admin/gestion-logs",
     },
     {
       title: "Publicaciones",

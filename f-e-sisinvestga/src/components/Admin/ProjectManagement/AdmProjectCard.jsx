@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Button, Badge } from 'react-bootstrap';
+import { Card, Button } from 'react-bootstrap';
 import { FaInfoCircle, FaTrash, FaEdit, FaUndo } from 'react-icons/fa';
 import AlertComponent from '../../Common/AlertComponent';
 import { useNavigate } from 'react-router-dom';
@@ -37,13 +37,23 @@ const AdmProjectCard = ({ proyecto, onViewDetails, fetchProjects }) => {
     }
   };
 
+  const getStatusClass = (status) => {
+    const statusMap = {
+      'Planeado': 'planned',
+      'En Proceso': 'in-progress',
+      'Finalizado': 'completed',
+      'Cancelado': 'canceled'
+    };
+    return statusMap[status] || 'default';
+  };
+
   return (
     <Card className={`project-card h-100 ${proyecto.isDeleted ? 'deleted-project' : ''}`}>
       <Card.Body>
         <Card.Title className="project-title">{proyecto.nombre}</Card.Title>
-        <Badge bg={proyecto.isDeleted ? 'danger' : 'primary'} className="mb-2">
+        <span bg={proyecto.isDeleted ? 'danger' : 'primary'} className={`adm-projects-card__status adm-projects-card__status--${getStatusClass(proyecto.estado)} mb-2`}>
           {proyecto.estado}
-        </Badge>
+        </span>
         <Card.Text>
           <strong>Objetivos:</strong> {proyecto.objetivos || 'N/A'} <br />
           <strong>Presupuesto:</strong> ${proyecto.presupuesto?.toLocaleString() || 'N/A'} <br />

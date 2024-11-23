@@ -39,6 +39,16 @@ const AdmProjectDetailsModal = ({ proyecto, handleClose, handlePrint }) => {
         ) : (
           <p>No hay recursos disponibles.</p>
         )}
+        <h5 className="mt-4">Investigadores:</h5>
+        {proyecto.investigadores && proyecto.investigadores.length > 0 ? (
+          <ListGroup>
+            {proyecto.investigadores.map((investigador, index) => (
+              <ListGroup.Item key={index}>{investigador.nombre} {investigador.apellido}</ListGroup.Item>
+            ))}
+          </ListGroup>
+        ) : (
+          <p>No hay investigadores disponibles.</p>
+        )}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>

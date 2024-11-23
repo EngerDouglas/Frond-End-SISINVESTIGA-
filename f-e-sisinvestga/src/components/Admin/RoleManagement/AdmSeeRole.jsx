@@ -10,7 +10,7 @@ import {
 } from '../../../services/apiServices';
 import AlertComponent from '../../Common/AlertComponent';
 import '../../../css/Admin/AdmSeeRole.css';
-import AdmPagination from '../Common/AdmPagination'; // Ajusta la ruta según tu estructura de archivos
+import AdmPagination from '../Common/AdmPagination';
 
 const AdmSeeRole = () => {
   const [roles, setRoles] = useState([]);
@@ -170,7 +170,7 @@ const AdmSeeRole = () => {
                     value={searchTerm}
                     onChange={(e) => {
                       setSearchTerm(e.target.value);
-                      setCurrentPage(1); // Reiniciar a la primera página al cambiar el término de búsqueda
+                      setCurrentPage(1); 
                     }}
                   />
                 </Form.Group>
