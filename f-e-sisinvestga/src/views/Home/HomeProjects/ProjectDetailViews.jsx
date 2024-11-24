@@ -225,6 +225,8 @@ const ProjectDetailViews = () => {
                       {evaluacion.evaluator.apellido}
                       <br />
                       <strong>Comentarios:</strong> {evaluacion.comentarios}
+                      <br />
+                      <strong>Puntuacion:</strong> {evaluacion.puntuacion}
                     </li>
                   ))}
                 </ul>
