@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// Constante de URL base para la API
-// const API_URL = 'http://54.211.7.33:3005/api';
-const API_URL = 'apisisi.duckdns.org/api';
+// // Constante de URL base para la API
+// const API_URL = 'http://localhost:3005/api';
+const API_URL = 'https://localhost:3005/api';
 
 // Configuración inicial de Axios
 const api = axios.create({
