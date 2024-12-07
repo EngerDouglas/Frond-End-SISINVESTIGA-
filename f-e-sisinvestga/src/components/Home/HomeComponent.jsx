@@ -40,11 +40,11 @@ const HomeComponent = () => {
       const result = await getDataParams(endpoint, params);
 
       if (activeTab === "Proyectos") {
-        setProjectData(result.projects || []);
-        setProjectStates([...new Set(result.projects.map(project => project.estado))]);
+        setProjectData(projects);
+        setProjectStates([...new Set(projects.map(project => project.estado))]);
       } else {
-        setPublicationData(result.publications || []);
-        setPublicationTypes([...new Set(result.publications.map(pub => pub.tipoPublicacion))]);
+        setPublicationData(pubs);
+        setPublicationTypes([...new Set(pubs.map(pub => pub.tipoPublicacion))]);
       }
 
       setTotalPages(result.totalPages || 1);

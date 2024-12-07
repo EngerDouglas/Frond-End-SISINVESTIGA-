@@ -93,6 +93,8 @@ const Login = () => {
               <FaLock className="input-icon" />
               <input
                 type="password"
+                name="password"
+                autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Contraseña"

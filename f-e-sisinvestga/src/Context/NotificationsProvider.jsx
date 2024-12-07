@@ -12,8 +12,9 @@ export const NotificationsProvider = ({ children }) => {
   const fetchNotifications = async () => {
     try {
       const response = await getData('notifications');
-      setNotifications(response);
-      setUnreadCount(response.filter(n => !n.isRead).length);
+      const notificationsArray = Array.isArray(response) ? response : [];
+      setNotifications(notificationsArray);
+      setUnreadCount(notificationsArray.filter(n => !n.isRead).length);
     } catch (error) {
       console.error('Error fetching notifications:', error);
     }
