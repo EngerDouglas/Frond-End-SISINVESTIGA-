@@ -9,7 +9,7 @@ const ProtectedRoute = ({ children, roles, redirectPath = '/unauthorized' }) => 
   const sessionLoaded = useSelector(selectSessionLoaded);
 
   if (!sessionLoaded) {
-    return <p>Cargando sesión...</p>;  // Puedes reemplazar esto con un componente de carga personalizado
+    return <p>Cargando sesión...</p>;
   }
 
   if (!token) {
