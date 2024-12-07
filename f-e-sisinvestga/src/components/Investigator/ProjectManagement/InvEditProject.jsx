@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
-import { getUserData, putData } from "../../../services/apiServices";
+import { getDataById, putData } from "../../../services/apiServices";
 import NavInvestigator from "../../../components/Investigator/Common/NavInvestigator";
 import AlertComponent from "../../../components/Common/AlertComponent";
 import { FaArrowLeft, FaArrowRight, FaSave, FaPlus, FaTrash, FaUpload } from "react-icons/fa";
@@ -32,8 +32,7 @@ const InvEditProject = () => {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const projectData = await getUserData("projects");
-        const project = projectData.data.find((p) => p._id === id);
+        const project = await getDataById("projects", id);
 
         if (project) {
           setFormData({
@@ -160,7 +159,7 @@ const InvEditProject = () => {
     }
 
     try {
-      await putData("projects", id, updatedProject);
+      await putData("projects/investigator", id, updatedProject);
       AlertComponent.success("Proyecto actualizado exitosamente.");
       navigate("/invest/proyectos");
     } catch (error) {
