@@ -33,7 +33,7 @@ const HomeComponent = () => {
         ...(activeTab === "Proyectos"
           ? selectedProjectState && { estado: selectedProjectState }
           : selectedPublicationTipo && { tipoPublicacion: selectedPublicationTipo }),
-        ...(searchTerm && { [activeTab === "Proyectos" ? "nombre" : "titulo"]: searchTerm }),
+        ...(searchTerm && { [activeTab === "Proyectos" ? "search" : "titulo"]: searchTerm }),
       };
 
       const endpoint = activeTab === "Proyectos" ? "projects" : "publications";

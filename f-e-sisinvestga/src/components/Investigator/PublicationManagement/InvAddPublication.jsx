@@ -31,7 +31,7 @@ const InvAddPublication = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const proyectosData = await getUserData("projects");
+        const proyectosData = await getUserData("projects", { limit: 0 });
         setProyectos(proyectosData.data || []);
 
         const tiposData = await getUserData("publications");
