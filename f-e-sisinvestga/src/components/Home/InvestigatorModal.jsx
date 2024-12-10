@@ -26,11 +26,11 @@ const InvestigatorModal = ({ investigador, onClose }) => {
           </h2>
           <p className="investigator-modal__info">
             <FaGraduationCap className="investigator-modal__icon" />
-            <strong>Especialización:</strong> {investigador.especializacion || 'No disponible'}
+            <strong>Specialization:</strong> {investigador.especializacion || 'No disponible'}
           </p>
           <p className="investigator-modal__info">
             <FaTasks className="investigator-modal__icon" />
-            <strong>Responsabilidades:</strong> {investigador.responsabilidades || 'No disponible'}
+            <strong>Responsibilities:</strong> {investigador.responsabilidades || 'No disponible'}
           </p>
         </div>
       </div>

@@ -48,15 +48,15 @@ function Nav() {
         </Link>
         <div className={`navbar-menu ${menuOpen ? 'active' : ''}`}>
           <Link to="/" className="navbar-item" onClick={closeMenu}>Home</Link>
-          <Link to="/proyectos" className="navbar-item" onClick={closeMenu}>Projects</Link>
-          <Link to="/publicaciones" className="navbar-item" onClick={closeMenu}>Publications</Link>
+          <Link to="/" className="navbar-item" onClick={closeMenu}>Projects</Link>
+          <Link to="/" className="navbar-item" onClick={closeMenu}>Publications</Link>
           <div className="navbar-item dropdown">
             <span onClick={toggleDropdown}>
               Resources <FaChevronDown className={`chevron ${dropdownOpen ? 'rotate' : ''}`} />
             </span>
             <div className={`dropdown-content ${dropdownOpen ? 'active' : ''}`}>
-              <Link to="/biblioteca" onClick={closeMenu}>Library</Link>
-              <Link to="/investigacion" onClick={closeMenu}>Research</Link>
+              <Link to="/" onClick={closeMenu}>Library</Link>
+              <Link to="/" onClick={closeMenu}>Research</Link>
             </div>
           </div>
           {!role && (

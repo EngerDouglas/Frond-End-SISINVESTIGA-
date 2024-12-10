@@ -26,11 +26,11 @@ const AuthorModal = ({ autor, onClose }) => {
           </h2>
           <p className="author-modal__info">
             <FaGraduationCap className="author-modal__icon" />
-            <strong>Especialización:</strong> {autor.especializacion || 'No disponible'}
+            <strong>Specialization:</strong> {autor.especializacion || 'No disponible'}
           </p>
           <p className="author-modal__info">
             <FaTasks className="author-modal__icon" />
-            <strong>Responsabilidades:</strong> {autor.responsabilidades || 'No disponible'}
+            <strong>Responsibilities:</strong> {autor.responsabilidades || 'No disponible'}
           </p>
         </div>
       </div>

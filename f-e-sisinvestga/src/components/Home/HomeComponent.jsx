@@ -30,16 +30,16 @@ const HomeComponent = () => {
       const params = {
         page: currentPage,
         limit: 6,
-        ...(activeTab === "Proyectos"
+        ...(activeTab === "Projects"
           ? selectedProjectState && { estado: selectedProjectState }
           : selectedPublicationTipo && { tipoPublicacion: selectedPublicationTipo }),
-        ...(searchTerm && { [activeTab === "Proyectos" ? "search" : "titulo"]: searchTerm }),
+        ...(searchTerm && { [activeTab === "Projects" ? "search" : "titulo"]: searchTerm }),
       };
 
-      const endpoint = activeTab === "Proyectos" ? "projects" : "publications";
+      const endpoint = activeTab === "Projects" ? "projects" : "publications";
       const result = await getDataParams(endpoint, params);
 
-      if (activeTab === "Proyectos") {
+      if (activeTab === "Projects") {
         const projects = result.projects || [];
         setProjectData(projects);
         setProjectStates([...new Set(projects.map(project => project.estado))]);
@@ -52,7 +52,7 @@ const HomeComponent = () => {
       setTotalPages(result.totalPages || 1);
     } catch (error) {
       console.error("Error al traer los datos", error);
-      activeTab === "Proyectos" ? setProjectData([]) : setPublicationData([]);
+      activeTab === "Projects" ? setProjectData([]) : setPublicationData([]);
       setTotalPages(1);
     } finally {
       setLoading(false);
@@ -77,7 +77,7 @@ const HomeComponent = () => {
   };
 
   const renderCards = () => {
-    const items = activeTab === "Proyectos" ? projects : publications;
+    const items = activeTab === "Projects" ? projects : publications;
     return items.map((item) => (
       <div key={item._id} className="card">
         <div className="card-image">
@@ -86,7 +86,7 @@ const HomeComponent = () => {
         <div className="card-content">
           <h3>{item.nombre || item.titulo}</h3>
           <p>{(item.descripcion || item.resumen)?.substring(0, 100)}...</p>
-          <p><strong>{activeTab === "Proyectos" ? "Estado:" : "Tipo:"}</strong> {item.estado || item.tipoPublicacion}</p>
+          <p><strong>{activeTab === "Projects" ? "Estado:" : "Tipo:"}</strong> {item.estado || item.tipoPublicacion}</p>
           <Link to={`/${activeTab.toLowerCase()}/${item._id}`} className="card-button">
             View more
           </Link>
@@ -115,19 +115,19 @@ const HomeComponent = () => {
         <SearchBar
           value={searchTerm}
           onChange={handleSearchChange}
-          placeholder={`Buscar ${activeTab.toLowerCase()}...`}
+          placeholder={`Search ${activeTab.toLowerCase()}...`}
         />
 
         <div className="home-tabs">
           <button
-            className={`home-tab ${activeTab === "Proyectos" ? "active" : ""}`}
-            onClick={() => { setActiveTab("Proyectos"); setCurrentPage(1); }}
+            className={`home-tab ${activeTab === "Projects" ? "active" : ""}`}
+            onClick={() => { setActiveTab("Projects"); setCurrentPage(1); }}
           >
             <FaProjectDiagram /> Projects
           </button>
           <button
-            className={`home-tab ${activeTab === "Publicaciones" ? "active" : ""}`}
-            onClick={() => { setActiveTab("Publicaciones"); setCurrentPage(1); }}
+            className={`home-tab ${activeTab === "Publications" ? "active" : ""}`}
+            onClick={() => { setActiveTab("Publications"); setCurrentPage(1); }}
           >
             <FaBook /> Publications
           </button>
@@ -136,16 +136,16 @@ const HomeComponent = () => {
         <div className="filters-container">
           <FaFilter className="filter-icon" />
           <select
-            value={activeTab === "Proyectos" ? selectedProjectState : selectedPublicationTipo}
+            value={activeTab === "Projects" ? selectedProjectState : selectedPublicationTipo}
             onChange={(e) => {
-              activeTab === "Proyectos"
+              activeTab === "Projects"
                 ? setSelectedProjectState(e.target.value)
                 : setSelectedPublicationTipo(e.target.value);
               setCurrentPage(1);
             }}
           >
-            <option value="">all</option>
-            {(activeTab === "Proyectos" ? projectStates : publicationTypes).map((item) => (
+            <option value="">All</option>
+            {(activeTab === "Projects" ? projectStates : publicationTypes).map((item) => (
               <option key={item} value={item}>{item}</option>
             ))}
           </select>

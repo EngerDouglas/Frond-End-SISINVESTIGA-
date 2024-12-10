@@ -10,7 +10,7 @@ const Footer = () => {
           <div className="footer-section about">
             <h3>Universidad Católica Santo Domingo</h3>
             <p>
-              Comprometidos con la excelencia académica y el desarrollo de la investigación en el país.
+              Compromised to academic excellence and the development of research in the country.
             </p>
             <div className="social-icons">
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FaFacebookF /></a>
@@ -20,18 +20,18 @@ const Footer = () => {
             </div>
           </div>
           <div className="footer-section contact">
-            <h3>Contacto</h3>
+            <h3>Contact</h3>
             <p><FaMapMarkerAlt /> Av. Bolívar 800, Santo Domingo</p>
             <p><FaPhone /> (809)-544-2812</p>
             <p><FaEnvelope /> info@ucsd.edu.do</p>
           </div>
           <div className="footer-section links">
-            <h3>Enlaces Rápidos</h3>
+            <h3>Quick Links</h3>
             <ul>
-              <li><Link to="/">Inicio</Link></li>
-              <li><Link to="/proyectos">Proyectos</Link></li>
-              <li><Link to="/publicaciones">Publicaciones</Link></li>
-              <li><Link to="/contacto">Contacto</Link></li>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/">Projects</Link></li>
+              <li><Link to="/">Publications</Link></li>
+              <li><Link to="/">Contact</Link></li>
             </ul>
           </div>
         </div>
@@ -48,7 +48,7 @@ const Footer = () => {
           ></iframe>
         </div>
         <div className="footer-bottom">
-          <p>&copy; {new Date().getFullYear()} Universidad Católica Santo Domingo. Todos los derechos reservados.</p>
+          <p>&copy; {new Date().getFullYear()} Universidad Católica Santo Domingo. All rights reserved.</p>
         </div>
       </footer>
     );
