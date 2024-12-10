@@ -88,7 +88,7 @@ const HomeComponent = () => {
           <p>{(item.descripcion || item.resumen)?.substring(0, 100)}...</p>
           <p><strong>{activeTab === "Proyectos" ? "Estado:" : "Tipo:"}</strong> {item.estado || item.tipoPublicacion}</p>
           <Link to={`/${activeTab.toLowerCase()}/${item._id}`} className="card-button">
-            Ver más
+            View more
           </Link>
         </div>
       </div>
@@ -104,8 +104,8 @@ const HomeComponent = () => {
           <Carousel.Item key={index}>
             <img className="d-block w-100" src={img} alt={`Slide ${index + 1}`} />
             <Carousel.Caption>
-              <h3>Investigación e Innovación</h3>
-              <p>Descubre nuestros proyectos y publicaciones más recientes</p>
+            <h3>Research and Innovation</h3>
+            <p>Discover our latest projects and publications</p>
             </Carousel.Caption>
           </Carousel.Item>
         ))}
@@ -123,13 +123,13 @@ const HomeComponent = () => {
             className={`home-tab ${activeTab === "Proyectos" ? "active" : ""}`}
             onClick={() => { setActiveTab("Proyectos"); setCurrentPage(1); }}
           >
-            <FaProjectDiagram /> Proyectos
+            <FaProjectDiagram /> Projects
           </button>
           <button
             className={`home-tab ${activeTab === "Publicaciones" ? "active" : ""}`}
             onClick={() => { setActiveTab("Publicaciones"); setCurrentPage(1); }}
           >
-            <FaBook /> Publicaciones
+            <FaBook /> Publications
           </button>
         </div>
 
@@ -144,7 +144,7 @@ const HomeComponent = () => {
               setCurrentPage(1);
             }}
           >
-            <option value="">Todos</option>
+            <option value="">all</option>
             {(activeTab === "Proyectos" ? projectStates : publicationTypes).map((item) => (
               <option key={item} value={item}>{item}</option>
             ))}

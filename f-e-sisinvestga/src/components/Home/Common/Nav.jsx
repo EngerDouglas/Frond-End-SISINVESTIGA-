@@ -28,7 +28,7 @@ function Nav() {
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
-    setDropdownOpen(false); // Cerrar el dropdown al abrir/cerrar el menú móvil
+    setDropdownOpen(false); // Close the dropdown when opening/closing the mobile menu
   };
 
   const toggleDropdown = () => {
@@ -47,21 +47,21 @@ function Nav() {
           <img src={logo} alt="UCSD Logo" />
         </Link>
         <div className={`navbar-menu ${menuOpen ? 'active' : ''}`}>
-          <Link to="/" className="navbar-item" onClick={closeMenu}>Inicio</Link>
-          <Link to="/proyectos" className="navbar-item" onClick={closeMenu}>Proyectos</Link>
-          <Link to="/publicaciones" className="navbar-item" onClick={closeMenu}>Publicaciones</Link>
+          <Link to="/" className="navbar-item" onClick={closeMenu}>Home</Link>
+          <Link to="/proyectos" className="navbar-item" onClick={closeMenu}>Projects</Link>
+          <Link to="/publicaciones" className="navbar-item" onClick={closeMenu}>Publications</Link>
           <div className="navbar-item dropdown">
             <span onClick={toggleDropdown}>
-              Recursos <FaChevronDown className={`chevron ${dropdownOpen ? 'rotate' : ''}`} />
+              Resources <FaChevronDown className={`chevron ${dropdownOpen ? 'rotate' : ''}`} />
             </span>
             <div className={`dropdown-content ${dropdownOpen ? 'active' : ''}`}>
-              <Link to="/biblioteca" onClick={closeMenu}>Biblioteca</Link>
-              <Link to="/investigacion" onClick={closeMenu}>Investigación</Link>
+              <Link to="/biblioteca" onClick={closeMenu}>Library</Link>
+              <Link to="/investigacion" onClick={closeMenu}>Research</Link>
             </div>
           </div>
           {!role && (
             <Link to="/login" className="navbar-item login-btn" onClick={closeMenu}>
-              Iniciar Sesión
+              Log In
             </Link>
           )}
         </div>

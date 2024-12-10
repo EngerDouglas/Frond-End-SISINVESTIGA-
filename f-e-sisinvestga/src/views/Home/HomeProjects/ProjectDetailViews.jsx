@@ -28,7 +28,7 @@ const ProjectDetailViews = () => {
         setProject(data);
         setLoading(false);
       } catch (error) {
-        console.error("Error al obtener los detalles del proyecto", error);
+        console.error("Error fetching project details", error);
         setLoading(false);
       }
     };
@@ -56,7 +56,7 @@ const ProjectDetailViews = () => {
         <Nav />
         <div className="project-details__loading">
           <div className="project-details__spinner"></div>
-          <p>Cargando detalles del proyecto...</p>
+          <p>Loading project details...</p>
         </div>
       </div>
     );
@@ -67,9 +67,9 @@ const ProjectDetailViews = () => {
       <div>
         <Nav />
         <div className="project-details__error">
-          <p>No se pudo encontrar el proyecto.</p>
+          <p>The project could not be found.</p>
           <Link to="/" className="project-details__back-link">
-            Volver al inicio
+            Return to home
           </Link>
         </div>
       </div>
@@ -82,8 +82,7 @@ const ProjectDetailViews = () => {
       <div className="project-details">
         <div className="project-details__container">
           <nav className="project-details__breadcrumb">
-            <Link to="/">Inicio</Link> <FaChevronRight />{" "}
-            <span>{project.nombre}</span>
+            <Link to="/">Home</Link> <FaChevronRight /> <span>{project.nombre}</span>
           </nav>
           <h1 className="project-details__title">{project.nombre}</h1>
           <p className="project-details__description">{project.descripcion}</p>
@@ -93,13 +92,13 @@ const ProjectDetailViews = () => {
               onClick={() => toggleSection("info")}
               className="project-details__section-title"
             >
-              Información General{" "}
+              General Information{" "}
               {expandedSections.info ? <FaChevronDown /> : <FaChevronRight />}
             </h2>
             {expandedSections.info && (
               <div className="project-details__section-content">
                 <p>
-                  <strong>Estado:</strong>{" "}
+                  <strong>Status:</strong>{" "}
                   <span
                     className={`project-details__status project-details__status--${project.estado.toLowerCase()}`}
                   >
@@ -107,14 +106,14 @@ const ProjectDetailViews = () => {
                   </span>
                 </p>
                 <p>
-                  <FaCalendarAlt /> <strong>Fecha de Inicio:</strong>{" "}
+                  <FaCalendarAlt /> <strong>Start Date:</strong>{" "}
                   {format(
                     new Date(project.cronograma.fechaInicio),
-                    "dd/MM/yyyy"
+                    "MM/dd/yyyy"
                   )}
                 </p>
                 <p>
-                  <FaDollarSign /> <strong>Presupuesto:</strong> $
+                  <FaDollarSign /> <strong>Budget:</strong> $
                   {project.presupuesto.toLocaleString()}
                 </p>
               </div>
@@ -126,7 +125,7 @@ const ProjectDetailViews = () => {
               onClick={() => toggleSection("investigators")}
               className="project-details__section-title"
             >
-              Investigadores{" "}
+              Investigators{" "}
               {expandedSections.investigators ? (
                 <FaChevronDown />
               ) : (
@@ -157,7 +156,7 @@ const ProjectDetailViews = () => {
               onClick={() => toggleSection("resources")}
               className="project-details__section-title"
             >
-              Recursos{" "}
+              Resources{" "}
               {expandedSections.resources ? (
                 <FaChevronDown />
               ) : (
@@ -180,7 +179,7 @@ const ProjectDetailViews = () => {
               onClick={() => toggleSection("milestones")}
               className="project-details__section-title"
             >
-              Hitos{" "}
+              Milestones{" "}
               {expandedSections.milestones ? (
                 <FaChevronDown />
               ) : (
@@ -192,9 +191,9 @@ const ProjectDetailViews = () => {
                 {project.hitos.map((hito, index) => (
                   <li key={index} className="project-details__milestone-item">
                     <strong>{hito.nombre}</strong> - <FaCalendarAlt />{" "}
-                    {format(new Date(hito.fecha), "dd/MM/yyyy")}
+                    {format(new Date(hito.fecha), "MM/dd/yyyy")}
                     <br />
-                    <em>Entregable:</em> {hito.entregable}
+                    <em>Deliverable:</em> {hito.entregable}
                   </li>
                 ))}
               </ul>
@@ -207,7 +206,7 @@ const ProjectDetailViews = () => {
                 onClick={() => toggleSection("evaluations")}
                 className="project-details__section-title"
               >
-                Evaluaciones{" "}
+                Evaluations{" "}
                 {expandedSections.evaluations ? (
                   <FaChevronDown />
                 ) : (
@@ -221,12 +220,12 @@ const ProjectDetailViews = () => {
                       key={evaluacion._id}
                       className="project-details__evaluation-item"
                     >
-                      <strong>Evaluador:</strong> {evaluacion.evaluator.nombre}{" "}
+                      <strong>Evaluator:</strong> {evaluacion.evaluator.nombre}{" "}
                       {evaluacion.evaluator.apellido}
                       <br />
-                      <strong>Comentarios:</strong> {evaluacion.comentarios}
+                      <strong>Comments:</strong> {evaluacion.comentarios}
                       <br />
-                      <strong>Puntuacion:</strong> {evaluacion.puntuacion}
+                      <strong>Score:</strong> {evaluacion.puntuacion}
                     </li>
                   ))}
                 </ul>
