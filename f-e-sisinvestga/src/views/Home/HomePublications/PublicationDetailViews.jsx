@@ -31,7 +31,7 @@ const PublicationDetailViews = () => {
         setPublication(data);
         setLoading(false);
       } catch (error) {
-        console.error("Error al obtener los detalles de la publicación", error);
+        console.error("Error fetching publication details", error);
         setLoading(false);
       }
     };
@@ -59,7 +59,7 @@ const PublicationDetailViews = () => {
         <Nav />
         <div className="publication-details__loading">
           <div className="publication-details__spinner"></div>
-          <p>Cargando detalles de la publicación...</p>
+          <p>Loading publication details...</p>
         </div>
       </div>
     );
@@ -70,9 +70,9 @@ const PublicationDetailViews = () => {
       <div>
         <Nav />
         <div className="publication-details__error">
-          <p>No se pudo encontrar la publicación.</p>
+          <p>Publication not found.</p>
           <Link to="/" className="publication-details__back-link">
-            Volver al inicio
+            Back to Home
           </Link>
         </div>
       </div>
@@ -85,7 +85,7 @@ const PublicationDetailViews = () => {
       <div className="publication-details">
         <div className="publication-details__container">
           <nav className="publication-details__breadcrumb">
-            <Link to="/">Inicio</Link> <FaChevronRight />{" "}
+            <Link to="/">Home</Link> <FaChevronRight />{" "}
             <span>{publication.titulo}</span>
           </nav>
           <h1 className="publication-details__title">{publication.titulo}</h1>
@@ -96,27 +96,27 @@ const PublicationDetailViews = () => {
               onClick={() => toggleSection("info")}
               className="publication-details__section-title"
             >
-              Información General{" "}
+              General Information{" "}
               {expandedSections.info ? <FaChevronDown /> : <FaChevronRight />}
             </h2>
             {expandedSections.info && (
               <div className="publication-details__section-content">
                 <p>
-                  <FaBook /> <strong>Revista:</strong> {publication.revista}
+                  <FaBook /> <strong>Journal:</strong> {publication.revista}
                 </p>
                 <p>
-                  <FaCalendarAlt /> <strong>Fecha de Publicación:</strong>{" "}
+                  <FaCalendarAlt /> <strong>Publication Date:</strong>{" "}
                   {format(new Date(publication.fecha), "dd/MM/yyyy")}
                 </p>
                 <p>
-                  <strong>Tipo de Publicación:</strong>{" "}
+                  <strong>Publication Type:</strong>{" "}
                   {publication.tipoPublicacion}
                 </p>
                 <p>
-                  <FaLanguage /> <strong>Idioma:</strong> {publication.idioma}
+                  <FaLanguage /> <strong>Language:</strong> {publication.idioma}
                 </p>
                 <p>
-                  <strong>Estado:</strong>{" "}
+                  <strong>Status:</strong>{" "}
                   <span
                     className={`publication-details__status publication-details__status--${publication.estado.toLowerCase()}`}
                   >
@@ -132,7 +132,7 @@ const PublicationDetailViews = () => {
               onClick={() => toggleSection("authors")}
               className="publication-details__section-title"
             >
-              Autores{" "}
+              Authors{" "}
               {expandedSections.authors ? (
                 <FaChevronDown />
               ) : (
@@ -163,7 +163,7 @@ const PublicationDetailViews = () => {
               onClick={() => toggleSection("keywords")}
               className="publication-details__section-title"
             >
-              Palabras Clave{" "}
+              Keywords{" "}
               {expandedSections.keywords ? (
                 <FaChevronDown />
               ) : (
@@ -186,7 +186,7 @@ const PublicationDetailViews = () => {
               onClick={() => toggleSection("attachments")}
               className="publication-details__section-title"
             >
-              Anexos{" "}
+              Attachments{" "}
               {expandedSections.attachments ? (
                 <FaChevronDown />
               ) : (
@@ -210,7 +210,7 @@ const PublicationDetailViews = () => {
                         {anexo.nombre}
                       </a>
                     ) : (
-                      <span>{anexo.nombre || "Anexo sin nombre"}</span>
+                      <span>{anexo.nombre || "Attachment without name"}</span>
                     )}
                   </li>
                 ))}
@@ -223,7 +223,7 @@ const PublicationDetailViews = () => {
               onClick={() => toggleSection("project")}
               className="publication-details__section-title"
             >
-              Proyecto Asociado{" "}
+              Associated Project{" "}
               {expandedSections.project ? (
                 <FaChevronDown />
               ) : (
