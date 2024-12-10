@@ -19,7 +19,7 @@ const HomeComponent = () => {
   const [selectedProjectState, setSelectedProjectState] = useState("");
   const [selectedPublicationTipo, setSelectedPublicationTipo] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeTab, setActiveTab] = useState("Proyectos");
+  const [activeTab, setActiveTab] = useState("Projects");
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);

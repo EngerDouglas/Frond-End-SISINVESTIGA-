@@ -80,8 +80,8 @@ const AppRouter = () => {
 
       {/* Rutas Defecto de la pagina */}
       <Route path='/' element={getHome()} />
-      <Route path='proyectos/:id' element={<ProjectDetailViews />} />
-      <Route path='publicaciones/:id' element={<PublicationDetailViews />} />
+      <Route path='projects/:id' element={<ProjectDetailViews />} />
+      <Route path='publications/:id' element={<PublicationDetailViews />} />
       
       #region Ruta de los Investigadores
       {/* Rutas Protegidas para Investigador */}

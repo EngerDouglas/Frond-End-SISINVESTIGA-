@@ -233,7 +233,7 @@ const PublicationDetailViews = () => {
             {expandedSections.project && (
               <div className="publication-details__section-content">
                 <Link
-                  to={`/proyectos/${publication.proyecto._id}`}
+                  to={`/projects/${publication.proyecto._id}`}
                   className="publication-details__project-link"
                 >
                   {publication.proyecto.nombre}
