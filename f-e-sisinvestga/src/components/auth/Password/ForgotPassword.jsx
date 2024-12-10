@@ -33,8 +33,8 @@ const ForgotPassword = () => {
           <Link to="/" className="logo-link">
             <img src={logo} alt="Logo UCSD" className="logo" />
           </Link>
-          <h1>Recuperar Contraseña</h1>
-          <p>Ingrese su correo electrónico para recibir instrucciones de recuperación.</p>
+          <h1>Reset Password</h1>
+          <p>Enter your email to receive recovery instructions.</p>
           <form onSubmit={handleSubmit} className='forgot-form'>
             <div className="forgot-input-group">
               <FaEnvelope className="forgot-input-icon" />
@@ -43,22 +43,22 @@ const ForgotPassword = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Correo Electrónico"
+                placeholder="Email Address"
                 required
               />
             </div>
             <button type="submit" disabled={status === 'loading'}>
-              {status === 'loading' ? 'Enviando...' : (
+              {status === 'loading' ? 'Sending...' : (
                 <>
                   <FaPaperPlane className="button-icon" />
-                  Enviar Instrucciones
+                    Send Instructions
                 </>
               )}
             </button>
           </form>
           {error && <p className="error-message">{error}</p>}
           {success && <p className="success-message">{success}</p>}
-          <Link to="/login" className="forgot-nav-link">Volver al Inicio de Sesión</Link>
+          <Link to="/login" className="forgot-nav-link">Back to Login</Link>
         </div>
       </div>
     </div>

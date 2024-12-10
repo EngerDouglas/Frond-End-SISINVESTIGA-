@@ -190,7 +190,7 @@ const AdminDashboard = () => {
 
   const userChartData = createChartData(
     [stats.users.active, stats.users.inactive, stats.users.disabled],
-    ["Activos", "Inactivos", "Deshabilitados"],
+    ["Active", "Inactive", "Disabled"],
     ["#36A2EB", "#FFCE56", "#FF6384"]
   );
 
@@ -200,7 +200,7 @@ const AdminDashboard = () => {
       stats.projects.completed,
       stats.projects.deleted,
     ],
-    ["En Proceso", "Completados", "Eliminados"],
+    ["In Progress", "Completed", "Deleted"],
     ["#FFCE56", "#4BC0C0", "#FF6384"]
   );
 
@@ -210,7 +210,7 @@ const AdminDashboard = () => {
       stats.publications.inReview,
       stats.publications.deleted,
     ],
-    ["Publicados", "Revisados", "Eliminados"],
+    ["Published", "Reviewed", "Deleted"],
     ["#4BC0C0", "#FFCE56", "#FF6384"]
   );
 
@@ -221,7 +221,7 @@ const AdminDashboard = () => {
       stats.requests.rejected,
       stats.requests.inProcess,
     ],
-    ["Pendientes", "Aprobadas", "Rechazadas", "En Proceso"],
+    ["Pending", "Approved", "Rejected", "In Process"],
     ["#FFCE56", "#4BC0C0", "#FF6384", "#36A2EB"]
   );
 
@@ -232,73 +232,73 @@ const AdminDashboard = () => {
   // Datos para las acciones rápidas
   const quickActions = [
     {
-      title: "Gestión de Proyectos",
-      description: "Administrar todos los proyectos en la plataforma.",
+      title: "Project Management",
+      description: "Manage all projects on the platform.",
       icon: faFolder,
-      buttonText: "Ir a Proyectos",
+      buttonText: "Go to Projects",
       path: "/admin/listarproyectos",
     },
     {
-      title: "Gestión de Investigadores",
-      description: "Administrar investigadores y su información.",
+      title: "Researcher Management",
+      description: "Manage researchers and their information.",
       icon: faUserTie,
-      buttonText: "Ir a Investigadores",
+      buttonText: "Go to Researchers",
       path: "/admin/gestionInvestigadores",
     },
     {
-      title: "Gestión de Roles",
-      description: "Administrar y actualizar los Roles del Proyecto.",
+      title: "Role Management",
+      description: "Manage and update project roles.",
       icon: faUserCog,
-      buttonText: "Ir a Roles",
+      buttonText: "Go to Roles",
       path: "/admin/roles",
     },
     {
-      title: "Auditoría",
-      description: "Revisar el historial de actividades.",
+      title: "Auditing",
+      description: "Review the activity history.",
       icon: faFileAlt,
-      buttonText: "Ir a Auditoría",
+      buttonText: "Go to Audit",
       path: "/admin/auditoria",
     },
     {
-      title: "Publicaciones",
-      description: "Administrar las publicaciones de los investigadores.",
+      title: "Publications",
+      description: "Manage researchers' publications.",
       icon: faFileContract,
-      buttonText: "Ir a Publicaciones",
+      buttonText: "Go to Publications",
       path: "/admin/publicaciones",
     },
     {
-      title: "Solicitudes",
-      description: "Solicitud para agregar investigadores a proyectos.",
+      title: "Requests",
+      description: "Requests to add researchers to projects.",
       icon: faTasks,
-      buttonText: "Ir a Solicitudes",
+      buttonText: "Go to Requests",
       path: "/admin/solicitudes",
     },
     {
-      title: "Informes",
-      description: "Generar y revisar informes de actividades.",
+      title: "Reports",
+      description: "Generate and review activity reports.",
       icon: faChartBar,
-      buttonText: "Ir a Informes",
+      buttonText: "Go to Reports",
       path: "/admin/informes",
     },
     {
-      title: "Configuración de Perfil",
-      description: "Administrar y actualizar la configuración del perfil.",
+      title: "Profile Settings",
+      description: "Manage and update profile settings.",
       icon: faCog,
-      buttonText: "Ir a Configuración",
+      buttonText: "Go to Settings",
       path: "/admin/confprofile",
     },
     {
-      title: "Gestión de Evaluaciones",
-      description: "Administrar y actualizar las evaluaciones de los proyectos.",
+      title: "Evaluation Management",
+      description: "Manage and update project evaluations.",
       icon: faListOl,
-      buttonText: "Ir a Evaluaciones",
+      buttonText: "Go to Evaluations",
       path: "/admin/evaluationprojects",
     },
     {
-      title: "Centro de Notificaciones",
-      description: "Administrar y actualizar las notificaciones del Sistema.",
+      title: "Notification Center",
+      description: "Manage and update system notifications.",
       icon: faBell,
-      buttonText: "Ir a Notificaciones",
+      buttonText: "Go to Notifications",
       path: "/admin/notificaciones",
     },
   ];
@@ -307,12 +307,12 @@ const AdminDashboard = () => {
     <div className="admin-dashboard">
       <AdminNav />
       <Container fluid className="py-4">
-        <h1 className="dashboard-title mb-4">Panel de Administración</h1>
+        <h1 className="dashboard-title mb-4">Administration Panel</h1>
 
         {loading ? (
           <div className="text-center">
             <Spinner animation="border" role="status">
-              <span className="visually-hidden">Cargando...</span>
+              <span className="visually-hidden">Loading...</span>
             </Spinner>
           </div>
         ) : (
@@ -322,17 +322,17 @@ const AdminDashboard = () => {
               onSelect={(k) => setActiveTab(k)}
               className="mb-4"
             >
-              <Tab eventKey="overview" title="Resumen">
+              <Tab eventKey="overview" title="Overview">
                 <Row>
                   <Col md={4} lg={3}>
                     <AdmStatCard
-                      title="Usuarios Totales"
+                      title="Total Users"
                       icon={faUsers}
                       value={stats.users.total}
                       color="#36A2EB"
                     />
                     <AdmStatCard
-                      title="Usuarios Activos"
+                      title="Active Users"
                       icon={faUserCheck}
                       value={stats.users.active}
                       color="#36A2EB"
@@ -340,13 +340,13 @@ const AdminDashboard = () => {
                   </Col>
                   <Col md={4} lg={3}>
                     <AdmStatCard
-                      title="Proyectos Activos"
+                      title="Active Projects"
                       icon={faProjectDiagram}
                       value={stats.projects.inProgress}
                       color="#FFCE56"
                     />
                     <AdmStatCard
-                      title="Usuarios Inactivos"
+                      title="Inactive Users"
                       icon={faUserTimes}
                       value={stats.users.inactive}
                       color="#FFCE56"
@@ -354,13 +354,13 @@ const AdminDashboard = () => {
                   </Col>
                   <Col md={4} lg={3}>
                     <AdmStatCard
-                      title="Publicaciones"
+                      title="Publications"
                       icon={faBook}
                       value={stats.publications.total}
                       color="#4BC0C0"
                     />
                     <AdmStatCard
-                      title="Sesiones Activas"
+                      title="Active Sessions"
                       icon={faDesktop}
                       value={stats.activeSessions}
                       color="#8A2BE2"
@@ -368,7 +368,7 @@ const AdminDashboard = () => {
                   </Col>
                   <Col md={4} lg={3}>
                     <AdmStatCard
-                      title="Evaluaciones"
+                      title="Evaluations"
                       icon={faStar}
                       value={stats.evaluations.total}
                       color="#FF6384"
@@ -378,13 +378,13 @@ const AdminDashboard = () => {
                 <Row>
                   <Col md={6} lg={3}>
                     <AdmChartCard
-                      title="Distribución de Usuarios"
+                      title="User Distribution"
                       data={userChartData}
                     />
                   </Col>
                   <Col md={6} lg={3}>
                     <AdmChartCard
-                      title="Estado de Proyectos"
+                      title="Project Status"
                       data={projectChartData}
                     />
                   </Col>
@@ -396,13 +396,13 @@ const AdminDashboard = () => {
                   </Col>
                   <Col md={6} lg={3}>
                     <AdmChartCard
-                      title="Solicitudes"
+                      title="Publications"
                       data={requestsChartData}
                     />
                   </Col>
                 </Row>
               </Tab>
-              <Tab eventKey="evaluations" title="Evaluaciones Recientes">
+              <Tab eventKey="evaluations" title="Recent Evaluations">
                 <AdmEvaluationList
                   evaluations={recentEvaluations}
                   handleNavigation={handleNavigation}
@@ -411,11 +411,11 @@ const AdminDashboard = () => {
               </Tab>
               <Tab
                 eventKey="pendingEvaluations"
-                title="Proyectos Pendientes de Evaluación"
+                title="Pending Evaluation Projects"
               >
                 <AdmPendingEvaluationList projects={pendingEvaluationProjects} />
               </Tab>
-              <Tab eventKey="requests" title="Solicitudes Recientes">
+              <Tab eventKey="requests" title="Recent Requests">
                 <AdmRequestList
                   requests={recentRequests}
                   handleNavigation={handleNavigation}
@@ -428,7 +428,7 @@ const AdminDashboard = () => {
 
         <Row className="mt-4">
           <Col>
-            <h2 className="section-title">Acciones Rápidas</h2>
+            <h2 className="section-title">Quick Actions</h2>
           </Col>
         </Row>
         <Row>

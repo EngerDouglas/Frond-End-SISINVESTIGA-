@@ -21,7 +21,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!recaptchaToken) {
-      AlertComponent.error("Por favor, complete el reCAPTCHA");
+      AlertComponent.error("Please complete the reCAPTCHA");
       return;
     }
     dispatch(loginUser({ email, password, recaptchaToken }));
@@ -46,7 +46,7 @@ const Login = () => {
   useEffect(() => {
     if (user && !error) {
       AlertComponent.success(
-        `Bienvenido, ${user.nombre} ${user.apellido}. Rol: ${role}`
+        `Welcome, ${user.nombre} ${user.apellido}. Rol: ${role}`
       );
 
       switch (role) {
@@ -76,7 +76,7 @@ const Login = () => {
           <Link to='/' className="logo-link">
             <img src={logo} alt="UCSD Logo" className="login-logo" />
           </Link>
-          <h2>Iniciar Sesión</h2>
+          <h2>Log In</h2>
           <form onSubmit={handleSubmit} className="login-form">
             <div className="input-group">
               <FaEnvelope className="input-icon" />
@@ -97,7 +97,7 @@ const Login = () => {
                 autoComplete="current-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Contraseña"
+                placeholder="Password"
                 required
                 className={error && error.includes("password") ? "input-error" : ""}
               />
@@ -114,10 +114,10 @@ const Login = () => {
               className="submit-btn"
               disabled={!recaptchaToken || status === "loading"}
             >
-              {status === "loading" ? "Iniciando..." : (
+              {status === "loading" ? "Logging in..." : (
                 <>
                   <FaSignInAlt className="btn-icon" />
-                  Iniciar Sesión
+                    Log In
                 </>
               )}
             </button>
@@ -126,17 +126,17 @@ const Login = () => {
               className="forgot-password-btn"
               onClick={goToForgotPassword}
             >
-              ¿Olvidaste tu contraseña?
+              Forgot your password?
             </button>
           </form>
           <div className="signup-option">
-            <span>¿No tienes una cuenta?</span>{" "}
+            <span>Don't have an account?</span>{" "}
             <Link to="/register" className="signup-link">
-              Regístrate
+              Sign Up
             </Link>
           </div>
           <footer className="footer">
-            © {new Date().getFullYear()} Universidad Católica Santo Domingo - Todos los Derechos Reservados
+            © {new Date().getFullYear()} Universidad Católica Santo Domingo - All Rights Reserved
           </footer>
         </div>
       </div>

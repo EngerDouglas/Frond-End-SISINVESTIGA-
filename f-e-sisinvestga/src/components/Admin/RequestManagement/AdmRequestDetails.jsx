@@ -21,8 +21,7 @@ const AdmRequestDetails = () => {
       setRequest(data);
       setError(null);
     } catch (err) {
-      setError('Error al cargar la solicitud. Por favor, intente de nuevo.');
-      AlertComponent.error('Error al cargar la solicitud');
+      AlertComponent.error('Error loading the request');
     } finally {
       setLoading(false);
     }
@@ -43,23 +42,22 @@ const AdmRequestDetails = () => {
   const handleUpdateRequest = async (updatedData) => {
     try {
       await putData('requests', id, updatedData);
-      AlertComponent.success('Solicitud actualizada con éxito');
+      AlertComponent.success('Successfully updated application');
       fetchRequest();
     } catch (error) {
-      AlertComponent.error('Error al actualizar la solicitud');
-      console.error(error);
+      AlertComponent.error('Error updating the request');
     }
   };
 
   const handleDelete = async () => {
-    const result = await AlertComponent.warning("¿Está seguro de que desea eliminar esta solicitud?");
+    const result = await AlertComponent.warning("Are you sure you want to delete this request?");
     if (result.isConfirmed) {
       try {
         await deleteData('requests', id);
-        AlertComponent.success("Solicitud eliminada con éxito");
+        AlertComponent.success("Request successfully deleted");
         fetchRequest();
       } catch (error) {
-        let errorMessage = "Ocurrió un error durante la eliminación del registro.";
+        let errorMessage = "An error occurred during the deletion of the registry.";
         let detailedErrors = [];
 
         try {
@@ -78,10 +76,10 @@ const AdmRequestDetails = () => {
   const handleRestore = async () => {
     try {
       await putData(`requests/${id}`, 'restore');
-      AlertComponent.success('Solicitud restaurada con éxito');
+      AlertComponent.success('Application successfully restored');
       fetchRequest();
     } catch (error) {
-      AlertComponent.error('Error al restaurar la solicitud');
+      AlertComponent.error('Error restoring the request');
     }
   };
 
@@ -89,7 +87,7 @@ const AdmRequestDetails = () => {
     return (
       <Container className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
         <Spinner animation="border" role="status" variant="primary">
-          <span className="visually-hidden">Cargando...</span>
+          <span className="visually-hidden">Loading...</span>
         </Spinner>
       </Container>
     );
@@ -100,54 +98,56 @@ const AdmRequestDetails = () => {
   }
 
   if (!request) {
-    return <Alert variant="info">No se encontró la solicitud.</Alert>;
+    return <Alert variant="info">The request was not found.</Alert>;
   }
 
   return (
     <>
       <Container className="my-4">
-      <h2 className="text-primary mb-4">Detalles de la Solicitud</h2>
+      <h2 className="text-primary mb-4">Request Details</h2>
       <Card className="mb-4">
         <Card.Header as="h3" className="bg-primary text-white">
-          Solicitud de {request.tipoSolicitud}
+          Request {request.tipoSolicitud}
         </Card.Header>
         <Card.Body>
           <Row>
             <Col md={6}>
-              <p><strong>Tipo de Solicitud:</strong> {request.tipoSolicitud}</p>
-              <p><strong>Estado:</strong> 
+              <p><strong>Request Type:</strong> {request.tipoSolicitud}</p>
+              <p><strong>Status:</strong> 
                 <Badge bg={
-                  request.estado === 'Aprobada' ? 'success' :
-                  request.estado === 'Rechazada' ? 'danger' :
-                  request.estado === 'En Proceso' ? 'warning' : 'info'
-                } className="ms-2">
-                  {request.estado}
+                    request.estado === 'Aprobada' ? 'success' :
+                    request.estado === 'Rechazada' ? 'danger' :
+                    request.estado === 'En Proceso' ? 'warning' : 'info'
+                  } className="ms-2">
+                    {request.estado === 'Aprobada' ? 'Approved' :
+                      request.estado === 'Rechazada' ? 'Rejected' :
+                      request.estado === 'En Proceso' ? 'In Progress' : 'Pending'}
                 </Badge>
               </p>
-              <p><strong>Fecha de Creación:</strong> {new Date(request.createdAt).toLocaleDateString()}</p>
-              <p><strong>Última Actualización:</strong> {new Date(request.updatedAt).toLocaleDateString()}</p>
+              <p><strong>Creation Date:</strong> {new Date(request.createdAt).toLocaleDateString()}</p>
+              <p><strong>Last Update:</strong> {new Date(request.updatedAt).toLocaleDateString()}</p>
             </Col>
             <Col md={6}>
-              <p><strong>Solicitante:</strong> {`${request.solicitante.nombre} ${request.solicitante.apellido}`}</p>
-              <p><strong>Proyecto:</strong> {request.proyecto ? request.proyecto.nombre : 'N/A'}</p>
-              <p><strong>Revisado por:</strong> {request.revisadoPor ? `${request.revisadoPor.nombre} ${request.revisadoPor.apellido}` : 'No revisado aún'}</p>
+              <p><strong>Requester:</strong> {`${request.solicitante.nombre} ${request.solicitante.apellido}`}</p>
+              <p><strong>Project:</strong> {request.proyecto ? request.proyecto.nombre : 'N/A'}</p>
+              <p><strong>Reviewed By:</strong> {request.revisadoPor ? `${request.revisadoPor.nombre} ${request.revisadoPor.apellido}` : 'No revisado aún'}</p>
             </Col>
           </Row>
           <Row className="mt-3">
             <Col>
-              <p><strong>Descripción:</strong></p>
+              <p><strong>Description:</strong></p>
               <p>{request.descripcion}</p>
             </Col>
           </Row>
           {request.comentarios && request.comentarios.length > 0 && (
             <Row className="mt-3">
               <Col>
-                <h4>Comentarios:</h4>
+                <h4>Comments:</h4>
                 {request.comentarios.map((comentario, index) => (
                   <Card key={index} className="mb-2">
                     <Card.Body>
                       <p>{comentario.comentario}</p>
-                      <small className="text-muted">Por: {comentario.usuario.nombre} {comentario.usuario.apellido} - {new Date(comentario.fecha).toLocaleString()}</small>
+                      <small className="text-muted">By: {comentario.usuario.nombre} {comentario.usuario.apellido} - {new Date(comentario.fecha).toLocaleString()}</small>
                     </Card.Body>
                   </Card>
                 ))}
@@ -159,15 +159,15 @@ const AdmRequestDetails = () => {
           {!request.isDeleted ? (
             <>
               <Button variant="warning" className="me-2" onClick={handleEdit}>
-                <FaEdit /> Editar
+                <FaEdit /> Edit
               </Button>
               <Button variant="danger" onClick={handleDelete}>
-                <FaTrash /> Eliminar
+                <FaTrash /> Delete
               </Button>
             </>
           ) : (
             <Button variant="success" onClick={handleRestore}>
-              <FaUndo /> Restaurar
+              <FaUndo /> Restore
             </Button>
           )}
         </Card.Footer>

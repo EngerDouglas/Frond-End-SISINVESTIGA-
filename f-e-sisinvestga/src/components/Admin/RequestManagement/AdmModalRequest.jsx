@@ -28,8 +28,7 @@ const AdmModalRequest = ({ show, handleClose, request, onUpdate }) => {
       await onUpdate(formData);
       handleClose();
     } catch (error) {
-      AlertComponent.error('Error al actualizar la solicitud');
-      console.error(error);
+      AlertComponent.error('Error updating the request.');
     }
   };
 
@@ -37,12 +36,12 @@ const AdmModalRequest = ({ show, handleClose, request, onUpdate }) => {
     <>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Editar Solicitud</Modal.Title>
+          <Modal.Title>Edit Request</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
-              <Form.Label>Estado</Form.Label>
+              <Form.Label>Status</Form.Label>
               <Form.Control
                 as="select"
                 name="estado"
@@ -50,26 +49,26 @@ const AdmModalRequest = ({ show, handleClose, request, onUpdate }) => {
                 onChange={handleInputChange}
                 required
               >
-                <option value="">Seleccione un estado</option>
-                <option value="Pendiente">Pendiente</option>
-                <option value="Aprobada">Aprobada</option>
-                <option value="Rechazada">Rechazada</option>
-                <option value="En Proceso">En Proceso</option>
+                <option value="">Select a status</option>
+                <option value="Pendiente">Pending</option>
+                <option value="Aprobada">Approved</option>
+                <option value="Rechazada">Rejected</option>
+                <option value="En Proceso">In Progress</option>
               </Form.Control>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Nuevo Comentario</Form.Label>
+              <Form.Label>New Comment</Form.Label>
               <Form.Control
                 as="textarea"
                 rows={3}
                 name="comentarios"
                 value={formData.comentarios}
                 onChange={handleInputChange}
-                placeholder="Añadir un nuevo comentario (opcional)"
+                placeholder="Add a new comment (optional)"
               />
             </Form.Group>
             <Button variant="primary" type="submit">
-              Guardar Cambios
+              Save Changes
             </Button>
           </Form>
         </Modal.Body>

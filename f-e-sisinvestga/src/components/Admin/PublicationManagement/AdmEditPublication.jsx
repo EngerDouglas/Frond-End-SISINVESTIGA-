@@ -34,9 +34,8 @@ const AdmEditPublication = () => {
         setExistingAnexos(data.anexos || []);
         setError(null);
       } catch (error) {
-        console.error("Error al obtener la publicación", error);
-        setError("Error al cargar la publicación. Por favor, intente de nuevo.");
-        AlertComponent.error("Error al cargar la publicación");
+        setError("Error loading the publication. Please try again.");
+        AlertComponent.error("Error loading the publication");
       } finally {
         setLoading(false);
       }
@@ -54,7 +53,7 @@ const AdmEditPublication = () => {
         const proyectosData = await getData('projects');
         setProyectos(proyectosData.projects || proyectosData);
       } catch (error) {
-        console.error("Error al cargar usuarios o proyectos", error);
+        setError("Error loading projects. Please try again.");
       }
     };
 
@@ -106,8 +105,7 @@ const AdmEditPublication = () => {
       AlertComponent.success('Publicación actualizada con éxito');
       navigate("/admin/publicaciones");
     } catch (error) {
-      console.error('Error al actualizar la publicación', error);
-      let errorMessage = 'Error al actualizar la publicación';
+      let errorMessage = 'Error updating the publication.';
       if (error.response && error.response.data && error.response.data.message) {
         errorMessage = error.response.data.message;
       }
@@ -119,11 +117,10 @@ const AdmEditPublication = () => {
   const handleRestore = async () => {
     try {
       await putData('publications/restore', id, {});
-      AlertComponent.success("Publicación restaurada con éxito");
+      AlertComponent.success("Publication restored successfully.");
       navigate('/admin/publicaciones');
     } catch (error) {
-      console.error("Error al restaurar la publicación", error);
-      AlertComponent.error("Error al restaurar la publicación");
+      AlertComponent.error("Error restoring the publication.");
     }
   };
 
@@ -140,7 +137,7 @@ const AdmEditPublication = () => {
       <Card>
         <Card.Body>
           <Card.Title className="mb-4">
-            {isEditing ? 'Editar Publicación' : 'Detalles de la Publicación'}
+            {isEditing ? 'Edit Publication' : 'Publication Details'}
           </Card.Title>
           {error && <Alert variant="danger">{error}</Alert>}
 
@@ -171,11 +168,11 @@ const AdmEditPublication = () => {
             {!isEditing && (
               <>
                 <Button variant="primary" onClick={handleEdit} className="me-2">
-                  <FaEdit /> Editar
+                  <FaEdit /> Edit
                 </Button>
                 {publication.isDeleted && (
                   <Button variant="warning" onClick={handleRestore}>
-                    <FaUndo /> Restaurar
+                    <FaUndo /> Restore
                   </Button>
                 )}
               </>
@@ -183,10 +180,10 @@ const AdmEditPublication = () => {
             {isEditing && (
               <>
                 <Button variant="success" onClick={handleSave} className="me-2">
-                  <FaSave /> Guardar
+                  <FaSave /> Save
                 </Button>
                 <Button variant="secondary" onClick={handleCancel}>
-                  Cancelar
+                  Cancel
                 </Button>
               </>
             )}

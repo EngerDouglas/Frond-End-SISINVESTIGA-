@@ -23,11 +23,11 @@ const NotFound = () => {
   const getRedirectText = () => {
     switch (role) {
       case 'Administrador':
-        return 'Volver al Panel de Administración';
+        return 'Return to the Admin Panel';
       case 'Investigador':
-        return 'Volver al Panel de Investigador';
+        return 'Return to the Research Panel';
       default:
-        return 'Volver a la Página de Inicio';
+        return 'Return to the Home Page';
     }
   };
 
@@ -40,8 +40,8 @@ const NotFound = () => {
         <div className="error-icon">
           <FaExclamationTriangle />
         </div>
-        <h1>404 - Página No Encontrada</h1>
-        <p>Lo sentimos, la página que estás buscando no existe.</p>
+        <h1>404 - Page Not Found</h1>
+        <p>Sorry, the page you are looking for does not exist.</p>
         <Link to={getRedirectLink()} className="not-nav-link">
           <FaArrowLeft className="icon-left" />
           {getRedirectText()}

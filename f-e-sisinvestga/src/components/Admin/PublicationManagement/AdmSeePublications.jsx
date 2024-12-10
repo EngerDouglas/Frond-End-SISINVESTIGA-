@@ -41,9 +41,8 @@ const AdmSeePublications = () => {
       setTotalPages(response.totalPages);
       setError(null);
     } catch (error) {
-      console.error("Error al obtener las publicaciones", error);
-      setError("Error al cargar las publicaciones. Por favor, intente de nuevo.");
-      AlertComponent.error("Error al cargar las publicaciones");
+      setError("Error loading publications. Please try again.");
+      AlertComponent.error("Error loading publications");
     }
     setLoading(false);
   }, [currentPage, searchTerm, filters]);
@@ -57,14 +56,14 @@ const AdmSeePublications = () => {
   }, [fetchPublications]);
 
   const handleDelete = async (id) => {
-    const result = await AlertComponent.warning("¿Está seguro de que desea eliminar esta publicación?");
+    const result = await AlertComponent.warning("Are you sure you want to delete this publication?");
     if (result.isConfirmed) {
       try {
         await deleteData("publications", id);
-        AlertComponent.success("Publicación eliminada con éxito");
+        AlertComponent.success("Publication successfully delete");
         fetchPublications();
       } catch (error) {
-        let errorMessage = "Ocurrió un error durante la eliminación del registro.";
+        let errorMessage = "An error occurred during the deletion..";
         let detailedErrors = [];
 
         try {
@@ -83,10 +82,10 @@ const AdmSeePublications = () => {
   const handleRestore = async (id) => {
       try {
         await putData(`publications/restore`, id, {}); 
-        AlertComponent.success("Publicación restaurada con éxito");
+        AlertComponent.success("Publication successfully restored");
         fetchPublications();
       } catch (error) {
-        let errorMessage = "Ocurrió un error durante la restauración del registro.";
+        let errorMessage = "An error occurred during the restoration.";
         let detailedErrors = [];
 
         try {
@@ -123,7 +122,7 @@ const AdmSeePublications = () => {
     <Container fluid className="mt-4">
       <Row className="mb-4">
         <Col>
-          <h1 className="adm-pub-title">Gestión de Publicaciones</h1>
+          <h1 className="adm-pub-title">Publication Management</h1>
         </Col>
       </Row>
       <Card>
@@ -131,10 +130,10 @@ const AdmSeePublications = () => {
           <Row className="mb-3 align-items-end">
             <Col md={4}>
               <Form.Group controlId="searchTerm">
-                <Form.Label><FaSearch style={{ color: '#006747' }} /> Buscar por título</Form.Label>
+                <Form.Label><FaSearch style={{ color: '#006747' }} />Search by title</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Buscar..."
+                  placeholder="Search..."
                   value={searchTerm}
                   onChange={handleSearch}
                 />
@@ -142,35 +141,35 @@ const AdmSeePublications = () => {
             </Col>
             <Col md={3}>
               <Form.Group controlId="tipoPublicacion">
-                <Form.Label>Tipo de Publicación</Form.Label>
+                <Form.Label>Publication Type</Form.Label>
                 <Form.Control
                   as="select"
                   name="tipoPublicacion"
                   value={filters.tipoPublicacion}
                   onChange={handleFilterChange}
                 >
-                  <option value="">Todos los tipos</option>
-                  <option value="Articulo">Artículo</option>
-                  <option value="Informe">Informe</option>
-                  <option value="Tesis">Tesis</option>
-                  <option value="Presentacion">Presentación</option>
-                  <option value="Otro">Otro</option>
+                  <option value="">All types</option>
+                  <option value="Articulo">Article</option>
+                  <option value="Informe">Report</option>
+                  <option value="Tesis">Thesis</option>
+                  <option value="Presentacion">Presentation</option>
+                  <option value="Otro">Other</option>
                 </Form.Control>
               </Form.Group>
             </Col>
             <Col md={3}>
               <Form.Group controlId="estado">
-                <Form.Label>Estado</Form.Label>
+                <Form.Label>Status</Form.Label>
                 <Form.Control
                   as="select"
                   name="estado"
                   value={filters.estado}
                   onChange={handleFilterChange}
                 >
-                  <option value="">Todos los estados</option>
-                  <option value="Borrador">Borrador</option>
-                  <option value="Revisado">Revisado</option>
-                  <option value="Publicado">Publicado</option>
+                  <option value="">All statuses</option>
+                  <option value="Borrador">Draft</option>
+                  <option value="Revisado">Reviewed</option>
+                  <option value="Publicado">Published</option>
                 </Form.Control>
               </Form.Group>
             </Col>
@@ -189,7 +188,7 @@ const AdmSeePublications = () => {
           {loading ? (
             <div className="text-center">
               <Spinner animation="border" role="status" variant="primary">
-                <span className="visually-hidden">Cargando...</span>
+                <span className="visually-hidden">Loading...</span>
               </Spinner>
             </div>
           ) : error ? (
@@ -200,14 +199,14 @@ const AdmSeePublications = () => {
                 <Table striped bordered hover>
                   <thead>
                     <tr>
-                      <th>Imagen</th>
-                      <th>Título</th>
-                      <th>Autores</th>
-                      <th>Tipo</th>
-                      <th>Estado</th>
-                      <th>Fecha</th>
-                      <th>Anexos</th>
-                      <th>Acciones</th>
+                      <th>Image</th>
+                      <th>Title</th>
+                      <th>Authors</th>
+                      <th>Type</th>
+                      <th>Status</th>
+                      <th>Date</th>
+                      <th>Attachments</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -248,7 +247,7 @@ const AdmSeePublications = () => {
                               size="sm"
                               onClick={() => handleRestore(publication._id)}
                             >
-                              <FaUndo /> Restaurar
+                              <FaUndo /> Restore
                             </Button>
                           ) : (
                             <>
@@ -258,14 +257,14 @@ const AdmSeePublications = () => {
                                 className="me-2"
                                 onClick={() => handleShowDetails(publication._id)}
                               >
-                                <FaEye /> Ver/Editar
+                                <FaEye /> View/Edit
                               </Button>
                               <Button
                                 variant="outline-danger"
                                 size="sm"
                                 onClick={() => handleDelete(publication._id)}
                               >
-                                <FaTrash /> Eliminar
+                                <FaTrash /> Delete
                               </Button>
                             </>
                           )}

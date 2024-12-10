@@ -21,7 +21,7 @@ const AdmPubAuthorsForm = ({ autores, isEditing, usuarios, setEditedPublication 
 
   return (
     <Form.Group className="mb-3">
-      <Form.Label>Autores</Form.Label>
+      <Form.Label>Authors</Form.Label>
       {isEditing ? (
         <>
           {autores.map((autor, index) => (
@@ -43,7 +43,7 @@ const AdmPubAuthorsForm = ({ autores, isEditing, usuarios, setEditedPublication 
                 onClick={() => handleRemoveAuthor(index)}
                 className="mt-1"
               >
-                Eliminar
+                Remove
               </Button>
             </div>
           ))}
@@ -52,7 +52,7 @@ const AdmPubAuthorsForm = ({ autores, isEditing, usuarios, setEditedPublication 
             size="sm"
             onClick={handleAddAuthor}
           >
-            Agregar Autor
+            Add Author
           </Button>
         </>
       ) : (

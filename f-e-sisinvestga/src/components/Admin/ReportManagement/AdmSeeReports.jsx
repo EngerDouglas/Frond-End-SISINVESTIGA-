@@ -51,8 +51,7 @@ const AdmSeeReports = () => {
         }
       }
     } catch (error) {
-      console.error(`Error al cargar los ${activeTab}:`, error);
-      AlertComponent.error(`Error al cargar los ${activeTab}. Por favor, inténtelo de nuevo.`);
+      AlertComponent.error(`Error loading the ${activeTab}. Please try again.`);
     } finally {
       setLoading(false);
     }
@@ -78,7 +77,7 @@ const AdmSeeReports = () => {
             }))
           );
         } else {
-          console.error('La respuesta de proyectos no tiene el formato esperado');
+          AlertComponent.error('The project response does not have the expected format');
         }
 
         if (Array.isArray(researchersResponse)) {
@@ -89,12 +88,11 @@ const AdmSeeReports = () => {
             }))
           );
         } else {
-          console.error('La respuesta de usuarios no tiene el formato esperado');
+          AlertComponent.error('The user response does not have the expected format.');
         }
 
       } catch (error) {
-        console.error('Error al cargar opciones:', error);
-        AlertComponent.error('Error al cargar opciones de filtros.');
+        AlertComponent.error('Error loading filter options.');
       }
     };
 
@@ -141,11 +139,10 @@ const AdmSeeReports = () => {
       link.click();
       document.body.removeChild(link);
       AlertComponent.success(
-        `Informe de ${reportType} en formato ${format.toUpperCase()} generado con éxito.`
+        `${reportType} report in ${format.toUpperCase()} generated successfully.`
       );
     } catch (error) {
-      console.error("Error al generar el informe:", error);
-      AlertComponent.error("Error al generar el informe. Por favor, inténtelo de nuevo.");
+      AlertComponent.error("Error while generating the report. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -182,7 +179,7 @@ const AdmSeeReports = () => {
 
   const renderTable = (data) => {
     if (!Array.isArray(data) || data.length === 0) {
-      return <p className="no-data-message">No hay datos disponibles.</p>;
+      return <p className="no-data-message">There is no data available.</p>;
     }
 
     if (activeTab === "projects") {
@@ -191,13 +188,13 @@ const AdmSeeReports = () => {
           <table className="table table-striped table-hover">
             <thead>
               <tr>
-                <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Estado</th>
-                <th>Fecha Inicio</th>
-                <th>Fecha Fin</th>
-                <th>Presupuesto</th>
-                <th>Evaluación Promedio</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>State</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Budget</th>
+                <th>Average Rating</th>
               </tr>
             </thead>
             <tbody>
@@ -242,12 +239,12 @@ const AdmSeeReports = () => {
                   </h6>
                   <div className="d-flex align-items-center mb-2">
                     <FaStar className="text-warning me-2" />
-                    <span>Puntuación: {evaluation.puntuacion.toFixed(1)}</span>
+                    <span>Score: {evaluation.puntuacion.toFixed(1)}</span>
                   </div>
                   <p className="card-text">{evaluation.comentarios}</p>
                   <p className="card-text">
                     <small className="text-muted">
-                      Fecha: {new Date(evaluation.fechaEvaluacion).toLocaleDateString()}
+                      Date: {new Date(evaluation.fechaEvaluacion).toLocaleDateString()}
                     </small>
                   </p>
                 </div>
@@ -262,7 +259,7 @@ const AdmSeeReports = () => {
   return (
     <>
       <div className="container mt-4">
-        <h1 className="text-center mb-4">Panel de Informes Administrativos</h1>
+        <h1 className="text-center mb-4">Administrative Reports Panel</h1>
 
         <ul className="nav nav-tabs mb-4">
           <li className="nav-item">
@@ -271,7 +268,7 @@ const AdmSeeReports = () => {
               onClick={() => { setActiveTab("projects"); setCurrentPage(1); setSearchTerm(""); fetchData(); }}
             >
               <FaProjectDiagram className="me-2" />
-              Proyectos
+              Projects
             </button>
           </li>
           <li className="nav-item">
@@ -280,7 +277,7 @@ const AdmSeeReports = () => {
               onClick={() => { setActiveTab("evaluations"); setCurrentPage(1); setSearchTerm(""); fetchData(); }}
             >
               <FaStar className="me-2" />
-              Evaluaciones
+              Evaluations
             </button>
           </li>
         </ul>
@@ -288,50 +285,50 @@ const AdmSeeReports = () => {
         <SearchBar
           value={searchTerm}
           onChange={handleSearch}
-          placeholder={`Buscar ${activeTab === "projects" ? "proyectos" : "evaluaciones"}...`}
+          placeholder={`Search ${activeTab === "projects" ? "projects" : "evaluations"}...`}
         />
 
-        {/* Filtros */}
+        {/* Filters  */}
         <div className="filters mt-3">
           <div className="row">
             <div className="col-md-4">
-              <label>Proyectos</label>
+              <label>Projects</label>
               <Select
                 isMulti
                 options={projectOptions}
                 value={selectedProjects}
                 onChange={(selected) => { setSelectedProjects(selected); handleFilterChange(); }}
-                placeholder="Seleccione proyectos"
+                placeholder="Select projects"
               />
             </div>
             <div className="col-md-4">
-              <label>Investigadores</label>
+              <label>Researchers</label>
               <Select
                 isMulti
                 options={researcherOptions}
                 value={selectedResearchers}
                 onChange={(selected) => { setSelectedResearchers(selected); handleFilterChange(); }}
-                placeholder="Seleccione investigadores"
+                placeholder="Select researchers"
               />
             </div>
             <div className="col-md-2">
-              <label>Fecha inicio</label>
+              <label>Start Date</label>
               <DatePicker
                 selected={startDate}
                 onChange={(date) => { setStartDate(date); handleFilterChange(); }}
                 dateFormat="yyyy-MM-dd"
                 className="form-control"
-                placeholderText="Fecha inicio"
+                placeholderText="Start date"
               />
             </div>
             <div className="col-md-2">
-              <label>Fecha fin</label>
+              <label>End Date</label>
               <DatePicker
                 selected={endDate}
                 onChange={(date) => { setEndDate(date); handleFilterChange(); }}
                 dateFormat="yyyy-MM-dd"
                 className="form-control"
-                placeholderText="Fecha fin"
+                placeholderText="End Date"
               />
             </div>
           </div>
@@ -341,13 +338,13 @@ const AdmSeeReports = () => {
           {loading ? (
             <div className="text-center">
               <FaSpinner className="spinner-border" role="status" />
-              <p>Cargando datos...</p>
+              <p>Loading data...</p>
             </div>
           ) : (
             <>
               <h2>
                 <FaChartBar className="me-2" />
-                {activeTab === "projects" ? "Resumen de Proyectos" : "Resumen de Evaluaciones"}
+                {activeTab === "projects" ? "Projects Summary" : "Evaluations Summary"}
               </h2>
               {renderTable(activeTab === "projects" ? projectsData : evaluationsData)}
               <div className="mt-4 d-flex justify-content-end">
@@ -357,7 +354,7 @@ const AdmSeeReports = () => {
                   disabled={loading}
                 >
                   <FaFileCsv className="me-2" />
-                  {loading ? "Generando..." : "Descargar CSV"}
+                  {loading ? "Generating..." : "Download CSV"}
                 </button>
                 <button
                   onClick={() => generateReport("pdf")}
@@ -365,7 +362,7 @@ const AdmSeeReports = () => {
                   disabled={loading}
                 >
                   <FaFilePdf className="me-2" />
-                  {loading ? "Generando..." : "Descargar PDF"}
+                  {loading ? "Generating..." : "Download PDF"}
                 </button>
               </div>
             </>

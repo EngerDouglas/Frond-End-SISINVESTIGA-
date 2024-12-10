@@ -39,7 +39,7 @@ const AdmEditInvestigator = ({ investigador, roles, onSave, onUpdateRole, onCanc
       <h2>Editar Investigador</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="nombre">Nombre:</label>
+          <label htmlFor="nombre">Name:</label>
           <input
             type="text"
             className="form-control"
@@ -51,7 +51,7 @@ const AdmEditInvestigator = ({ investigador, roles, onSave, onUpdateRole, onCanc
           />
         </div>
         <div className="form-group">
-          <label htmlFor="apellido">Apellido:</label>
+          <label htmlFor="apellido">Last Name:</label>
           <input
             type="text"
             className="form-control"
@@ -74,7 +74,7 @@ const AdmEditInvestigator = ({ investigador, roles, onSave, onUpdateRole, onCanc
           />
         </div>
         <div className="form-group">
-          <label htmlFor="especializacion">Especialización:</label>
+          <label htmlFor="especializacion">Specialization:</label>
           <input
             type="text"
             className="form-control"
@@ -86,7 +86,7 @@ const AdmEditInvestigator = ({ investigador, roles, onSave, onUpdateRole, onCanc
           />
         </div>
         <div className="form-group">
-          <label htmlFor="role">Rol:</label>
+          <label htmlFor="role">Role:</label>
           <select
             className="form-control"
             id="role"
@@ -103,7 +103,7 @@ const AdmEditInvestigator = ({ investigador, roles, onSave, onUpdateRole, onCanc
           </select>
         </div>
         <div className="form-group">
-          <label htmlFor="responsabilidades">Responsabilidades:</label>
+          <label htmlFor="responsabilidades">Responsibilities:</label>
           <textarea
             className="form-control"
             id="responsabilidades"
@@ -120,20 +120,20 @@ const AdmEditInvestigator = ({ investigador, roles, onSave, onUpdateRole, onCanc
         </div>
         <div className="form-group">
           <label>
-            Fecha de Creación: {new Date(editedUser.createdAt).toLocaleString()}
+            Creation Date: {new Date(editedUser.createdAt).toLocaleString()}
           </label>
         </div>
         <div className="form-group">
           <label>
-            Última Actualización: {new Date(editedUser.updatedAt).toLocaleString()}
+            Last Update: {new Date(editedUser.updatedAt).toLocaleString()}
           </label>
         </div>
         <div className="form-group">
           <button type="submit" className="btn btn-primary">
-            Guardar
+            Save
           </button>
           <button type="button" className="btn btn-secondary" onClick={onCancel}>
-            Cancelar
+            Cancel
           </button>
         </div>
       </form>

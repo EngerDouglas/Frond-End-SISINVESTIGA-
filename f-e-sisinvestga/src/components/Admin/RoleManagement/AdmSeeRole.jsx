@@ -36,8 +36,8 @@ const AdmSeeRole = () => {
       setRoles(response);
       setError(null);
     } catch (err) {
-      setError('Error al cargar los roles. Por favor, intente de nuevo.');
-      AlertComponent.error('Error al cargar los roles');
+      setError('Error loading the roles. Please try again.');
+      AlertComponent.error('Error loading the roles');
     }
     setLoading(false);
   };
@@ -65,27 +65,27 @@ const AdmSeeRole = () => {
     try {
       if (modalMode === 'create') {
         await postData('roles', roleForm);
-        AlertComponent.success('Rol creado exitosamente');
+        AlertComponent.success('Successfully created role');
       } else {
         await putData('roles', selectedRole._id, roleForm);
-        AlertComponent.success('Rol actualizado exitosamente');
+        AlertComponent.success('Successfully updated role');
       }
       handleCloseModal();
       fetchRoles();
     } catch (err) {
-      AlertComponent.error(`Error al ${modalMode === 'create' ? 'crear' : 'actualizar'} el rol`);
+      AlertComponent.error(`Error to ${modalMode === 'create' ? 'create' : 'update'} the role`);
     }
   };
 
   const handleDelete = async (id) => {
-    const result = await AlertComponent.warning("¿Está seguro de que desea eliminar este rol?");
+    const result = await AlertComponent.warning("Are you sure you want to delete this role?");
     if (result.isConfirmed) {
       try {
         await deleteData("roles", id);
-        AlertComponent.success("Rol eliminado con éxito");
+        AlertComponent.success("Successfully eliminated role");
         fetchRoles();
       } catch (error) {
-        let errorMessage = "Ocurrió un error durante la eliminación del registro.";
+        let errorMessage = "An error occurred during the deletion of the registry.";
         let detailedErrors = [];
 
         try {
@@ -104,10 +104,10 @@ const AdmSeeRole = () => {
   const handleRestore = async (id) => {
     try {
       await putData(`roles/${id}`, 'restore');
-      AlertComponent.success('Rol restaurado exitosamente');
+      AlertComponent.success('Successfully restored role');
       fetchRoles();
     } catch (err) {
-      AlertComponent.error('Error al restaurar el rol');
+      AlertComponent.error('Failed to restore the role');
     }
   };
 
@@ -134,7 +134,7 @@ const AdmSeeRole = () => {
     return (
       <div className="text-center mt-5">
         <Spinner animation="border" role="status">
-          <span className="visually-hidden">Cargando...</span>
+          <span className="visually-hidden">Loading...</span>
         </Spinner>
       </div>
     );
@@ -149,11 +149,11 @@ const AdmSeeRole = () => {
       <Container fluid className="mt-4">
         <Row className="mb-4 align-items-center">
           <Col>
-            <h1 className="titulo-roles">Gestión de Roles</h1>
+            <h1 className="titulo-roles">Role Management</h1>
           </Col>
           <Col xs="auto">
             <Button variant="outline-primary" onClick={() => handleShowModal('create')}>
-              <FaPlus /> Nuevo Rol
+              <FaPlus /> New Role
             </Button>
           </Col>
         </Row>
@@ -163,10 +163,10 @@ const AdmSeeRole = () => {
             <Row className="mb-3">
               <Col md={6}>
                 <Form.Group controlId="searchRole">
-                  <Form.Label><FaSearch /> Buscar rol</Form.Label>
+                  <Form.Label><FaSearch /> Search Role</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Buscar por nombre..."
+                    placeholder="Search by name..."
                     value={searchTerm}
                     onChange={(e) => {
                       setSearchTerm(e.target.value);
@@ -180,9 +180,9 @@ const AdmSeeRole = () => {
             <Table responsive striped bordered hover>
               <thead>
                 <tr>
-                  <th>Nombre del Rol</th>
-                  <th>Estado</th>
-                  <th>Acciones</th>
+                  <th>Role Name</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -191,7 +191,7 @@ const AdmSeeRole = () => {
                     <td>{role.roleName}</td>
                     <td>
                       <Badge bg={role.isDeleted ? 'danger' : 'success'}>
-                        {role.isDeleted ? 'Inactivo' : 'Activo'}
+                        {role.isDeleted ? 'Inactive' : 'Active'}
                       </Badge>
                     </td>
                     <td>
@@ -201,7 +201,7 @@ const AdmSeeRole = () => {
                         onClick={() => handleShowModal('update', role)}
                         className="me-2"
                       >
-                        <FaEdit /> Editar
+                        <FaEdit /> Edit
                       </Button>
                       {role.isDeleted ? (
                         <Button
@@ -209,7 +209,7 @@ const AdmSeeRole = () => {
                           size="sm"
                           onClick={() => handleRestore(role._id)}
                         >
-                          <FaUndo /> Restaurar
+                          <FaUndo /> Restore
                         </Button>
                       ) : (
                         <Button
@@ -217,7 +217,7 @@ const AdmSeeRole = () => {
                           size="sm"
                           onClick={() => handleDelete(role._id)}
                         >
-                          <FaTrash /> Eliminar
+                          <FaTrash /> Delete
                         </Button>
                       )}
                     </td>
@@ -240,12 +240,12 @@ const AdmSeeRole = () => {
         {/* Modal para Crear/Editar Rol */}
         <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Header closeButton>
-            <Modal.Title>{modalMode === 'create' ? 'Crear Nuevo Rol' : 'Editar Rol'}</Modal.Title>
+            <Modal.Title>{modalMode === 'create' ? 'Create New Role' : 'Edit Role'}</Modal.Title>
           </Modal.Header>
           <Form onSubmit={handleSubmit}>
             <Modal.Body>
               <Form.Group className="mb-3">
-                <Form.Label>Nombre del Rol</Form.Label>
+                <Form.Label>Role Name</Form.Label>
                 <Form.Control
                   type="text"
                   name="roleName"
@@ -260,7 +260,7 @@ const AdmSeeRole = () => {
                 Cancelar
               </Button>
               <Button variant="outline-primary" type="submit">
-                {modalMode === 'create' ? 'Crear' : 'Actualizar'}
+                {modalMode === 'create' ? 'Create' : 'Update'}
               </Button>
             </Modal.Footer>
           </Form>

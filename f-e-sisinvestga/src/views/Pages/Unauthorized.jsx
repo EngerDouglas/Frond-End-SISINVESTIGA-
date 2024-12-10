@@ -23,11 +23,11 @@ const Unauthorized = () => {
   const getRedirectText = () => {
     switch (role) {
       case 'Administrador':
-        return 'Volver al Panel de Administración';
+        return 'Return to the Admin Panel';
       case 'Investigador':
-        return 'Volver al Panel de Investigador';
+        return 'Return to the Research Panel';
       default:
-        return 'Volver a la Página de Inicio';
+        return 'Return to the Home Page';
     }
   };
 
@@ -40,8 +40,8 @@ const Unauthorized = () => {
         <div className="error-icon">
           <FaLock />
         </div>
-        <h1>403 - Acceso No Autorizado</h1>
-        <p>No tienes permisos para acceder a esta página.</p>
+        <h1>403 - Unauthorized Access</h1>
+        <p>You do not have permission to access this page.</p>
         <Link to={getRedirectLink()} className="not-nav-link">
           <FaArrowLeft className="icon-left" />
           {getRedirectText()}

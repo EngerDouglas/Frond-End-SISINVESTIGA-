@@ -30,8 +30,8 @@ const AdmSeeRequest = () => {
       setTotalPages(response.totalPages);
       setError(null);
     } catch (err) {
-      setError('Error al cargar las solicitudes. Por favor, intente de nuevo.');
-      AlertComponent.error('Error al cargar las solicitudes');
+      setError('Error loading the requests. Please try again.');
+      AlertComponent.error('Error loading the requests');
     }
     setLoading(false);
   }, [currentPage, filters.estado, filters.tipoSolicitud]);
@@ -64,23 +64,23 @@ const AdmSeeRequest = () => {
   const handleUpdateSubmit = async () => {
     try {
       await putData('requests', selectedRequest._id, updateData);
-      AlertComponent.success('Solicitud actualizada exitosamente');
+      AlertComponent.success('Successfully updated application');
       setShowUpdateModal(false);
       fetchRequests();
     } catch (err) {
-      AlertComponent.error('Error al actualizar la solicitud');
+      AlertComponent.error('Error updating the requestd');
     }
   };
 
   const handleDelete = async (id) => {
-    const result = await AlertComponent.warning("Está seguro de que desea eliminar esta solicitud?");
+    const result = await AlertComponent.warning("Are you sure you want to delete this request?");
     if (result.isConfirmed) {
       try {
         await deleteData("requests", id);
-        AlertComponent.success("Solicitud eliminada con éxito");
+        AlertComponent.success("Request successfully deleted");
         fetchRequests();
       } catch (error) {
-        let errorMessage = "Ocurrió un error durante la eliminación del registro.";
+        let errorMessage = "An error occurred during the deletion of the registry.";
         let detailedErrors = [];
 
         try {
@@ -99,10 +99,10 @@ const AdmSeeRequest = () => {
   const handleRestore = async (id) => {
     try {
       await putData(`requests/${id}`, 'restore');
-      AlertComponent.success('Solicitud restaurada exitosamente');
+      AlertComponent.success('Application successfully restored');
       fetchRequests();
     } catch (err) {
-      AlertComponent.error('Error al restaurar la solicitud');
+      AlertComponent.error('Error restoring the request');
     }
   };
 
@@ -111,7 +111,7 @@ const AdmSeeRequest = () => {
       <Container fluid className="mt-4">
         <Row className="mb-4">
           <Col>
-            <h1 className="titulo-solicitud">Gestión de Solicitudes</h1>
+            <h1 className="titulo-solicitud">Request Management</h1>
           </Col>
         </Row>
 
@@ -120,42 +120,42 @@ const AdmSeeRequest = () => {
             <Row className="mb-3">
               <Col md={4}>
                 <Form.Group>
-                  <Form.Label><FaFilter /> Filtrar por Estado</Form.Label>
+                  <Form.Label><FaFilter />Filter by Status</Form.Label>
                   <Form.Control
                     as="select"
                     name="estado"
                     value={filters.estado}
                     onChange={handleFilterChange}
                   >
-                    <option value="">Todos</option>
-                    <option value="Pendiente">Pendiente</option>
-                    <option value="Aprobada">Aprobada</option>
-                    <option value="Rechazada">Rechazada</option>
-                    <option value="En Proceso">En Proceso</option>
+                    <option value="">All</option>
+                    <option value="Pendiente">Pending</option>
+                    <option value="Aprobada">Approved</option>
+                    <option value="Rechazada">Rejected</option>
+                    <option value="En Proceso">In Progress</option>
                   </Form.Control>
                 </Form.Group>
               </Col>
               <Col md={4}>
                 <Form.Group>
-                  <Form.Label><FaFilter /> Filtrar por Tipo</Form.Label>
+                  <Form.Label><FaFilter />Filter by Type</Form.Label>
                   <Form.Control
                     as="select"
                     name="tipoSolicitud"
                     value={filters.tipoSolicitud}
                     onChange={handleFilterChange}
                   >
-                    <option value="">Todos</option>
-                    <option value="Unirse a Proyecto">Unirse a Proyecto</option>
-                    <option value="Recursos">Recursos</option>
-                    <option value="Aprobación">Aprobación</option>
-                    <option value="Permiso">Permiso</option>
-                    <option value="Otro">Otro</option>
+                    <option value="">All</option>
+                    <option value="Unirse a Proyecto">Join Project</option>
+                    <option value="Recursos">Resources</option>
+                    <option value="Aprobación">Approval</option>
+                    <option value="Permiso">Permission</option>
+                    <option value="Otro">Other</option>
                   </Form.Control>
                 </Form.Group>
               </Col>
               <Col md={4} className="d-flex align-items-end">
                 <Button variant="outline-secondary" onClick={fetchRequests}>
-                  <FaSync /> Actualizar
+                  <FaSync /> Refresh
                 </Button>
               </Col>
             </Row>
@@ -163,25 +163,25 @@ const AdmSeeRequest = () => {
             {loading ? (
               <div className="text-center">
                 <Spinner animation="border" role="status">
-                  <span className="visually-hidden">Cargando...</span>
+                  <span className="visually-hidden">Loading...</span>
                 </Spinner>
               </div>
             ) : error ? (
               <Alert variant="danger">{error}</Alert>
             ) : requests.length === 0 ? (
-              <Alert variant="info">No hay solicitudes que mostrar.</Alert>
+              <Alert variant="info">NNo requests to show.</Alert>
             ) : (
               <Table responsive striped bordered hover>
                 <thead>
                   <tr>
-                    <th>Tipo</th>
-                    <th>Descripción</th>
-                    <th>Estado</th>
-                    <th>Fecha de Creación</th>
-                    <th>Actualizado</th>
-                    <th>Proyecto</th>
-                    <th>Solicitante</th>
-                    <th>Acciones</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Creation Date</th>
+                    <th>Updated</th>
+                    <th>Project</th>
+                    <th>Requester</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -194,8 +194,10 @@ const AdmSeeRequest = () => {
                           request.estado === 'Aprobada' ? 'success' :
                           request.estado === 'Rechazada' ? 'danger' :
                           request.estado === 'En Proceso' ? 'warning' : 'info'
-                        }`}>
-                          {request.estado}
+                          }`}>
+                          {request.estado === 'Aprobada' ? 'Approved' :
+                          request.estado === 'Rechazada' ? 'Rejected' :
+                          request.estado === 'En Proceso' ? 'In Progress' : 'Pending'}
                         </span>
                       </td>
                       <td>{new Date(request.createdAt).toLocaleDateString()}</td>
@@ -204,15 +206,15 @@ const AdmSeeRequest = () => {
                       <td>{`${request.solicitante.nombre} ${request.solicitante.apellido}`}</td>
                       <td>
                         <Button variant="outline-primary" size="sm" onClick={() => handleUpdateClick(request)} className="me-2">
-                          <FaEdit /> Actualizar
+                          <FaEdit /> Update
                         </Button>
                         {request.isDeleted ? (
                           <Button variant="outline-warning" size="sm" onClick={() => handleRestore(request._id)}>
-                            <FaUndo /> Restaurar
+                            <FaUndo /> Restore
                           </Button>
                         ) : (
                           <Button variant="outline-danger" size="sm" onClick={() => handleDelete(request._id)}>
-                            <FaTrash /> Eliminar
+                            <FaTrash /> Delete
                           </Button>
                         )}
                       </td>
@@ -235,26 +237,26 @@ const AdmSeeRequest = () => {
 
       <Modal show={showUpdateModal} onHide={() => setShowUpdateModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Actualizar Solicitud</Modal.Title>
+          <Modal.Title>Update Request</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3">
-              <Form.Label>Estado</Form.Label>
+              <Form.Label>Status</Form.Label>
               <Form.Control
                 as="select"
                 name="estado"
                 value={updateData.estado}
                 onChange={handleUpdateChange}
               >
-                <option value="Pendiente">Pendiente</option>
-                <option value="Aprobada">Aprobada</option>
-                <option value="Rechazada">Rechazada</option>
-                <option value="En Proceso">En Proceso</option>
+                <option value="Pendiente">Pending</option>
+                <option value="Aprobada">Approved</option>
+                <option value="Rechazada">Rejected</option>
+                <option value="En Proceso">In Progress</option>
               </Form.Control>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Comentarios</Form.Label>
+              <Form.Label>Comments</Form.Label>
               <Form.Control
                 as="textarea"
                 rows={3}
@@ -267,10 +269,10 @@ const AdmSeeRequest = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="outline-secondary" onClick={() => setShowUpdateModal(false)}>
-            Cancelar
+            Cancel
           </Button>
           <Button variant="outline-primary" onClick={handleUpdateSubmit}>
-            Guardar Cambios
+            Save Changes
           </Button>
         </Modal.Footer>
       </Modal>

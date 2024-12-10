@@ -36,10 +36,10 @@ export default function Register() {
         responsabilidades: responsabilidadesList,
       });
 
-      AlertComponent.success("El investigador ha sido registrado correctamente.");
+      AlertComponent.success("The researcher has been registered correctly.");
       resetForm();
     } catch (error) {
-      let errorMessage = "Ocurrió un error durante el registro.";
+      let errorMessage = "An error occurred during registration.";
       let detailedErrors = [];
 
       try {
@@ -90,14 +90,14 @@ export default function Register() {
           <Link to="/" className="logo-link">
             <img src={logo} alt="UCSD Logo" className="register-logo" />
           </Link>
-          <h2>Registro de Investigador</h2>
+          <h2>Researcher Registration</h2>
           <form className="register-form" onSubmit={handleSubmit}>
             <div className="input-group">
               <FaUser className="input-icon" />
               <input
                 type="text"
                 name="nombre"
-                placeholder="Nombre"
+                placeholder="First Name"
                 value={formData.nombre}
                 onChange={handleChange}
                 required
@@ -108,7 +108,7 @@ export default function Register() {
               <input
                 type="text"
                 name="apellido"
-                placeholder="Apellido"
+                placeholder="Last Name"
                 value={formData.apellido}
                 onChange={handleChange}
                 required
@@ -130,7 +130,7 @@ export default function Register() {
               <input
                 type="password"
                 name="password"
-                placeholder="Contraseña"
+                placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
                 required
@@ -141,7 +141,7 @@ export default function Register() {
               <input
                 type="text"
                 name="especializacion"
-                placeholder="Especialización"
+                placeholder="Specialization"
                 value={formData.especializacion}
                 onChange={handleChange}
                 required
@@ -153,7 +153,7 @@ export default function Register() {
                 <input
                   type="text"
                   name="responsabilidad"
-                  placeholder="Responsabilidad"
+                  placeholder="Responsibility"
                   value={formData.responsabilidad}
                   onChange={handleChange}
                 />
@@ -181,17 +181,17 @@ export default function Register() {
               ))}
             </ul>
             <button type="submit" className="register-btn" disabled={isLoading}>
-              {isLoading ? "Registrando..." : "Registrar Investigador"}
+              {isLoading ? "Registering..." : "Register Researcher"}
             </button>
           </form>
           <div className="signin-option">
-            <span>¿Ya tienes cuenta?</span>{" "}
+            <span>Already have an account?</span>{" "}
             <Link to="/login" className="signin-link">
-              Iniciar sesión
+              Log In
             </Link>
           </div>
           <footer className="footer">
-            © {new Date().getFullYear()} Universidad Católica Santo Domingo - Todos los Derechos Reservados
+            © {new Date().getFullYear()} Universidad Católica Santo Domingo - All Rights Reserved
           </footer>
         </div>
       </div>

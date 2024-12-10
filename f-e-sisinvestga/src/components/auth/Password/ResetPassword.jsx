@@ -25,7 +25,7 @@ const ResetPassword = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      AlertComponent.error('Las contraseñas no coinciden');
+      AlertComponent.error('The passwords don\'t\' match');
       return;
     }
     dispatch(confirmPasswordReset({ token, password }));
@@ -49,8 +49,8 @@ const ResetPassword = () => {
           <Link to="/" className="logo-link">
             <img src={logo} alt="Logo UCSD" className="logo" />
           </Link>
-          <h1>Restablecer Contraseña</h1>
-          <p>Ingrese su nueva contraseña.</p>
+          <h1>Reset Password</h1>
+          <p>Enter your new password.</p>
           <form onSubmit={handleSubmit} className='reset-form'>
             <div className="reset-input-group">
               <FaLock className="reset-input-icon" />
@@ -59,7 +59,7 @@ const ResetPassword = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Nueva Contraseña"
+                placeholder="New Password"
                 required
               />
             </div>
@@ -70,22 +70,22 @@ const ResetPassword = () => {
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirmar Nueva Contraseña"
+                placeholder="Confirm New Password"
                 required
               />
             </div>
             <button type="submit" disabled={status === 'loading'}>
-              {status === 'loading' ? 'Restableciendo...' : (
+              {status === 'loading' ? 'Resetting...' : (
                 <>
                   <FaCheck className="reset-button-icon" />
-                  Restablecer Contraseña
+                    Reset Password
                 </>
               )}
             </button>
           </form>
           {error && <p className="error-message">{error}</p>}
           {success && <p className="success-message">{success}</p>}
-          <Link to="/login" className="reset-nav-link">Volver al Inicio de Sesión</Link>
+          <Link to="/login" className="reset-nav-link">Back to Login</Link>
         </div>
       </div>
     </div>

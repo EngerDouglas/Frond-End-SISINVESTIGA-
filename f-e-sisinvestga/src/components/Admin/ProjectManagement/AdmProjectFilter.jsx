@@ -26,7 +26,7 @@ const AdmProjectFilter = ({ onSearch, onFilter }) => {
             <InputGroup.Text><FaSearch /></InputGroup.Text>
             <Form.Control
               type="text"
-              placeholder="Buscar proyecto..."
+              placeholder="Search project..."
               value={searchTerm}
               onChange={handleSearchChange}
             />

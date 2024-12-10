@@ -41,7 +41,7 @@ const AdmProjectCard = ({ proyecto, onViewDetails, fetchProjects }) => {
     const statusMap = {
       'Planeado': 'planned',
       'En Proceso': 'in-progress',
-      'Completado': 'completed',
+      'Finalizado': 'completed',
       'Cancelado': 'canceled'
     };
     return statusMap[status] || 'default';

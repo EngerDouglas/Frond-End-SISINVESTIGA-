@@ -24,21 +24,23 @@ const AdmProjectList = () => {
       if (estadoSeleccionado !== 'Todos' && estadoSeleccionado !== 'Eliminado') {
         filters.estado = estadoSeleccionado;
         filters.isDeleted = false;
-      } else if (estadoSeleccionado === 'Eliminado') {
+      } 
+      
+      if (estadoSeleccionado === 'Eliminado') {
         filters.isDeleted = true;
       } else {
         filters.isDeleted = false;
       }
 
       if (searchTerm) {
-        filters.nombre = searchTerm;
+        filters.search = searchTerm;
       }
 
       const response = await getDataParams('projects', { page: currentPage, limit: 6, ...filters });
       setProjects(response.projects);
       setTotalPages(response.totalPages);
     } catch (error) {
-      AlertComponent.error('Error al cargar los proyectos');
+      AlertComponent.error('Error loading the projects.');
     } finally {
       setLoading(false);
     }
@@ -81,8 +83,8 @@ const AdmProjectList = () => {
         <>
           {projects.length === 0 ? (
             <Alert variant="info" className="text-center my-5">
-              <Alert.Heading>No se encontraron proyectos</Alert.Heading>
-              <p>Intenta ajustar los filtros de búsqueda.</p>
+              <Alert.Heading>No projects were found</Alert.Heading>
+              <p>Try to adjust the search filters.</p>
             </Alert>
           ) : (
             <>

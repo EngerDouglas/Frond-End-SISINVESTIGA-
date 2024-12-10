@@ -40,9 +40,9 @@ const VerifyEmail = () => {
           <Link to="/" className="logo-link">
             <img src={logo} alt="Logo UCSD" className="logo" />
           </Link>
-          <h1>Verificación de Email</h1>
+          <h1>Email Verification</h1>
           {status === 'loading' ? (
-            <p>Verificando su email, por favor espere...</p>
+            <p>Verifying your email, please wait...</p>
           ) : status === 'succeeded' ? (
             <div className="verification-success">
               <FaCheckCircle className="icon success" />
@@ -55,12 +55,12 @@ const VerifyEmail = () => {
             </div>
           ) : (
             <div className="verification-prompt">
-              <p>Haz clic en el botón para verificar tu email.</p>
-              <button onClick={handleVerify} className="verify-button">Verificar Email</button>
+              <p>Click the button below to verify your email.</p>
+              <button onClick={handleVerify} className="verify-button">Verify Email</button>
               {error && <p className="error">{error}</p>}
             </div>
           )}
-          <Link to="/login" className="verify-nav-link">Volver al Inicio de Sesión</Link>
+          <Link to="/login" className="verify-nav-link">Back to Login</Link>
         </div>
       </div>
     </div>

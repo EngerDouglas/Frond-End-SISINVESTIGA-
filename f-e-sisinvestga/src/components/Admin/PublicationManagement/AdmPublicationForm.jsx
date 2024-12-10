@@ -7,7 +7,7 @@ const AdmPublicationForm = ({ publication, isEditing, handleInputChange, proyect
       <Row>
         <Col md={6}>
           <Form.Group className="mb-3">
-            <Form.Label>Título</Form.Label>
+            <Form.Label>Title</Form.Label>
             <Form.Control
               type="text"
               name="titulo"
@@ -19,7 +19,7 @@ const AdmPublicationForm = ({ publication, isEditing, handleInputChange, proyect
         </Col>
         <Col md={6}>
           <Form.Group className="mb-3">
-            <Form.Label>Tipo de Publicación</Form.Label>
+            <Form.Label>Publication Type</Form.Label>
             <Form.Control
               as="select"
               name="tipoPublicacion"
@@ -27,11 +27,11 @@ const AdmPublicationForm = ({ publication, isEditing, handleInputChange, proyect
               onChange={handleInputChange}
               disabled={!isEditing}
             >
-              <option value="Articulo">Artículo</option>
-              <option value="Informe">Informe</option>
-              <option value="Tesis">Tesis</option>
-              <option value="Presentacion">Presentación</option>
-              <option value="Otro">Otro</option>
+              <option value="Articulo">Article</option>
+              <option value="Informe">Report</option>
+              <option value="Tesis">Thesis</option>
+              <option value="Presentacion">Presentation</option>
+              <option value="Otro">Other</option>
             </Form.Control>
           </Form.Group>
         </Col>
@@ -39,7 +39,7 @@ const AdmPublicationForm = ({ publication, isEditing, handleInputChange, proyect
       <Row>
         <Col md={6}>
           <Form.Group className="mb-3">
-            <Form.Label>Fecha</Form.Label>
+            <Form.Label>Date</Form.Label>
             <Form.Control
               type="date"
               name="fecha"
@@ -51,7 +51,7 @@ const AdmPublicationForm = ({ publication, isEditing, handleInputChange, proyect
         </Col>
         <Col md={6}>
           <Form.Group className="mb-3">
-            <Form.Label>Estado</Form.Label>
+            <Form.Label>Status</Form.Label>
             <Form.Control
               as="select"
               name="estado"
@@ -59,15 +59,15 @@ const AdmPublicationForm = ({ publication, isEditing, handleInputChange, proyect
               onChange={handleInputChange}
               disabled={!isEditing}
             >
-              <option value="Borrador">Borrador</option>
-              <option value="Revisado">Revisado</option>
-              <option value="Publicado">Publicado</option>
+              <option value="Borrador">Draft</option>
+              <option value="Revisado">Reviewed</option>
+              <option value="Publicado">Published</option>
             </Form.Control>
           </Form.Group>
         </Col>
       </Row>
       <Form.Group className="mb-3">
-        <Form.Label>Resumen</Form.Label>
+        <Form.Label>Summary</Form.Label>
         <Form.Control
           as="textarea"
           rows={3}
@@ -78,9 +78,9 @@ const AdmPublicationForm = ({ publication, isEditing, handleInputChange, proyect
         />
       </Form.Group>
 
-      {/* Palabras Clave */}
+      {/* Keywords  */}
       <Form.Group className="mb-3">
-        <Form.Label>Palabras Clave</Form.Label>
+        <Form.Label>Keywords</Form.Label>
         <Form.Control
           type="text"
           name="palabrasClave"
@@ -100,7 +100,7 @@ const AdmPublicationForm = ({ publication, isEditing, handleInputChange, proyect
 
       {/* Proyecto */}
       <Form.Group className="mb-3">
-        <Form.Label>Proyecto</Form.Label>
+        <Form.Label>Project </Form.Label>
         {isEditing ? (
           <Form.Control
             as="select"
@@ -116,7 +116,7 @@ const AdmPublicationForm = ({ publication, isEditing, handleInputChange, proyect
               });
             }}
           >
-            <option value="">No asignado</option>
+            <option value="">Not assigned</option>
             {proyectos.map((proyecto) => (
               <option key={proyecto._id} value={proyecto._id}>
                 {proyecto.nombre}
@@ -126,17 +126,17 @@ const AdmPublicationForm = ({ publication, isEditing, handleInputChange, proyect
         ) : (
           <Form.Control
             type="text"
-            value={publication.proyecto ? publication.proyecto.nombre : 'No asignado'}
+            value={publication.proyecto ? publication.proyecto.nombre : 'Not assigned'}
             readOnly
           />
         )}
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label>Estado de Eliminación</Form.Label>
+        <Form.Label>Deletion Status</Form.Label>
         <Form.Control
           type="text"
-          value={publication.isDeleted ? 'Eliminado' : 'Activo'}
+          value={publication.isDeleted ? 'Deleted' : 'Active'}
           readOnly
         />
       </Form.Group>

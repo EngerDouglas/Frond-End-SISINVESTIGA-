@@ -10,14 +10,14 @@ const AdmProjectDetailsModal = ({ proyecto, handleClose, handlePrint }) => {
       </Modal.Header>
       <Modal.Body>
         <ListGroup variant="flush">
-          <ListGroup.Item><strong>Descripción:</strong> {proyecto.descripcion}</ListGroup.Item>
-          <ListGroup.Item><strong>Objetivos:</strong> {proyecto.objetivos}</ListGroup.Item>
-          <ListGroup.Item><strong>Presupuesto:</strong> ${proyecto.presupuesto?.toLocaleString()}</ListGroup.Item>
-          <ListGroup.Item><strong>Fecha de Inicio:</strong> {new Date(proyecto.cronograma.fechaInicio).toLocaleDateString()}</ListGroup.Item>
-          <ListGroup.Item><strong>Fecha de Fin:</strong> {new Date(proyecto.cronograma.fechaFin).toLocaleDateString()}</ListGroup.Item>
-          <ListGroup.Item><strong>Estado:</strong> {proyecto.estado}</ListGroup.Item>
+          <ListGroup.Item><strong>Description:</strong> {proyecto.descripcion}</ListGroup.Item>
+          <ListGroup.Item><strong>Objectives:</strong> {proyecto.objetivos}</ListGroup.Item>
+          <ListGroup.Item><strong>Budget:</strong> ${proyecto.presupuesto?.toLocaleString()}</ListGroup.Item>
+          <ListGroup.Item><strong>Start Date:</strong> {new Date(proyecto.cronograma.fechaInicio).toLocaleDateString()}</ListGroup.Item>
+          <ListGroup.Item><strong>End Date:</strong> {new Date(proyecto.cronograma.fechaFin).toLocaleDateString()}</ListGroup.Item>
+          <ListGroup.Item><strong>Status:</strong> {proyecto.estado}</ListGroup.Item>
         </ListGroup>
-        <h5 className="mt-4">Hitos:</h5>
+        <h5 className="mt-4">Milestones:</h5>
         {proyecto.hitos && proyecto.hitos.length > 0 ? (
           <ListGroup>
             {proyecto.hitos.map((hito, index) => (
@@ -27,9 +27,9 @@ const AdmProjectDetailsModal = ({ proyecto, handleClose, handlePrint }) => {
             ))}
           </ListGroup>
         ) : (
-          <p>No hay hitos disponibles.</p>
+          <p>No milestones available.</p>
         )}
-        <h5 className="mt-4">Recursos:</h5>
+        <h5 className="mt-4">Resources:</h5>
         {proyecto.recursos && proyecto.recursos.length > 0 ? (
           <ListGroup>
             {proyecto.recursos.map((recurso, index) => (
@@ -37,9 +37,9 @@ const AdmProjectDetailsModal = ({ proyecto, handleClose, handlePrint }) => {
             ))}
           </ListGroup>
         ) : (
-          <p>No hay recursos disponibles.</p>
+          <p>No resources available.</p>
         )}
-        <h5 className="mt-4">Investigadores:</h5>
+        <h5 className="mt-4">Researchers:</h5>
         {proyecto.investigadores && proyecto.investigadores.length > 0 ? (
           <ListGroup>
             {proyecto.investigadores.map((investigador, index) => (
@@ -47,15 +47,15 @@ const AdmProjectDetailsModal = ({ proyecto, handleClose, handlePrint }) => {
             ))}
           </ListGroup>
         ) : (
-          <p>No hay investigadores disponibles.</p>
+          <p>No researchers available.</p>
         )}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
-          <FaTimes /> Cerrar
+          <FaTimes /> Close
         </Button>
         <Button variant="primary" onClick={handlePrint}>
-          <FaPrint /> Imprimir Detalles
+          <FaPrint /> Print Details
         </Button>
       </Modal.Footer>
     </Modal>

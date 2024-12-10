@@ -27,10 +27,10 @@ const AdmPubAnexosForm = ({
 
   return (
     <Form.Group className="mb-3">
-      <Form.Label>Anexos</Form.Label>
+      <Form.Label>Attachments</Form.Label>
       {isEditing ? (
         <>
-          {/* Input de archivos */}
+          {/* File Input */}
           <div>
             <input
               type="file"
@@ -40,13 +40,13 @@ const AdmPubAnexosForm = ({
               ref={fileInputRef}
             />
             <Button variant="secondary" onClick={() => fileInputRef.current.click()}>
-              <FaUpload /> Agregar Anexos
+              <FaUpload /> Add Attachments
             </Button>
           </div>
 
-          {/* Lista de anexos existentes */}
+          {/* List of existing attachments */}
           <div className="mt-3">
-            <h6>Anexos Existentes</h6>
+            <h6>Existing Attachments</h6>
             <ul>
               {existingAnexos
                 .filter(anexo => !anexosToDelete.includes(anexo._id))
@@ -54,7 +54,7 @@ const AdmPubAnexosForm = ({
                   <li key={anexo._id}>
                     {anexo.nombre} - {anexo.tipo} -{' '}
                     <a href={anexo.url} target="_blank" rel="noreferrer">
-                      Ver Archivo
+                      View File
                     </a>
                     <Button
                       variant="danger"
@@ -62,14 +62,14 @@ const AdmPubAnexosForm = ({
                       onClick={() => removeExistingAnexo(anexo._id)}
                       className="ms-2"
                     >
-                      <FaTrash /> Eliminar
+                      <FaTrash /> Delete
                     </Button>
                   </li>
                 ))}
             </ul>
           </div>
 
-          {/* Lista de nuevos anexos */}
+          {/* List of new attachment */}
           {newAnexos.length > 0 && (
             <div className="mt-3">
               <h6>Nuevos Anexos</h6>
@@ -83,7 +83,7 @@ const AdmPubAnexosForm = ({
                       onClick={() => removeNewAnexo(index)}
                       className="ms-2"
                     >
-                      <FaTrash /> Eliminar
+                      <FaTrash /> Delete
                     </Button>
                   </li>
                 ))}
@@ -97,7 +97,7 @@ const AdmPubAnexosForm = ({
             <li key={anexo._id}>
               {anexo.nombre} - {anexo.tipo} -{' '}
               <a href={anexo.url} target="_blank" rel="noreferrer">
-                Ver Archivo
+                View File
               </a>
             </li>
           ))}

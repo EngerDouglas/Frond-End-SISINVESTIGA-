@@ -155,7 +155,7 @@ const AdmSeeAudits = () => {
                     name="user"
                     value={filters.user}
                     onChange={handleFilterChange}
-                    placeholder="Filtrar por usuario"
+                    placeholder="Filter By User"
                   />
                 </Form.Group>
               </Col>
@@ -167,7 +167,7 @@ const AdmSeeAudits = () => {
                     name="activity"
                     value={filters.activity}
                     onChange={handleFilterChange}
-                    placeholder="Filtrar por actividad"
+                    placeholder="Filter By Activity"
                   />
                 </Form.Group>
               </Col>
