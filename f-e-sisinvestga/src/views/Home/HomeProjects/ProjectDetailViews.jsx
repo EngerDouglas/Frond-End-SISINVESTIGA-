@@ -125,7 +125,7 @@ const ProjectDetailViews = () => {
               onClick={() => toggleSection("investigators")}
               className="project-details__section-title"
             >
-              Investigators{" "}
+              Researcher{" "}
               {expandedSections.investigators ? (
                 <FaChevronDown />
               ) : (
