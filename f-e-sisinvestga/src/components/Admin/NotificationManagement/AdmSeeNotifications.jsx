@@ -29,17 +29,13 @@ const AdmSeeNotifications = () => {
         isRead: filters.isRead || undefined,
         isDeleted: filters.isDeleted || undefined,
       };
-
-      console.log('Fetching notifications with params:', params);
       const response = await getDataParams('notifications/admin/all', params);
-      console.log('API Response:', response);
 
       setNotifications(response.notifications);
       setTotalPages(response.totalPages);
       setError(null);
     } catch (error) {
-      console.error("Error al obtener las notificaciones", error);
-      setError("Error al cargar las notificaciones. Por favor, intente de nuevo.");
+      setError("Error loading notifications. Please try again.");
     }
     setLoading(false);
   }, [currentPage, filters]);
@@ -60,7 +56,6 @@ const AdmSeeNotifications = () => {
       ));
       await fetchNotifications();
     } catch (error) {
-      console.error('Error marking notification as read:', error);
       setError('Failed to mark notification as read. Please try again.');
     }
   };
@@ -73,7 +68,6 @@ const AdmSeeNotifications = () => {
       ));
       await fetchNotifications();
     } catch (error) {
-      console.error('Error deleting notification:', error);
       setError('Failed to mark notification as read. Please try again.');
     }
   };
@@ -114,11 +108,11 @@ const AdmSeeNotifications = () => {
 
   return (
     <Container fluid className="notification-management">
-      <h1 className="my-4">Gestión de Notificaciones</h1>
+      <h1 className="my-4">Notification Management</h1>
       <Row className="mb-3">
         <Col md={4}>
           <Form.Group>
-            <Form.Label>Tipo</Form.Label>
+            <Form.Label>Type</Form.Label>
             <Form.Control as="select" name="type" onChange={handleFilterChange} value={filters.type}>
               <option value="">Todos</option>
               <option value="Proyecto">Proyecto</option>
@@ -133,21 +127,21 @@ const AdmSeeNotifications = () => {
         </Col>
         <Col md={4}>
           <Form.Group>
-            <Form.Label>Estado de lectura</Form.Label>
+            <Form.Label>Read Status</Form.Label>
             <Form.Control as="select" name="isRead" onChange={handleFilterChange} value={filters.isRead}>
-              <option value="">Todos</option>
-              <option value="true">Leído</option>
-              <option value="false">No leído</option>
+              <option value="">All</option>
+              <option value="true">Read</option>
+              <option value="false">Unread</option>
             </Form.Control>
           </Form.Group>
         </Col>
         <Col md={4}>
           <Form.Group>
-            <Form.Label>Estado de eliminación</Form.Label>
+            <Form.Label>Deletion Status</Form.Label>
             <Form.Control as="select" name="isDeleted" onChange={handleFilterChange} value={filters.isDeleted}>
-              <option value="">Todos</option>
-              <option value="false">Activo</option>
-              <option value="true">Eliminado</option>
+              <option value="">All</option>
+              <option value="false">Active</option>
+              <option value="true">Deleted</option>
             </Form.Control>
           </Form.Group>
         </Col>
@@ -156,22 +150,22 @@ const AdmSeeNotifications = () => {
       {loading ? (
         <div className="text-center">
           <Spinner animation="border" role="status">
-            <span className="visually-hidden">Cargando...</span>
+            <span className="visually-hidden">Loading...</span>
           </Spinner>
         </div>
       ) : (
         <>
           {notifications.length === 0 ? (
-            <Alert variant="info">No se encontraron notificaciones.</Alert>
+            <Alert variant="info">No notifications found.</Alert>
           ) : (
             <Table responsive hover className="notification-table">
               <thead>
                 <tr>
-                  <th>Tipo</th>
-                  <th>Mensaje</th>
-                  <th>Fecha de Creación</th>
-                  <th>Estado</th>
-                  <th>Acciones</th>
+                  <th>Type</th>
+                  <th>Message</th>
+                  <th>Creation Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -182,24 +176,24 @@ const AdmSeeNotifications = () => {
                     <td>{new Date(notification.createdAt).toLocaleString()}</td>
                     <td>
                       {notification.isRead ? (
-                        <Badge bg="success">Leído</Badge>
+                        <Badge bg="success">Read</Badge>
                       ) : (
-                        <Badge bg="warning">No leído</Badge>
+                        <Badge bg="warning">Unread</Badge>
                       )}
                     </td>
                     <td>
                       {!notification.isRead && (
                         <Button variant="outline-success" size="sm" onClick={() => handleMarkAsRead(notification._id)} className="me-2">
-                          <FaCheck /> Marcar como leído
+                          <FaCheck /> Mark as Read
                         </Button>
                       )}
                       {!notification.isDeleted ? (
                         <Button variant="outline-danger" size="sm" onClick={() => handleDelete(notification._id)}>
-                          <FaTrash /> Eliminar
+                          <FaTrash /> Delete
                         </Button>
                       ) : (
                         <Button variant="outline-warning" size="sm" onClick={() => handleRestore(notification._id)}>
-                          <FaUndo /> Restaurar
+                          <FaUndo /> Restore
                         </Button>
                       )}
                     </td>

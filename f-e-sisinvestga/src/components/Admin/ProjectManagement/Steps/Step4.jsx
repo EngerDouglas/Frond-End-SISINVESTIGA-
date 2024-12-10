@@ -9,7 +9,7 @@ const Step4 = ({
 }) => {
   return (
     <Card className="mb-3">
-      <Card.Header>Investigadores</Card.Header>
+      <Card.Header>Researchers</Card.Header>
       <Card.Body>
         {investigadoresDisponibles.map((investigador) => (
           <InvestigadorItem

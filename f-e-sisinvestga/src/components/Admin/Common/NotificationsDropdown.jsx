@@ -21,13 +21,13 @@ const NotificationsDropdown = ({
 
       <Dropdown.Menu className="notification-menu">
         <div className="notification-header">
-          <h6 className="notification-title">Notificaciones</h6>
+          <h6 className="notification-title">Notifications</h6>
         </div>
 
         <div className="notification-body">
           {notifications.length === 0 ? (
             <div className="notification-empty">
-              No hay notificaciones
+              No notifications available
             </div>
           ) : (
             notifications.map((notification) => (
@@ -83,7 +83,7 @@ const NotificationsDropdown = ({
               className="footer-btn"
               onClick={onMarkAllAsRead}
             >
-              Marcar todas como leídas
+              Mark all as read
             </Button>
             <Button 
               variant="outline-secondary" 
@@ -91,7 +91,7 @@ const NotificationsDropdown = ({
               className="footer-btn"
               onClick={onMarkAllAsUnread}
             >
-              Marcar todas como no leídas
+              Mark all as unread
             </Button>
           </div>
           <Button 
@@ -100,7 +100,7 @@ const NotificationsDropdown = ({
             className="view-all-btn"
             href="/admin/notificaciones"
           >
-            <FaExternalLinkAlt className="me-1" /> Ver todas
+            <FaExternalLinkAlt className="me-1" /> View all
           </Button>
         </div>
       </Dropdown.Menu>

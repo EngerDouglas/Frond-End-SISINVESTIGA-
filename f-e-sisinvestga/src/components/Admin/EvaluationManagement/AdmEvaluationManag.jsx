@@ -11,7 +11,7 @@ const AdmEvaluationManag = () => {
     <Container fluid className="evaluation-management py-4">
       <Row className="mb-4">
         <Col>
-          <h1 className="text-black">Gestión de Evaluaciones</h1>
+          <h1 className="text-black">Evaluation Management</h1>
         </Col>
       </Row>
       <Row>
@@ -23,7 +23,7 @@ const AdmEvaluationManag = () => {
                 active={activeTab === 'evaluations'}
                 onClick={() => setActiveTab('evaluations')}
               >
-                Evaluaciones Realizadas
+                Completed Evaluations
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
@@ -32,7 +32,7 @@ const AdmEvaluationManag = () => {
                 active={activeTab === 'unevaluatedProjects'}
                 onClick={() => setActiveTab('unevaluatedProjects')}
               >
-                Proyectos Sin Evaluar
+                Unevaluated Projects
               </Nav.Link>
             </Nav.Item>
           </Nav>

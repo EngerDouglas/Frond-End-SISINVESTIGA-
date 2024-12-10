@@ -18,8 +18,8 @@ const AdmEvaluationDetails = () => {
       setEvaluations(data);
       setError(null);
     } catch (err) {
-      setError('Error al cargar la evaluación. Por favor, intente de nuevo.');
-      AlertComponent.error('Error al cargar la evaluación');
+      setError('Error loading evaluation. Please try again.');
+      AlertComponent.error('Error loading evaluation');
     } finally {
       setLoading(false);
     }
@@ -45,16 +45,16 @@ const AdmEvaluationDetails = () => {
 
   return (
     <Container className="my-4 evaluation-details">
-      <h2 className="text-primary mb-4">Evaluaciones del Proyecto</h2>
+      <h2 className="text-primary mb-4">Project Evaluations</h2>
       {evaluations.length === 0 ? (
-        <Alert variant="info">No hay evaluaciones para este proyecto.</Alert>
+        <Alert variant="info">There are no evaluations for this project.</Alert>
       ) : (
         evaluations.map((evaluation) => (
           <Card key={evaluation._id} className="mb-4 evaluation-card">
             <Card.Header as="h3" className="bg-primary text-white d-flex justify-content-between align-items-center">
-              <span>Evaluación #{evaluation._id.substr(-4)}</span>
+              <span>Evaluation #{evaluation._id.substr(-4)}</span>
               <Badge bg={evaluation.isDeleted ? "danger" : "success"}>
-                {evaluation.isDeleted ? "Eliminado" : "Activo"}
+                {evaluation.isDeleted ? "Delete" : "Active"}
               </Badge>
             </Card.Header>
             <Card.Body>
@@ -62,24 +62,24 @@ const AdmEvaluationDetails = () => {
                 <Col md={6}>
                   <div className="mb-3">
                     <FaProjectDiagram className="icon-spacing" />
-                    <strong>Proyecto:</strong> {evaluation.project.nombre}
+                    <strong>Project:</strong> {evaluation.project.nombre}
                   </div>
                   <div className="mb-3">
                     <FaStar className="icon-spacing" />
-                    <strong>Puntuación:</strong> {evaluation.puntuacion}/100
+                    <strong>Score:</strong> {evaluation.puntuacion}/100
                   </div>
                   <div className="mb-3">
                     <FaCalendarAlt className="icon-spacing" />
-                    <strong>Fecha de Evaluación:</strong> {new Date(evaluation.fechaEvaluacion).toLocaleDateString()}
+                    <strong>Evaluation Date:</strong> {new Date(evaluation.fechaEvaluacion).toLocaleDateString()}
                   </div>
                   <div className="mb-3">
                     <FaUserAlt className="icon-spacing" />
-                    <strong>Evaluador:</strong> {evaluation.evaluator.nombre} {evaluation.evaluator.apellido}
+                    <strong>Evaluator:</strong> {evaluation.evaluator.nombre} {evaluation.evaluator.apellido}
                   </div>
                 </Col>
                 <Col md={6}>
                   <div className="mb-3">
-                    <strong>Comentarios:</strong>
+                    <strong>Comments:</strong>
                     <p className="evaluation-comments">{evaluation.comentarios}</p>
                   </div>
                 </Col>

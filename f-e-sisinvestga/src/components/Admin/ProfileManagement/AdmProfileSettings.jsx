@@ -104,7 +104,7 @@ const AdmProfileSettings = () => {
         navigate('/login');
       });
     } catch (error) {
-      console.error('Error al cerrar las sesiones en todos los dispositivos:', error);
+      console.error('Error closing sessions on all devices:', error);
     }
   };
 
@@ -152,25 +152,25 @@ const AdmProfileSettings = () => {
                   />
                 </div>
                 <h3 className="mb-0">{`${user.nombre} ${user.apellido}`}</h3>
-                <p className="text-muted mb-3">Administrador</p>
+                <p className="text-muted mb-3">Administrator</p>
                 <div className="d-flex justify-content-center mb-3">
                   <button className="btn btn-outline-primary me-2">
                     <FaEnvelope className="me-2" />
-                    Mensaje
+                    Message
                   </button>
                   <button className="btn btn-outline-secondary">
                     <FaUser className="me-2" />
-                    Perfil
+                    Profile
                   </button>
                 </div>
                 <div className="border-top pt-3">
                   <div className="row">
                     <div className="col">
-                      <h6>Último acceso</h6>
+                      <h6>Last Access</h6>
                       <p className="text-muted">{user.lastLogin}</p>
                     </div>
                     <div className="col">
-                      <h6>Cuenta creada</h6>
+                      <h6>Account Created</h6>
                       <p className="text-muted">{user.accountCreated}</p>
                     </div>
                   </div>
@@ -188,7 +188,7 @@ const AdmProfileSettings = () => {
                       onClick={() => setActiveTab('personal')}
                     >
                       <FaUser className="me-2" />
-                      Información Personal
+                      Personal Information
                     </button>
                   </li>
                   <li className="nav-item">
@@ -197,7 +197,7 @@ const AdmProfileSettings = () => {
                       onClick={() => setActiveTab('security')}
                     >
                       <FaLock className="me-2" />
-                      Seguridad
+                      Security
                     </button>
                   </li>
                   <li className="nav-item">
@@ -206,7 +206,7 @@ const AdmProfileSettings = () => {
                       onClick={() => setActiveTab('notifications')}
                     >
                       <FaBell className="me-2" />
-                      Notificaciones
+                      Notifications
                     </button>
                   </li>
                 </ul>
@@ -216,7 +216,7 @@ const AdmProfileSettings = () => {
                   <form onSubmit={handleUpdateUser}>
                     <div className="row mb-3">
                       <div className="col-md-6">
-                        <label htmlFor="nombre" className="form-label">Nombre</label>
+                        <label htmlFor="nombre" className="form-label">Name</label>
                         <div className="input-group">
                           <span className="input-group-text"><FaUser /></span>
                           <input
@@ -230,7 +230,7 @@ const AdmProfileSettings = () => {
                         </div>
                       </div>
                       <div className="col-md-6">
-                        <label htmlFor="apellido" className="form-label">Apellido</label>
+                        <label htmlFor="apellido" className="form-label">Last Name</label>
                         <div className="input-group">
                           <span className="input-group-text"><FaUser /></span>
                           <input
@@ -260,7 +260,7 @@ const AdmProfileSettings = () => {
                         </div>
                       </div>
                       <div className="col-md-6">
-                        <label htmlFor="especializacion" className="form-label">Especialización</label>
+                        <label htmlFor="especializacion" className="form-label">Specialization</label>
                         <div className="input-group">
                           <span className="input-group-text"><FaGraduationCap /></span>
                           <input
@@ -275,7 +275,7 @@ const AdmProfileSettings = () => {
                       </div>
                     </div>
                     <div className="mb-3">
-                      <label htmlFor="responsabilidades" className="form-label">Responsabilidades</label>
+                      <label htmlFor="responsabilidades" className="form-label">Responsibilities</label>
                       <div className="input-group">
                         <span className="input-group-text"><FaTasks /></span>
                         <textarea
@@ -303,7 +303,7 @@ const AdmProfileSettings = () => {
                 {activeTab === 'security' && (
                   <form onSubmit={handleUpdateUser}>
                     <div className="mb-3">
-                      <label htmlFor="currentPassword" className="form-label">Contraseña actual</label>
+                      <label htmlFor="currentPassword" className="form-label">Current password</label>
                       <div className="input-group">
                         <span className="input-group-text"><FaKey /></span>
                         <input
@@ -316,7 +316,7 @@ const AdmProfileSettings = () => {
                       </div>
                     </div>
                     <div className="mb-3">
-                      <label htmlFor="newPassword" className="form-label">Nueva contraseña</label>
+                      <label htmlFor="newPassword" className="form-label">New password</label>
                       <div className="input-group">
                         <span className="input-group-text"><FaKey /></span>
                         <input
@@ -329,7 +329,7 @@ const AdmProfileSettings = () => {
                       </div>
                     </div>
                     <div className="mb-3">
-                      <label htmlFor="confirmPassword" className="form-label">Confirmar nueva contraseña</label>
+                      <label htmlFor="confirmPassword" className="form-label">Confirm new password</label>
                       <div className="input-group">
                         <span className="input-group-text"><FaKey /></span>
                         <input
@@ -348,11 +348,11 @@ const AdmProfileSettings = () => {
                       valueAgain={confirmPassword}
                       onChange={(isValid) => setIsPasswordValid(isValid)}
                       messages={{
-                        minLength: "La contraseña tiene al menos 8 caracteres.",
-                        specialChar: "La contraseña tiene caracteres especiales.",
-                        number: "La contraseña tiene un número.",
-                        capital: "La contraseña tiene una letra mayúscula.",
-                        match: "Las contraseñas coinciden.",
+                        minLength: "The password has at least 8 characters.",
+                        specialChar: "The password has special characters.",
+                        number: "The password has a number.",
+                        capital: "The password has a capital letter.",
+                        match: "The passwords match.",
                       }}
                     />
                     <div className="mb-3 mt-4">
@@ -365,7 +365,7 @@ const AdmProfileSettings = () => {
                           onChange={() => setTwoFactorEnabled(!twoFactorEnabled)}
                         />
                         <label className="form-check-label" htmlFor="twoFactorAuth">
-                          Habilitar autenticación de dos factores
+                          Enable two-factor authentication
                         </label>
                       </div>
                     </div>
@@ -375,14 +375,14 @@ const AdmProfileSettings = () => {
                         onClick={handleLogoutAllSessions}
                         className="btn btn-danger"
                       >
-                        <FaSignOutAlt className="me-2" /> Cerrar sesiones en todos los dispositivos
+                        <FaSignOutAlt className="me-2" /> Sign out on all devices
                       </button>
                       <button
                         type="submit"
                         className="btn  btn-primary"
                         disabled={isUpdating || (newPassword && !isPasswordValid)}
                       >
-                        {isUpdating ? "Actualizando..." : "Guardar cambios"}
+                        {isUpdating ? "Updating..." : "Save changes"}
                       </button>
                     </div>
                   </form>
@@ -390,7 +390,7 @@ const AdmProfileSettings = () => {
 
                 {activeTab === 'notifications' && (
                   <div>
-                    <h5 className="mb-4">Preferencias de notificación</h5>
+                    <h5 className="mb-4">Notification preferences</h5>
                     <div className="mb-3">
                       <div className="form-check form-switch">
                         <input
@@ -401,7 +401,7 @@ const AdmProfileSettings = () => {
                           onChange={() => handleNotificationChange('email')}
                         />
                         <label className="form-check-label" htmlFor="emailNotifications">
-                          Notificaciones por correo electrónico
+                          Email Notifications
                         </label>
                       </div>
                     </div>
@@ -415,7 +415,7 @@ const AdmProfileSettings = () => {
                           onChange={() => handleNotificationChange('push')}
                         />
                         <label className="form-check-label" htmlFor="pushNotifications">
-                          Notificaciones push
+                          Push Notifications
                         </label>
                       </div>
                     </div>
@@ -429,13 +429,13 @@ const AdmProfileSettings = () => {
                           onChange={() => handleNotificationChange('sms')}
                         />
                         <label className="form-check-label" htmlFor="smsNotifications">
-                          Notificaciones SMS
+                          SMS Notifications
                         </label>
                       </div>
                     </div>
                     <div className="text-end mt-4">
                       <button type="button" className="btn btn-primary">
-                        Guardar preferencias
+                        Save preferences
                       </button>
                     </div>
                   </div>

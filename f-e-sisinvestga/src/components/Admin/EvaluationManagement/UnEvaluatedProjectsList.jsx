@@ -26,7 +26,7 @@ const UnEvaluatedProjectsList = () => {
       setProjects(unEvaluated);
       setTotalPages(projectsResponse.totalPages);
     } catch (error) {
-      AlertComponent.error('Error al cargar los proyectos');
+      AlertComponent.error('Error loading projects');
     } finally {
       setLoading(false);
     }
@@ -55,8 +55,8 @@ const UnEvaluatedProjectsList = () => {
         </div>
       ) : projects.length === 0 ? (
         <Alert variant="info" className="text-center">
-          <Alert.Heading>No hay proyectos pendientes de evaluación</Alert.Heading>
-          <p>¡Todos los proyectos han sido evaluados!</p>
+          <Alert.Heading>No projects pending evaluation</Alert.Heading>
+          <p>All projects have been evaluated!</p>
         </Alert>
       ) : (
         <>

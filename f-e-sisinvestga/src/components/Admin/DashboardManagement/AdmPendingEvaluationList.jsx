@@ -5,7 +5,7 @@ const AdmPendingEvaluationList = ({ projects }) => {
   return (
     <Card>
       <Card.Body>
-        <Card.Title>Proyectos Pendientes de Evaluación</Card.Title>
+        <Card.Title>Projects Pending Evaluation</Card.Title>
         <ListGroup variant="flush">
           {projects.map((project) => (
             <ListGroup.Item key={project._id}>

@@ -11,34 +11,34 @@ const AdmProjectCard = ({ project, onEvaluate }) => {
         <strong>{nombre}</strong>
       </Card.Header>
       <Card.Body>
-        <Card.Text><strong>Descripción:</strong> {descripcion || 'No disponible'}</Card.Text>
-        <Card.Text><strong>Objetivos:</strong> {objetivos || 'No disponible'}</Card.Text>
+        <Card.Text><strong>Description:</strong> {descripcion || 'No disponible'}</Card.Text>
+        <Card.Text><strong>Objectives:</strong> {objetivos || 'No disponible'}</Card.Text>
         <Card.Text>
-          <strong>Presupuesto:</strong> {presupuesto !== undefined ? `$${presupuesto.toLocaleString()}` : 'No disponible'}
+          <strong>Budget:</strong> {presupuesto !== undefined ? `$${presupuesto.toLocaleString()}` : 'No disponible'}
         </Card.Text>
-        <Card.Text><strong>Cronograma:</strong></Card.Text>
+        <Card.Text><strong>Schedule:</strong></Card.Text>
         {cronograma && cronograma.fechaInicio && cronograma.fechaFin ? (
           <ListGroup variant="flush" className="mb-3">
-            <ListGroup.Item><strong>Inicio:</strong> {new Date(cronograma.fechaInicio).toLocaleDateString()}</ListGroup.Item>
-            <ListGroup.Item><strong>Fin:</strong> {new Date(cronograma.fechaFin).toLocaleDateString()}</ListGroup.Item>
+            <ListGroup.Item><strong>Start:</strong> {new Date(cronograma.fechaInicio).toLocaleDateString()}</ListGroup.Item>
+            <ListGroup.Item><strong>End:</strong> {new Date(cronograma.fechaFin).toLocaleDateString()}</ListGroup.Item>
           </ListGroup>
         ) : (
-          <Card.Text>No hay cronograma disponible.</Card.Text>
+          <Card.Text>No schedule available.</Card.Text>
         )}
-        <Card.Text><strong>Investigadores:</strong></Card.Text>
+        <Card.Text><strong>Researchers:</strong></Card.Text>
         {investigadores && investigadores.length > 0 ? (
-          <ListGroup variant="flush">
+          <ListGroup variant="flush"> 
             {investigadores.map((investigador) => (
               <ListGroup.Item key={investigador._id}>{investigador.nombre} {investigador.apellido}</ListGroup.Item>
             ))}
           </ListGroup>
         ) : (
-          <Card.Text>No hay investigadores asignados.</Card.Text>
+          <Card.Text>No researchers assigned.</Card.Text>
         )}
       </Card.Body>
       <Card.Footer className="d-flex justify-content-end">
         <Button variant="primary" onClick={() => onEvaluate(project)}>
-          <FaClipboardCheck className="me-2" /> Evaluar
+          <FaClipboardCheck className="me-2" /> Evaluate
         </Button>
       </Card.Footer>
     </Card>

@@ -8,7 +8,7 @@ const Step2 = ({ formData, handleChange, handleDateChange }) => {
   return (
     <>
       <Form.Group className="mb-3">
-        <Form.Label>Presupuesto</Form.Label>
+        <Form.Label>Budget</Form.Label>
         <Form.Control
           type="number"
           name="presupuesto"
@@ -18,23 +18,23 @@ const Step2 = ({ formData, handleChange, handleDateChange }) => {
         />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Estado del Proyecto</Form.Label>
+        <Form.Label>Project Status</Form.Label>
         <Form.Select
           name="estado"
           value={estado}
           onChange={handleChange}
           required
         >
-          <option value="Planeado">Planeado</option>
-          <option value="En Proceso">En Proceso</option>
-          <option value="Finalizado">Finalizado</option>
-          <option value="Cancelado">Cancelado</option>
+          <option value="Planeado">Planned</option>
+          <option value="En Proceso">In Progress</option>
+          <option value="Finalizado">Completed</option>
+          <option value="Cancelado">Cancelled</option>
         </Form.Select>
       </Form.Group>
       <Row>
         <Col>
           <Form.Group className="mb-3">
-            <Form.Label>Fecha de Inicio</Form.Label>
+            <Form.Label>Start Date</Form.Label>
             <DatePicker
               selected={fechaInicio}
               onChange={(date) => handleDateChange("fechaInicio", date)}
@@ -46,7 +46,7 @@ const Step2 = ({ formData, handleChange, handleDateChange }) => {
         </Col>
         <Col>
           <Form.Group className="mb-3">
-            <Form.Label>Fecha de Fin</Form.Label>
+            <Form.Label>End Date</Form.Label>
             <DatePicker
               selected={fechaFin}
               onChange={(date) => handleDateChange("fechaFin", date)}

@@ -11,7 +11,7 @@ const AdmRequestList = ({ requests, handleNavigation, renderTooltip }) => {
   return (
     <Card>
       <Card.Body>
-        <Card.Title>Solicitudes Recientes</Card.Title>
+        <Card.Title>Recent Requests</Card.Title>
         <ListGroup variant="flush">
           {requests.map((request) => (
             <ListGroup.Item
@@ -21,7 +21,7 @@ const AdmRequestList = ({ requests, handleNavigation, renderTooltip }) => {
               <div>
                 <strong>{request.tipoSolicitud}</strong>
                 <p className="mb-0 text-muted">
-                  Solicitante: {request.solicitante.nombre}{" "}
+                  Applicant: {request.solicitante.nombre}{" "}
                   {request.solicitante.apellido}
                 </p>
               </div>
@@ -52,7 +52,7 @@ const AdmRequestList = ({ requests, handleNavigation, renderTooltip }) => {
                       handleNavigation(`/admin/solicitudes/${request._id}`)
                     }
                   >
-                    Detalles
+                    Details
                   </Button>
                 </OverlayTrigger>
               </div>

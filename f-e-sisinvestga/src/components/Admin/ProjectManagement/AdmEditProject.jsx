@@ -41,7 +41,7 @@ const AdmEditProject = () => {
         setInvestigadoresDisponibles(investigadores);
       } catch (error) {
         console.error(error);
-        AlertComponent.error('Error al cargar la lista de investigadores');
+        AlertComponent.error('Error loading list of researchers');
       }
     };
 
@@ -74,7 +74,7 @@ const AdmEditProject = () => {
         }
       } catch (error) {
         console.error(error);
-        AlertComponent.error('Error al cargar los datos del proyecto');
+        AlertComponent.error('Error loading project data');
       }
     };
 
@@ -196,10 +196,10 @@ const AdmEditProject = () => {
 
     try {
       await putData("projects", id, updatedProject);
-      AlertComponent.success("Proyecto actualizado exitosamente.");
+      AlertComponent.success("Project successfully updated.");
       navigate('/admin/listarproyectos');
     } catch (error) {
-      handleError(error, "Ocurrió un error al actualizar el Proyecto.");
+      handleError(error, "OAn error occurred while updating the Project.");
     }
   };
 
@@ -261,7 +261,7 @@ const AdmEditProject = () => {
 
   return (
     <Container className="my-5 adm-edit-project">
-      <h1 className="text-center mb-4">Editar Proyecto</h1>
+      <h1 className="text-center mb-4">Edit Project</h1>
       <Card>
         <Card.Body>
           <ProgressBar now={(currentStep / 5) * 100} className="mb-4" />
@@ -270,17 +270,17 @@ const AdmEditProject = () => {
             <div className="d-flex justify-content-between mt-4">
               {currentStep > 1 && (
                 <Button variant="secondary" onClick={() => setCurrentStep(currentStep - 1)} type="button">
-                  Anterior
+                  Previous
                 </Button>
               )}
               {currentStep < 5 && (
                 <Button variant="primary" onClick={() => setCurrentStep(currentStep + 1)} type="button">
-                  Siguiente
+                  Next
                 </Button>
               )}
               {currentStep === 5 && (
                 <Button variant="success" type="submit">
-                  <FaSave /> Guardar Cambios
+                  <FaSave /> Save Changes
                 </Button>
               )}
             </div>

@@ -7,7 +7,7 @@ const Step1 = ({ formData, handleChange }) => {
   return (
     <>
       <Form.Group className="mb-3">
-        <Form.Label>Nombre del Proyecto</Form.Label>
+        <Form.Label>Project Name</Form.Label>
         <Form.Control
           type="text"
           name="nombre"
@@ -17,7 +17,7 @@ const Step1 = ({ formData, handleChange }) => {
         />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Descripción</Form.Label>
+        <Form.Label>Description</Form.Label>
         <Form.Control
           as="textarea"
           rows={3}
@@ -28,7 +28,7 @@ const Step1 = ({ formData, handleChange }) => {
         />
       </Form.Group>
       <Form.Group className="mb-3">
-        <Form.Label>Objetivos</Form.Label>
+        <Form.Label>Objectives</Form.Label>
         <Form.Control
           as="textarea"
           rows={3}

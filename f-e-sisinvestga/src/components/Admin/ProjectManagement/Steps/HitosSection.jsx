@@ -5,14 +5,14 @@ import { FaTrash, FaPlus } from 'react-icons/fa';
 
 const HitosSection = ({ hitos, addHito, removeHito, handleHitoChange }) => (
   <Card className="mb-3">
-    <Card.Header>Hitos</Card.Header>
+    <Card.Header>Milestone</Card.Header>
     <Card.Body>
       {hitos.map((hito, index) => (
         <Row key={index} className="mb-3">
           <Col xs={12} md={6}>
             <Form.Control
               type="text"
-              placeholder="Nombre del hito"
+              placeholder="Milestone name"
               value={hito.nombre}
               onChange={(e) => handleHitoChange(index, "nombre", e.target.value)}
               required
@@ -35,7 +35,7 @@ const HitosSection = ({ hitos, addHito, removeHito, handleHitoChange }) => (
         </Row>
       ))}
       <Button variant="success" onClick={addHito}>
-        <FaPlus /> Añadir Hito
+        <FaPlus /> Add Milestone
       </Button>
     </Card.Body>
   </Card>

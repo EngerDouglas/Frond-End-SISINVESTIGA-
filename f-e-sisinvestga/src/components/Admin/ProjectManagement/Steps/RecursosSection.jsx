@@ -4,14 +4,14 @@ import { FaTrash, FaPlus } from 'react-icons/fa';
 
 const RecursosSection = ({ recursos, addRecurso, removeRecurso, handleRecursoChange }) => (
   <Card>
-    <Card.Header>Recursos</Card.Header>
+    <Card.Header>Resources</Card.Header>
     <Card.Body>
       {recursos.map((recurso, index) => (
         <Row key={index} className="mb-3">
           <Col xs={10}>
             <Form.Control
               type="text"
-              placeholder="Recurso"
+              placeholder="Resource"
               value={recurso}
               onChange={(e) => handleRecursoChange(index, e.target.value)}
               required
@@ -25,7 +25,7 @@ const RecursosSection = ({ recursos, addRecurso, removeRecurso, handleRecursoCha
         </Row>
       ))}
       <Button variant="success" onClick={addRecurso}>
-        <FaPlus /> Añadir Recurso
+        <FaPlus /> Add Resource
       </Button>
     </Card.Body>
   </Card>

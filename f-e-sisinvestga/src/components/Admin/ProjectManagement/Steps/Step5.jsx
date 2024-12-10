@@ -4,7 +4,7 @@ import { FaUpload } from 'react-icons/fa';
 
 const Step5 = ({ previewImage, selectedFile, handleImageChange }) => (
   <Form.Group className="mb-3">
-    <Form.Label>Imagen del Proyecto</Form.Label>
+    <Form.Label>Project Image</Form.Label>
     <div className="d-flex align-items-center mb-3">
       <Form.Control
         type="file"
@@ -14,7 +14,7 @@ const Step5 = ({ previewImage, selectedFile, handleImageChange }) => (
         id="project-image"
       />
       <Button as="label" htmlFor="project-image" variant="outline-primary">
-        <FaUpload /> Seleccionar Imagen
+        <FaUpload /> Select Image
       </Button>
       {selectedFile && <span className="ml-3">{selectedFile.name}</span>}
     </div>

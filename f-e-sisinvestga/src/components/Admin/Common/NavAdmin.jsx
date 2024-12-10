@@ -45,7 +45,7 @@ const AdminNav = () => {
       navigate("/login");
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
-      alert("Ocurrió un error durante el proceso de cierre de sesión.");
+      alert("An error occurred during the logout process.");
     }
   };
 
@@ -102,31 +102,31 @@ const AdminNav = () => {
   );
 
   const menuItems = [
-    { path: "/admin", icon: <FaHome />, text: "Panel de Administración" },
+    { path: "/admin", icon: <FaHome />, text: "Admin Panel" },
     {
       path: "/admin/listarproyectos",
       icon: <FaFolder />,
-      text: "Gestión de Proyectos",
+      text: "Project Management",
     },
     {
       path: "/admin/gestionInvestigadores",
       icon: <FaUsers />,
-      text: "Gestión de Investigadores",
+      text: "Researcher Management",
     },
-    { path: "/admin/roles", icon: <FaUserCog />, text: "Gestión de Roles" },
-    { path: "/admin/auditoria", icon: <FaFileAlt />, text: "Auditoría" },
-    { path: "/admin/publicaciones", icon: <FaBook />, text: "Publicaciones" },
-    { path: "/admin/solicitudes", icon: <FaTasks />, text: "Solicitudes" },
-    { path: "/admin/informes", icon: <FaChartBar />, text: "Informes" },
+    { path: "/admin/roles", icon: <FaUserCog />, text: "Role Management" },
+    { path: "/admin/auditoria", icon: <FaFileAlt />, text: "Audit" },
+    { path: "/admin/publicaciones", icon: <FaBook />, text: "Publications" },
+    { path: "/admin/solicitudes", icon: <FaTasks />, text: "Requests" },
+    { path: "/admin/informes", icon: <FaChartBar />, text: "Reports" },
     {
       path: "/admin/confprofile",
       icon: <FaCog />,
-      text: "Configuración de Perfil",
+      text: "Profile Settings",
     },
     {
       path: "/admin/evaluationprojects",
       icon: <FaClipboardList />,
-      text: "Gestión de Evaluaciones",
+      text: "Evaluation Management",
     },
   ];
 
@@ -198,14 +198,14 @@ const AdminNav = () => {
               <OverlayTrigger
                 placement="bottom"
                 delay={{ show: 250, hide: 400 }}
-                overlay={(props) => renderTooltip(props, "Cerrar Sesión")}
+                overlay={(props) => renderTooltip(props, "Logout")}
               >
                 <button
                   onClick={handleLogout}
                   className="nav-link btn btn-link"
                 >
                   <FaSignOutAlt />
-                  <span className="d-lg-none ms-2">Cerrar Sesión</span>
+                  <span className="d-lg-none ms-2">Logout</span>
                 </button>
               </OverlayTrigger>
             </li>
@@ -213,11 +213,11 @@ const AdminNav = () => {
               <OverlayTrigger
                 placement="bottom"
                 delay={{ show: 250, hide: 400 }}
-                overlay={(props) => renderTooltip(props, "Atrás")}
+                overlay={(props) => renderTooltip(props, "Back")}
               >
                 <button onClick={goBack} className="nav-link btn btn-link">
                   <FaArrowLeft />
-                  <span className="d-lg-none ms-2">Atrás</span>
+                  <span className="d-lg-none ms-2">Back</span>
                 </button>
               </OverlayTrigger>
             </li>

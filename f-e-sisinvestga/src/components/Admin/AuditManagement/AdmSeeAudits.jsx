@@ -53,7 +53,7 @@ const AdmSeeAudits = () => {
       setTotalPages(response.totalPages);
       updateStats(response);
     } catch (error) {
-      AlertComponent.error('Error al cargar los registros de auditoría');
+      AlertComponent.error('Error loading audit records');
       console.error(error);
     } finally {
       setLoading(false);
@@ -114,13 +114,13 @@ const AdmSeeAudits = () => {
 
   return (
     <Container fluid className="audit-container">
-      <h1 className="text-center mb-4">Registros de Auditoría</h1>
+      <h1 className="text-center mb-4">Audit Records</h1>
 
       <Row className="mb-4">
         <Col md={4}>
           <Card className="stats-card">
             <Card.Body>
-              <Card.Title>Total de Registros</Card.Title>
+              <Card.Title>Total Logs</Card.Title>
               <Card.Text>{stats.totalLogs}</Card.Text>
             </Card.Body>
           </Card>
@@ -128,7 +128,7 @@ const AdmSeeAudits = () => {
         <Col md={4}>
           <Card className="stats-card">
             <Card.Body>
-              <Card.Title>Usuarios Únicos</Card.Title>
+              <Card.Title>Unique Users</Card.Title>
               <Card.Text>{stats.uniqueUsers}</Card.Text>
             </Card.Body>
           </Card>
@@ -136,7 +136,7 @@ const AdmSeeAudits = () => {
         <Col md={4}>
           <Card className="stats-card">
             <Card.Body>
-              <Card.Title>Actividad Más Común</Card.Title>
+              <Card.Title>Most Common Activity</Card.Title>
               <Card.Text>{stats.mostCommonActivity}</Card.Text>
             </Card.Body>
           </Card>
@@ -149,7 +149,7 @@ const AdmSeeAudits = () => {
             <Row>
               <Col md={3}>
                 <Form.Group>
-                  <Form.Label>Usuario</Form.Label>
+                  <Form.Label>User</Form.Label>
                   <Form.Control
                     type="text"
                     name="user"
@@ -161,7 +161,7 @@ const AdmSeeAudits = () => {
               </Col>
               <Col md={3}>
                 <Form.Group>
-                  <Form.Label>Actividad</Form.Label>
+                  <Form.Label>Activity</Form.Label>
                   <Form.Control
                     type="text"
                     name="activity"
@@ -173,14 +173,14 @@ const AdmSeeAudits = () => {
               </Col>
               <Col md={2}>
                 <Form.Group>
-                  <Form.Label>Método</Form.Label>
+                  <Form.Label>Method</Form.Label>
                   <Form.Control
                     as="select"
                     name="method"
                     value={filters.method}
                     onChange={handleFilterChange}
                   >
-                    <option value="">Todos</option>
+                    <option value="">All</option>
                     {/* <option value="GET">GET</option> */}
                     <option value="PATCH">PATCH</option>
                     <option value="POST">POST</option>
@@ -191,7 +191,7 @@ const AdmSeeAudits = () => {
               </Col>
               <Col md={2}>
                 <Form.Group>
-                  <Form.Label>Fecha Inicio</Form.Label>
+                  <Form.Label>Start Date</Form.Label>
                   <Form.Control
                     type="date"
                     name="startDate"
@@ -202,7 +202,7 @@ const AdmSeeAudits = () => {
               </Col>
               <Col md={2}>
                 <Form.Group>
-                  <Form.Label>Fecha Fin</Form.Label>
+                  <Form.Label>End Date</Form.Label>
                   <Form.Control
                     type="date"
                     name="endDate"
@@ -216,11 +216,11 @@ const AdmSeeAudits = () => {
               <Col>
                 <Button variant="primary" onClick={fetchAuditLogs}>
                   <FaSearch className="me-2" />
-                  Buscar
+                  Search
                 </Button>
                 <Button variant="secondary" onClick={resetFilters} className="ms-2">
                   <FaSync className="me-2" />
-                  Reiniciar Filtros
+                  Reset Filters
                 </Button>
               </Col>
             </Row>
@@ -231,7 +231,7 @@ const AdmSeeAudits = () => {
       {loading ? (
         <div className="text-center">
           <Spinner animation="border" role="status">
-            <span className="visually-hidden">Cargando...</span>
+            <span className="visually-hidden">Loading...</span>
           </Spinner>
         </div>
       ) : (
@@ -240,23 +240,23 @@ const AdmSeeAudits = () => {
             <Table striped bordered hover className="audit-table">
               <thead>
                 <tr>
-                  <th>Usuario</th>
+                  <th>User</th>
                   <th>Email</th>
-                  <th>Rol</th>
-                  <th>Método</th>
+                  <th>Role</th>
+                  <th>Method</th>
                   <th>URL</th>
-                  <th>Actividad</th>
+                  <th>Activity</th>
                   <th>IP</th>
-                  <th>Ubicación</th>
-                  <th>Dispositivo</th>
-                  <th>Fecha y Hora</th>
+                  <th>Location</th>
+                  <th>Device</th>
+                  <th>Date and Time</th>
                 </tr>
               </thead>
               <tbody>
                 {auditLogs.map((log) => (
                   <tr key={log._id}>
                     <td>
-                      {log.user ? `${log.user.nombre} ${log.user.apellido}` : 'Usuario Desconocido'}
+                      {log.user ? `${log.user.nombre} ${log.user.apellido}` : 'Unknown User'}
                     </td>
                     <td>
                       {log.user ? `${log.user.email}` : 'N/A'}

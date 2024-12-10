@@ -42,42 +42,42 @@ const EvaluationFormModal = ({ show, handleClose, evaluation, project, refreshDa
     try {
       if (evaluation && evaluation._id) {
         await putData('evaluations', evaluation._id, formData);
-        AlertComponent.success('Evaluación actualizada con éxito');
+        AlertComponent.success('Evaluation successfully updated');
       } else {
         await postData(`evaluations/projects/${formData.project}`, formData);
-        AlertComponent.success('Evaluación creada con éxito');
+        AlertComponent.success('Evaluation successfully created');
       }
       handleClose();
       refreshData();
     } catch (error) {
-      AlertComponent.error('Error al guardar la evaluación');
+      AlertComponent.error('Error saving the evaluation');
     }
   };
 
   return (
     <Modal show={show} onHide={handleClose} size="lg"  centered>
       <Modal.Header closeButton className="bg-primary text-white">
-        <Modal.Title>{evaluation ? 'Editar Evaluación' : 'Crear Evaluación'}</Modal.Title>
+        <Modal.Title>{evaluation ? 'Edit Evaluation' : 'Create Evaluation'}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {project && (
           <div className="mb-4">
-            <h5 className="text-primary">Detalles del Proyecto</h5>
+            <h5 className="text-primary">Project Details</h5>
             <Row>
               <Col md={6}>
-                <p><strong>Nombre:</strong> {project.nombre}</p>
-                <p><strong>Descripción:</strong> {project.descripcion}</p>
+                <p><strong>Name:</strong> {project.nombre}</p>
+                <p><strong>Description:</strong> {project.descripcion}</p>
               </Col>
               <Col md={6}>
-                <p><strong>Objetivos:</strong> {project.objetivos}</p>
-                <p><strong>Presupuesto:</strong> ${project.presupuesto?.toLocaleString()}</p>
+                <p><strong>Objectives:</strong> {project.objetivos}</p>
+                <p><strong>Budget:</strong> ${project.presupuesto?.toLocaleString()}</p>
               </Col>
             </Row>
           </div>
         )}
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
-            <Form.Label>Puntuación</Form.Label>
+            <Form.Label>Score</Form.Label>
             <Form.Control
               type="number"
               name="puntuacion"
@@ -89,7 +89,7 @@ const EvaluationFormModal = ({ show, handleClose, evaluation, project, refreshDa
             />
           </Form.Group>
           <Form.Group className="mb-3">
-            <Form.Label>Comentarios</Form.Label>
+            <Form.Label>Comments</Form.Label>
             <Form.Control
               as="textarea"
               rows={3}
@@ -101,10 +101,10 @@ const EvaluationFormModal = ({ show, handleClose, evaluation, project, refreshDa
           </Form.Group>
           <div className="d-flex justify-content-end">
             <Button variant="secondary" onClick={handleClose} className="me-2">
-              Cancelar
+              Cancel
             </Button>
             <Button variant="primary" type="submit">
-              {evaluation ? 'Guardar Cambios' : 'Crear Evaluación'}
+              {evaluation ? 'Save Changes' : 'Create Evaluation'}
             </Button>
           </div>
         </Form>

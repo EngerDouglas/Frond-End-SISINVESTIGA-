@@ -15,7 +15,7 @@ const AdmEvaluationList = ({
   return (
     <Card>
       <Card.Body>
-        <Card.Title>Evaluaciones Recientes</Card.Title>
+        <Card.Title>Recent Evaluations</Card.Title>
         <ListGroup variant="flush">
           {evaluations.map((evaluation) => (
             <ListGroup.Item
@@ -25,7 +25,7 @@ const AdmEvaluationList = ({
               <div>
                 <strong>{evaluation.project.nombre}</strong>
                 <p className="mb-0 text-muted">
-                  Evaluador: {evaluation.evaluator.nombre}{" "}
+                    Evaluator: {evaluation.evaluator.nombre}{" "}
                   {evaluation.evaluator.apellido}
                 </p>
               </div>
@@ -47,7 +47,7 @@ const AdmEvaluationList = ({
                       )
                     }
                   >
-                    Detalles
+                    Details
                   </Button>
                 </OverlayTrigger>
               </div>

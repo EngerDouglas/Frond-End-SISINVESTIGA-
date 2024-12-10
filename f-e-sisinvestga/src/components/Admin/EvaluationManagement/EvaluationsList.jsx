@@ -21,7 +21,7 @@ const EvaluationsList = () => {
       setEvaluations(response.evaluations);
       setTotalPages(response.totalPages);
     } catch (error) {
-      AlertComponent.error('Error al cargar las evaluaciones');
+      AlertComponent.error('Error loading evaluations');
     } finally {
       setLoading(false);
     }
@@ -50,8 +50,8 @@ const EvaluationsList = () => {
         </div>
       ) : evaluations.length === 0 ? (
         <div className="text-center my-5">
-          <h4>No hay evaluaciones disponibles</h4>
-          <p>Aún no se han realizado evaluaciones.</p>
+          <h4>No evaluations available</h4>
+          <p>No evaluations have been conducted yet.</p>
         </div>
       ) : (
         <>

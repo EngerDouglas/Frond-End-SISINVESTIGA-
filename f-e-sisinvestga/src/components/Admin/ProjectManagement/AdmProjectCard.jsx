@@ -15,25 +15,25 @@ const AdmProjectCard = ({ proyecto, onViewDetails, fetchProjects }) => {
   const handleDeleteProject = async () => {
     try {
       const result = await AlertComponent.warning(
-        '¿Estás seguro que deseas eliminar este proyecto?'
+        'Are you sure you want to delete this project?'
       );
       if (result.isConfirmed) {
         await deleteData('projects', proyecto._id);
-        AlertComponent.success('El proyecto ha sido eliminado correctamente.');
+        AlertComponent.success('The project has been successfully deleted.');
         fetchProjects();
       }
     } catch (error) {
-      AlertComponent.error('Ocurrió un error durante la eliminación del registro.');
+      AlertComponent.error('An error occurred while deleting the record.');
     }
   };
 
   const handleRestoreProject = async () => {
     try {
       await putData('projects/restore', `${proyecto._id}`);
-      AlertComponent.success('El proyecto ha sido restaurado correctamente.');
+      AlertComponent.success('The project has been successfully restored.');
       fetchProjects();
     } catch (error) {
-      AlertComponent.error('Ocurrió un error al restaurar el proyecto.');
+      AlertComponent.error('An error occurred while restoring the project.');
     }
   };
 
@@ -41,7 +41,7 @@ const AdmProjectCard = ({ proyecto, onViewDetails, fetchProjects }) => {
     const statusMap = {
       'Planeado': 'planned',
       'En Proceso': 'in-progress',
-      'Finalizado': 'completed',
+      'Completado': 'completed',
       'Cancelado': 'canceled'
     };
     return statusMap[status] || 'default';
@@ -55,27 +55,27 @@ const AdmProjectCard = ({ proyecto, onViewDetails, fetchProjects }) => {
           {proyecto.estado}
         </span>
         <Card.Text>
-          <strong>Objetivos:</strong> {proyecto.objetivos || 'N/A'} <br />
-          <strong>Presupuesto:</strong> ${proyecto.presupuesto?.toLocaleString() || 'N/A'} <br />
-          <strong>Fecha de Inicio:</strong> {new Date(proyecto.cronograma.fechaInicio).toLocaleDateString()} <br />
-          <strong>Fecha Límite:</strong> {new Date(proyecto.cronograma.fechaFin).toLocaleDateString()}
+          <strong>Objectives:</strong> {proyecto.objetivos || 'N/A'} <br />
+          <strong>Budget:</strong> ${proyecto.presupuesto?.toLocaleString() || 'N/A'} <br />
+          <strong>Start Date:</strong> {new Date(proyecto.cronograma.fechaInicio).toLocaleDateString()} <br />
+          <strong>Deadline:</strong> {new Date(proyecto.cronograma.fechaFin).toLocaleDateString()}
         </Card.Text>
       </Card.Body>
       <Card.Footer className="d-flex flex-column">
         {proyecto.isDeleted ? (
           <Button variant="outline-success" className="w-100" onClick={handleRestoreProject}>
-            <FaUndo /> Restaurar
+            <FaUndo /> Restore
           </Button>
         ) : (
           <>
             <Button variant="outline-primary" className="w-100 mb-2" onClick={() => onViewDetails(proyecto)}>
-              <FaInfoCircle /> Ver Detalles
+              <FaInfoCircle /> View Details
             </Button>
             <Button variant="outline-secondary" className="w-100 mb-2" onClick={() => handleEditProject(proyecto._id)}>
-              <FaEdit /> Editar
+              <FaEdit /> Edit
             </Button>
             <Button variant="outline-danger" className="w-100" onClick={handleDeleteProject}>
-              <FaTrash /> Eliminar
+              <FaTrash /> Delete
             </Button>
           </>
         )}

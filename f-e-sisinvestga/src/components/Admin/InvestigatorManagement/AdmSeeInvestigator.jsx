@@ -34,9 +34,9 @@ export default function AdmSeeInvestigator() {
       setInvestigadores(usersData);
       setRoles(rolesData);
     } catch (error) {
-      setError("Error al cargar los datos. Por favor, intente de nuevo.");
+      setError("Error loading data. Please try again.");
       AlertComponent.error(
-        "Error al cargar los datos. Por favor, intente de nuevo."
+        "Error loading data. Please try again."
       );
     } finally {
       setLoading(false);
@@ -54,11 +54,11 @@ export default function AdmSeeInvestigator() {
       );
       setInvestigadores(updatedInvestigadores);
       AlertComponent.success(
-        `Usuario ${isDisabled ? "habilitado" : "deshabilitado"} exitosamente.`
+        `User ${isDisabled ? "enabled" : "disabled"} successfully.`
       );
     } catch (error) {
       AlertComponent.error(
-        "Error al cambiar el estado del usuario. Por favor, intente de nuevo."
+        "Error changing user status. Please try again."
       );
     }
   };
@@ -81,10 +81,10 @@ export default function AdmSeeInvestigator() {
 
       setInvestigadores(updatedInvestigadores);
       setIsModalOpen(false);
-      AlertComponent.success("Usuario actualizado exitosamente.");
+      AlertComponent.success("User updated successfully.");
     } catch (error) {
       AlertComponent.error(
-        "Error al actualizar el usuario. Por favor, intente de nuevo."
+        "Error updating user. Please try again."
       );
     }
   };
@@ -98,11 +98,11 @@ export default function AdmSeeInvestigator() {
           : investigador
       );
       setInvestigadores(updatedInvestigadores);
-      AlertComponent.success("Rol del usuario actualizado exitosamente.");
+      AlertComponent.success("User role updated successfully.");
     } catch (error) {
-      console.error('Error al actualizar el rol:', error);
+      console.error('Error updating role:', error);
       AlertComponent.error(
-        "Error al actualizar el rol del usuario. Por favor, intente de nuevo."
+        "Error updating user role. Please try again."
       );
     }
   };
@@ -133,7 +133,7 @@ export default function AdmSeeInvestigator() {
   if (loading) return (
     <div className="d-flex justify-content-center align-items-center" style={{height: "100vh"}}>
       <Spinner animation="border" role="status" variant="primary">
-        <span className="visually-hidden">Cargando...</span>
+        <span className="visually-hidden">Loading...</span>
       </Spinner>
     </div>
   );
@@ -145,7 +145,7 @@ export default function AdmSeeInvestigator() {
       <Container fluid className="py-4">
         <Row className="mb-4">
           <Col>
-            <h1 className="text-black">Gestión de Investigadores</h1>
+            <h1 className="text-black">Researcher Management</h1>
           </Col>
         </Row>
         <Card>
@@ -153,10 +153,10 @@ export default function AdmSeeInvestigator() {
             <Row className="mb-3">
               <Col md={6}>
                 <Form.Group className="mb-3">
-                  <Form.Label><FaSearch /> Buscar investigador</Form.Label>
+                  <Form.Label><FaSearch />Search Researcher</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Buscar por nombre..."
+                    placeholder="Search by name..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
@@ -166,14 +166,14 @@ export default function AdmSeeInvestigator() {
             <Table responsive hover className="align-middle">
               <thead className="bg-light">
                 <tr>
-                  <th>Foto</th>
-                  <th>Nombre</th>
-                  <th>Especialización</th>
-                  <th>Correo Eletrónico</th>
-                  <th>Rol</th>
-                  <th>Estado</th>
-                  <th>Verificado</th>
-                  <th>Acciones</th>
+                  <th>Photo</th>
+                  <th>Name</th>
+                  <th>Specialization</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Verified</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -182,7 +182,7 @@ export default function AdmSeeInvestigator() {
                     <td>
                       <img
                         src={investigador.fotoPerfil || profilenot}
-                        alt={`Foto de ${investigador.nombre}`}
+                        alt={`Profile of ${investigador.nombre}`}
                         className="rounded-circle"
                         width="50"
                         height="50"
@@ -191,15 +191,15 @@ export default function AdmSeeInvestigator() {
                     <td>{`${investigador.nombre} ${investigador.apellido}`}</td>
                     <td>{investigador.especializacion}</td>
                     <td>{investigador.email}</td>
-                    <td>{investigador.role?.roleName || 'No asignado'}</td>
+                    <td>{investigador.role?.roleName || 'Not assigned'}</td>
                     <td>
                       <Badge bg={investigador.isDisabled ? "danger" : "success"}>
-                        {investigador.isDisabled ? "Deshabilitado" : "Habilitado"}
+                        {investigador.isDisabled ? "Disabled" : "Enabled"}
                       </Badge>
                     </td>
                     <td>
                       <Badge bg={investigador.isVerified ? "info" : "warning"}>
-                        {investigador.isVerified ? "Verificado" : "No verificado"}
+                        {investigador.isVerified ? "Verified" : "Not verified"}
                       </Badge>
                     </td>
                     <td>
@@ -209,7 +209,7 @@ export default function AdmSeeInvestigator() {
                         className="me-2"
                         onClick={() => handleEdit(investigador)}
                       >
-                        <FaEdit /> Editar
+                        <FaEdit /> Edit
                       </Button>
                       <Button
                         variant={investigador.isDisabled ? "outline-success" : "outline-danger"}
@@ -218,7 +218,7 @@ export default function AdmSeeInvestigator() {
                       >
                         {investigador.isDisabled ? <FaToggleOn /> : <FaToggleOff />}
                         {' '}
-                        {investigador.isDisabled ? "Habilitar" : "Deshabilitar"}
+                        {investigador.isDisabled ? "Enable" : "Disable"}
                       </Button>
                     </td>
                   </tr>
@@ -239,7 +239,7 @@ export default function AdmSeeInvestigator() {
         <Modal 
           isOpen={isModalOpen} 
           onClose={() => setIsModalOpen(false)}
-          title="Editar Investigador"
+          title="Edit Investigator"
         >
           {editingUser && (
             <AdmEditInvestigator
